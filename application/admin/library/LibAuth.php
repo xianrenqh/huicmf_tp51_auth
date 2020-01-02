@@ -25,6 +25,7 @@ class LibAuth extends \lib\Auth
     
     public function getRuleIds($uid = null)
     {
+        $uid = is_null($uid) ? $this->uid : $uid;
         return $this->auth->getRuleIds($uid);
     }
     public function isSuperAdmin()

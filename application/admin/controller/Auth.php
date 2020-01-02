@@ -355,25 +355,60 @@ class Auth extends Common
             $this->error('你无权限访问');
         }
         if(input('dosubmit')){
-            $rulesArr = input('post.rules');
-            $rules = '';
-            foreach($rulesArr as $v){
-                $rules .=$v.",";
+            $groupList = Db::name('auth_group')->where(['status' => 'normal'])->select();
+            $params = input('post.');
+            $rulesArr = $params['rules'];
+            $rulesStr = implode(",",$rulesArr);
+
+            //父节点不能是非权限内节点
+            if (!in_array($params['pid'], $this->childrenGroupIds)) {
+                $this->error('父节点不能是非权限内节点');
             }
-            $rules = substr($rules,0,strlen($rules)-1);
-            $param = input('post.');
-            $param['updatetime']=time();
-            $param['rules']=$rules;
-            if($param['save']){
-                $res = Db::name('auth_group')->where('id',input('id'))->data($param)->strict(false)->update();
-                if ($res) {
+            
+            // 父节点不能是它自身的子节点或自己本身
+            if (in_array($params['pid'], Tree2::instance()->init($groupList)->getChildrenIds($row->id,true))){
+                $this->error('父节点不能是它自身的子节点或自己本身');
+            }
+    
+            $params['rules'] = explode(',', $rulesStr);
+    
+            $parentmodel = model("AuthGroup")->get($params['pid']);
+            if (!$parentmodel) {
+                $this->error('无法找到父级组节点');
+            }
+            // 父级别的规则节点
+            $parentrules = explode(',', $parentmodel->rules);
+           
+            // 当前组别的规则节点
+            $LibAuth = new LibAuth();
+            $currentrules = $LibAuth->getRuleIds();
+            $rules = $params['rules'];
+            
+            // 如果父组不是超级管理员则需要过滤规则节点,不能超过父组别的权限
+            $rules = in_array('*', $parentrules) ? $rules : array_intersect($parentrules, $rules);
+            // 如果当前组别不是超级管理员则需要过滤规则节点,不能超当前组别的权限
+            $rules = in_array('*', $currentrules) ? $rules : array_intersect($currentrules, $rules);
+            $params['rules'] = implode(',', $rules);
+            if ($params) {
+                Db::startTrans();
+                try {
+                    $row->save($params);
+                    $children_auth_groups = Db::name('auth_group')->where('id','in', implode(',',(Tree2::instance()->init($groupList)->getChildrenIds($row->id))))->select();
+                    $childparams = [];
+                    foreach ($children_auth_groups as $key=>$children_auth_group) {
+                        $childparams[$key]['id'] = $children_auth_group['id'];
+                        $childparams[$key]['rules'] = implode(',', array_intersect(explode(',', $children_auth_group['rules']), $rules));
+                    }
+                    model("AuthGroup")->saveAll($childparams);
+                    Db::commit();
                     return json(['status' => 1, 'msg' => '修改成功！']);
-                } else {
+                }catch (Exception $e){
+                    Db::rollback();
                     return json(['status' => 0, 'msg' => '修改失败！！！']);
                 }
-            }else{
-                return json(['status' => 0, 'msg' => '父组别不能是它子组别及本身！！！']);
             }
+            $this->error('错错错！！！');
+            return;
             
         }else{
             if (input('id')==1) {
