@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HuiCMF-后台管理系统-v3.0</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC_ADMIN__css/font.css">
+    <link rel="stylesheet" href="__STATIC_ADMIN__css/weadmin.css">
+    <link rel="stylesheet" href="__STATIC_ADMIN__css/style.css">
+</head>
+<body class="login-bg" style="background: url({:url('getbing_bgpic')})">
+
+<div class="login">
+    <div class="message">小灰灰内容管理系统-后台管理系统</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form" action="javascript:;" onsubmit="return dosub(this)">
+        <input name="username" id="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input"  required="required">
+        <hr class="hr15">
+        <input name="password" id="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" required="required">
+
+        {if config('huiadmin.login_captcha')}
+        <hr class="hr15">
+        <img src="{:url('verify')}" id="imgVcode" alt="captcha" title="点击刷新验证码" border="0" class="verifyimg" onclick="this.src=this.src+'?'" style="float:right;height: 50px;"/>
+        <input type="text" name="code" id="code" class="login_input verify_input" lay-verify="required"  placeholder="验证码" required="required" style="float:left; width: 40%">
+        {/if}
+
+        <hr class="hr20">
+        <input type="hidden" id="dosubmit" value="1">
+        <input class="loginin" value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+    </form>
+</div>
+<div id="click_pic">
+    <a href="javascript:;" class="click_pic click_pic_a" title="上一个图像"></a>
+    <a href="javascript:;" class="click_pic click_pic_b" title="下一个图像"></a>
+</div>
+<div id="focus_ovr" data-bm="21"></div>
+<!-- 底部结束 -->
+</body>
+</html>
+{include file='footer'/}
+<script>
+    function dosub() {
+        $.post("{:url('index')}",{
+            username:$('#username').val(),
+            password:$('#password').val(),
+            code:$('#code').val(),
+            dosubmit:$('#dosubmit').val(),
+        },function (res) {
+            if(res.status=='1001'){
+                $('#imgVcode').attr("src","{:url('verify')}"+"?" + Math.random());
+                layer.msg(res.msg,{'icon':2});
+            }
+            if(res.status=='1002'||res.status=='1003'){
+                layer.msg(res.msg,{'icon':2},function () {
+                    location.reload();
+                });
+            }
+            if(res.status==1){
+                layer.msg(res.msg,{'icon':1},function () {
+                    window.location.href="{:url('index/index')}";
+                });
+            }
+        })
+    }
+
+    var i = 0;
+    $(".click_pic_a").click(function () {
+        i += 1;
+        if (i <= 7) {
+            $(".login-bg").css({
+                "background": "url({:url('getbing_bgpic')}?idx=" + i + ")",
+                "transition": "500ms ease 500ms",
+                "-webkit-transition": "500ms ease 500ms"
+            });
+            $(".click_pic_a").css("opacity", "1")
+        } else {
+            i = 7;
+            alert("没有了")
+        }
+    });
+    $(".click_pic_b").click(function () {
+        i -= 1;
+        if (i >= 0) {
+            $(".login-bg").css({
+                "background": "url({:url('getbing_bgpic')}?idx=" + i + ")",
+                "transition": "500ms ease 500ms",
+                "-webkit-transition": "500ms ease 500ms"
+            });
+            $(".click_pic_b").css("opacity", "1")
+        } else {
+            i = 0;
+            alert("没有了");
+        }
+    })
+</script>

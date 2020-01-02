@@ -1,0 +1,47 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+    .layui-table tr td input{width: 50px;text-align: center}
+</style>
+<body>
+
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">系统管理</a><span lay-separator="">/</span>
+            <a><cite>后台菜单管理</cite></a>
+      </span>
+
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px;margin-left:10px;" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+    <a class="layui-btn layui-btn-sm layui-btn-lvse" href="javascript:;" onclick="WeAdminShow('添加菜单','{:url('rule_add')}','800')" style="float:right;margin-top: 5px"> 添加菜单 </a>
+</div>
+<div class="weadmin-body">
+    <form action="{:url('rule_order')}" method="post" class="layui-form" >
+        <table class="layui-table">
+            <thead>
+            <tr class="text-c">
+                <th width="50">排序</th>
+                <th width="50">菜单ID</th>
+                <th width="60">是否菜单</th>
+                <th class="text-l">规则名称</th>
+                <th width="70" style="text-align:center">图标</th>
+                <th class="text-l">规则</th>
+                <th width="60">状态</th>
+                <th width="200" style="text-align:center">管理操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {$menus|raw}
+            </tbody>
+        </table>
+        {if condition="check_auth('admin/auth/rule_order')"}
+        <div class="layui-form-item readonly-bg">
+            <input class="layui-btn" name="dosubmit" value="排序" type="submit" style="margin-left: 16px;margin-top: 10px; margin-bottom: 10px;">
+        </div>
+        {/if}
+    </form>
+</div>
+{include file='footer'/}
+</body>
+</html>

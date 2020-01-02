@@ -1,0 +1,44 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+    .layui-table tr td input{width: 50px;text-align: center}
+</style>
+<body>
+
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">权限管理</a><span lay-separator="">/</span>
+            <a><cite>角色组管理</cite></a>
+      </span>
+
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px;margin-left:10px;" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+    <a class="layui-btn layui-btn-sm layui-btn-lvse" href="javascript:;" onclick="WeAdminShow('添加角色组','{:url('group_add')}','800')" style="float:right;margin-top: 5px"> 添加角色组 </a>
+</div>
+
+<div class="weadmin-body">
+    <blockquote class="layui-elem-quote">
+        <b>角色组</b><br>
+        角色组可以有多个,角色有上下级层级关系,如果子角色有角色组和管理员的权限则可以派生属于自己组别的下级角色组或管理员
+    </blockquote>
+    <form action="{:url('rule_order')}" method="post" class="layui-form" >
+        <table class="layui-table">
+            <thead>
+            <tr class="text-c">
+                <th width="70">菜单ID</th>
+                <th>父级ID</th>
+                <th>规则</th>
+                <th>状态</th>
+                <th width="250" style="text-align:center">管理操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {$menus|raw}
+            </tbody>
+        </table>
+    </form>
+</div>
+{include file='footer'/}
+</body>
+</html>

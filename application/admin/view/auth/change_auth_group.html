@@ -1,0 +1,113 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" method="post">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择权限</label>
+            <div class="layui-input-block">
+                <div id="LAY-auth-tree-index"></div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="layui-input-inline">
+            <div class="yzm_tags"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                已选的权限
+            </label>
+            <div class="layui-input-block">
+                <input type="hidden" id="tags" name="tags" autocomplete="off" class="layui-input" lay-verify="required" required="required">
+                <input type="text" id="tags_name" name="tags_name" autocomplete="off" class="layui-input" lay-verify="required" required="required">
+            </div>
+        </div>
+    </form>
+    <div style="position: fixed;bottom: 20px;right: 10px;z-index: 99;">
+        <button onclick="dosub()" name="dosubmit" class="layui-btn" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="yzmcms_close()" class="layui-btn layui-btn-normal" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+    </div>
+</div>
+
+</body>
+</html>
+{include file='footer'/}
+<script>
+    layui.extend({
+        authtree: 'extends/authtree'
+    });
+    layui.use(['form','layer','authtree'], function(){
+        var form = layui.form
+            ,authtree = layui.authtree;
+
+        layui.use(['authtree'], function () {
+            var authtree = layui.authtree;
+            $.ajax({
+                url: "{:url('change_auth_group',['do'=>1])}?id={$id}",
+                dataType: 'json',
+                success: function (res) {
+                    $("#tags").val(res.data.checkedId);
+                    $("#tags_name").val(get_auth_group_name($('#tags').val()));
+                    // 如果后台返回的不是树结构，请使用 authtree.listConvert 转换
+                    var trees = authtree.listConvert(res.data.list, {
+                        primaryKey: 'id'
+                        , startPid: res.start_pid
+                        , parentKey: 'pid'
+                        , nameKey: 'title'
+                        , valueKey: 'id'
+                        ,checkedKey: res.data.checkedId
+                    });
+                    authtree.render('#LAY-auth-tree-index', trees, {
+                        inputname: 'rules[]',
+                        layfilter: 'lay-check-convert-auth',
+                        autowidth: true,
+                        openall: true,
+                        autochecked: false,
+                        autoclose: false,
+                        theme: 'auth-skin-default',
+                        themePath: '__STATIC_ADMIN__js/extends/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
+                    });
+
+                    authtree.on('change(lay-check-convert-auth)', function(data) {
+                        // 获取所有已选中节点
+                        var checked = authtree.getChecked('#LAY-auth-tree-index');
+                        var str =checked.join(',');
+                        var str=checked.toString();
+                        $("#tags").val(str);
+                        get_auth_group_name(str);
+                    });
+
+                }
+            });
+
+        });
+
+    });
+
+    function dosub(){
+        v = $("#tags").val();
+        v_name = $("#tags_name").val();
+        if(v_name==''){
+            layer.msg('请选择权限');
+            return false;
+        }
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.$("#groups").val(v);
+        parent.$("#groups_name").val(v_name);
+        parent.layer.close(index);
+    }
+
+    //关闭弹出层
+    function yzmcms_close(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+
+    function get_auth_group_name(arr) {
+        $.post("{:url('get_auth_group_name')}",{arr:arr},function (res) {
+            $("#tags_name").val(res);
+        })
+    }
+</script>

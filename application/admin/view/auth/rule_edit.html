@@ -1,0 +1,133 @@
+{include file='header'/}
+<style>
+    .layui-form-select dl{max-height:450px;}
+</style>
+<body>
+<div class="weadmin-body weadmin-body">
+    <form class="layui-form" action="javascript:;" method="post" onsubmit="return dosub(this)">
+        <div class="layui-form-item">
+            <label for="ismenu" class="layui-form-label">是否菜单</label>
+            <div class="layui-input-block" id="ismenu">
+                <input type="radio" name="ismenu" value="1" title="是" lay-filter="ismenu" {if condition="$data.ismenu eq 1"} checked{/if}>
+                <input type="radio" name="ismenu" value="0" title="否" lay-filter="ismenu" {if condition="$data.ismenu eq 0"} checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>上级菜单
+            </label>
+            <div class="layui-input-block">
+                <select name="pid">
+                    <option value="0">一级菜单</option>
+                    {$select_menus|raw}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">
+                <span class="we-red">*</span>菜单名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" value="{$data.title}" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>规则
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$data.name}" placeholder="父级菜单无需匹配控制器和方法,子级菜单请使用控制器名" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="iCon" class="layui-form-label">图标</label>
+            <div class="layui-input-inline" style="width: 55%">
+                <input type="text" id="icon" name="icon" value="{$data.icon}" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <button type="button" class="layui-btn" id="checkicon" onclick="fopen('选择图标','{:url('index/public_checkicon')}','800','500');"><i class="layui-icon"></i>选择图标</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="condition" class="layui-form-label">规则条件</label>
+            <div class="layui-input-block">
+                <textarea name="condition" id="condition" rows="4" class="layui-textarea">{$data.condition}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">是否显示</label>
+            <div class="layui-input-block" id="status">
+                <input type="radio" name="status" value="normal" title="显示" {if($data.status=='normal')} checked{/if}>
+                <input type="radio" name="status" value="hidden" title="隐藏" {if($data.status=='hidden')} checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="weigh" class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="text" id="weigh" name="weigh" value="{$data.weigh}" placeholder="数字越小越靠前，默认为0"  autocomplete="off" class="layui-input" lay-verify="number">
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{$data.id}">
+        <input type="hidden" name="dosubmit" value="1">
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn"  lay-submit="" >确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+<script>
+    layui.use(['form','upload', 'layer','element'], function() {
+        var form = layui.form
+            , element = layui.element;
+        form.on('radio(ismenu)', function (data) {
+            if(data.value==1){
+                $("#name").attr('placeholder','父级菜单无需匹配控制器和方法,子级菜单请使用控制器名');
+            }else{
+                $("#name").attr('placeholder','控制器/方法名,如果有目录（非后台admin模块目录）请使用 目录名/控制器名/方法名');
+            }
+        });
+
+    });
+    function fopen(title, url, w, h) {
+        layer.open({
+            type: 2,
+            area: [w + 'px', h + 'px'],
+            fix: false, //不固定
+            maxmin: true,
+            shadeClose: true,
+            shade: 0.4,
+            title: title,
+            content: url,
+            end: function () {
+                var iconname = $.cookie('menu_icon_name1');
+                $("#icon").val(iconname);
+            }
+        });
+    }
+    function dosub(obj){
+
+        $.ajax({
+            type: 'POST',
+            url: '{:url('rule_edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        })
+        return false;
+    }
+</script>
+</body>
+</html>

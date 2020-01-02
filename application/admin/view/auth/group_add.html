@@ -1,0 +1,119 @@
+{include file='header'/}
+<style>
+    .layui-form-select dl{max-height:450px;}
+</style>
+<body>
+<div class="weadmin-body weadmin-body">
+    <form class="layui-form" action="javascript:;" method="post" onsubmit="return dosub(this)">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>父级
+            </label>
+            <div class="layui-input-block">
+                <select name="pid" lay-filter="parent_menu">
+                    {$select_menus|raw}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择权限</label>
+            <div class="layui-input-block">
+                <div id="LAY-auth-tree-index"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">状态</label>
+            <div class="layui-input-block" id="status">
+                <input type="radio" name="status" value="normal" title="启用" checked>
+                <input type="radio" name="status" value="hidden" title="禁用">
+            </div>
+        </div>
+        <input type="hidden" name="dosubmit" value="1">
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn" lay-submit="">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+<script>
+    layui.extend({
+        authtree: 'extends/authtree'
+    });
+    //使用拓展模块
+    layui.use(['jquery', 'authtree', 'form', 'layer'], function () {
+        var $ = layui.jquery;
+        var authtree = layui.authtree;
+        var form = layui.form;
+        var layer = layui.layer;
+        load_tree({$role_id});
+        form.on('select(parent_menu)', function (data) {
+            load_tree(data.value);
+        });
+
+    });
+
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('group_add')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if (res.status == 1) {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function () {
+                        parent.location.reload();
+                    });
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+        return false;
+    }
+
+    function load_tree(pid) {
+        layui.use(['authtree'], function () {
+            var authtree = layui.authtree;
+            $.ajax({
+                url: "{:url('group_rule_priv',['do'=>1])}?pid=" + pid,
+                dataType: 'json',
+                success: function (res) {
+                    // 如果后台返回的不是树结构，请使用 authtree.listConvert 转换
+                    var trees = authtree.listConvert(res.data.list, {
+                        primaryKey: 'id'
+                        , startPid: 0
+                        , parentKey: 'pid'
+                        , nameKey: 'title'
+                        , valueKey: 'id'
+                        //,checkedKey: res.data.checkedId
+                    });
+                    authtree.render('#LAY-auth-tree-index', trees, {
+                        inputname: 'rules[]',
+                        layfilter: 'lay-check-convert-auth',
+                        autowidth: true,
+                        openall: true,
+                        autoclose: false,
+                        theme: 'auth-skin-default',
+                        themePath: '__STATIC_ADMIN__js/extends/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
+                    });
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>

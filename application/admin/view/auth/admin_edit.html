@@ -1,0 +1,117 @@
+{include file='header'/}
+<style>
+
+</style>
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)">
+        <div class="layui-form-item">
+            <label for="username" class="layui-form-label">
+                <span class="we-red">*</span>所属组别
+            </label>
+            <div class="layui-input-inline block" style="width:435px;">
+                <div id="wordTags"></div>
+                <input type="hidden" id="groups" name="group" value="{$data.group_ids}"  autocomplete="off" class="layui-input readonly-bg" readonly>
+                <input type="text" id="groups_name" name="groups_name" value="{$data.group_names}"  autocomplete="off" class="layui-input readonly-bg" readonly>
+            </div>
+            {if($hidden!=1)}
+            <div class="layui-input-inline">
+                <a class="layui-btn layui-btn-lvse" onclick="WeAdminShow('选择组别','{:url('change_auth_group',['id'=>$data.id])}','800','550')">点击选择组别</a>
+            </div>
+            {/if}
+        </div>
+
+        <div class="layui-form-item">
+            <label for="username" class="layui-form-label">
+                <span class="we-red">*</span>登录名
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="username" name="username" value="{$data.username}" lay-verify="required" autocomplete="off" class="layui-input readonly-bg" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="password" class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" id="password" name="password" placeholder="不修改密码请留空" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="nickname" class="layui-form-label">昵称</label>
+            <div class="layui-input-block">
+                <input type="text" id="nickname" name="nickname" value="{$data.nickname}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="email" class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" id="email" name="email" value="{$data.email}" autocomplete="off" class="layui-input" lay-verify="email">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="loginfailure" class="layui-form-label">登录失败次数</label>
+            <div class="layui-input-block">
+                <input type="number" id="loginfailure" name="loginfailure" value="{$data.loginfailure}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">是否启用</label>
+            <div class="layui-input-block" id="status">
+                <input type="radio" name="status" value="normal" title="启用" {if($data.status=='normal')}checked{/if} >
+                <input type="radio" name="status" value="hidden" title="禁用" {if($data.status=='hidden')}checked{/if} >
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{$data.id}">
+        <input type="hidden" name="dosubmit" value="1">
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn"  lay-submit="" >确定</button>
+        </div>
+    </form>
+</div>
+</body>
+{include file='footer'/}
+<script type="text/javascript" src="__LIB__jquery/aspect.js"></script>
+<script type="text/javascript" src="__LIB__jquery/keyWord.js"></script>
+<script>
+
+    layui.use(['form','upload', 'layer','element'], function(){
+        var form = layui.form
+            ,element = layui.element;
+        /*通用简单的表单验证*/
+        form.verify({
+            newPwd: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ],
+            regpwd:function (value) {
+                if($("#password").val()!=value){
+                    return "两次输入密码不一致，请重新输入！";
+                }
+            }
+        });
+
+    });
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('admin_edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+
+
+</script>
