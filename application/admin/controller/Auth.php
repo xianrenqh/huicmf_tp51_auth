@@ -16,6 +16,9 @@ use lib\Random;
 use app\admin\library\LibAuth;
 use app\admin\model\Admin;
 use app\admin\model\AuthGroup;
+use think\facade\Cache;
+
+use function Qiniu\explodeUpToken;
 
 
 class Auth extends Common
@@ -132,7 +135,8 @@ class Auth extends Common
                 ->strict(false)
                 ->data($param)
                 ->insert();
-            
+    
+            Cache::clear();
             return json(['status' => 1, 'msg' => '添加成功！']);
         } else {
             $pid = input('pid') ? input('pid') : 0;
@@ -172,6 +176,7 @@ class Auth extends Common
                 ->strict(false)
                 ->update();
             if ($update) {
+                Cache::clear();
                 return json(['status' => 1, 'msg' => '修改成功！']);
             } else {
                 return json(['status' => 0, 'msg' => '修改失败！！！']);
@@ -265,10 +270,7 @@ class Auth extends Common
                 $del_tree='';
             }else{
                 $del_tree =
-                    '<a title="删除" href="javascript:;" onclick=\'WeAdminDel("' . url(
-                        'group_delete',
-                        ['id' => $v['id']]
-                    ) . '")\'style="text-decoration:none" data-href="'.url('group_delete',['id'=>$v['id']]).'" class="layui-btn layui-btn-xs layui-btn-danger ">删除</a>';
+                    '<a title="删除" href="javascript:;" style="text-decoration:none" data-href="'.url('group_delete',['id'=>$v['id']]).'" class="layui-btn layui-btn-xs layui-btn-danger j-tr-del">删除</a>';
             }
             
             $v['string'] = ($v['id']==$group_data[0]['id'])?'':$edit_tree . $del_tree;
@@ -320,11 +322,6 @@ class Auth extends Common
             $LibAuth = new LibAuth();
             $role_id = $LibAuth->getChildrenGroupIds(true);
             $data = Db::name('auth_group')->where('id', 'in', $role_id)->select();
-            
-            /*$data = Db::name('auth_group')
-                ->field('id,pid,name')
-                ->order('id ASC')
-                ->select();*/
             
             $array = [];
             foreach ($data as $v) {
@@ -420,6 +417,44 @@ class Auth extends Common
         if ( ! check_auth('auth/group_delete')) {
             exit('2222');
         }
+        if (input('id')) {
+            $id = input('id');
+            $ids =  [$id];
+            $row = AuthGroup::get(['id' => $id]);
+            if (!$row) {
+                $this->error('记录未找到');
+            }
+            if (!in_array($row->id, $this->childrenGroupIds)) {
+                $this->error('你无权限访问');
+            }
+            $idArr = [$id];
+            $grouplist = AuthGroup::where('id', $id)->select();
+            $groupaccessmodel = model('AuthGroupAccess');
+            foreach ($grouplist as $k => $v) {
+                // 当前组别下有管理员
+                $groupone = $groupaccessmodel->get(['group_id' => $v['id']]);
+                if ($groupone) {
+                    $ids = array_diff($idArr, [$v['id']]);
+                    continue;
+                }
+                // 当前组别下有子组别
+                $groupone = AuthGroup::get(['pid' => $v['id']]);
+                if ($groupone) {
+                    $ids = array_diff($idArr, [$v['id']]);
+                    continue;
+                }
+            }
+            if (!$ids) {
+                return json(['status'=>0,'msg'=>'你不能删除含有子组和管理员的组']);
+            }
+            $count = AuthGroup::where('id', 'in', $ids)->delete();
+            if ($count) {
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }
+            
+        }else{
+            $this->error('错错错！！！');
+        }
     }
     
     /**
@@ -476,7 +511,28 @@ class Auth extends Common
      */
     public function admin_add()
     {
-        return $this->fetch();
+        if(input('post.dosubmit')){
+            $param = input('post.');
+            //查看是否有重复会员登录名
+            $cha = Admin::where('username',$param['username'])->find();
+            if($cha){
+                return json(['status'=>0,'msg'=>'已存在此登录名，请更换']);
+            }
+            $salt = Random::alnum();
+            $param['salt'] = $salt;
+            $param['password'] =  md5(md5($param['password']) . $salt);
+            $param['createtime'] = time();
+            $ins_id = Db::name('admin')->strict(false)->insertGetId($param);
+            $group_ids = explode(",",$param['group']);
+            $data2 = '';
+            foreach ($group_ids as $k=>$v){
+                $data2[] = ['uid'=>$ins_id,'group_id'=>$v];
+            }
+            $insert_group = Db::name('auth_group_access')->insertAll($data2);
+            return json(['status'=>1,'msg'=>'操作成功~~~']);
+        }else{
+            return $this->fetch();
+        }
     }
     
     /**
@@ -529,6 +585,43 @@ class Auth extends Common
             $data111['group_names']=$group_names;
             $hidden = $this->uid==$data111['id']?1:0;
             return $this->fetch('',['data'=>$data111,'hidden'=>$hidden]);
+        }
+    }
+    
+    /**
+     * 删除管理员
+     */
+    public function admin_delete()
+    {
+        if ( ! check_auth('auth/admin_delete')) {
+            exit('2222');
+        }
+        $ids = input('ids');
+        if($ids){
+            $ids = array_intersect($this->childrenAdminIds, array_filter(explode(',', $ids)));
+            // 避免越权删除管理员
+            $childrenGroupIds = $this->childrenGroupIds;
+            $idsss = Db::name('auth_group_access')->where('group_id','in',$childrenGroupIds)->column('uid');
+            $adminList = Admin::where('id', 'in', $ids)
+                ->where('id', 'in',$idsss)
+                ->select();
+            if ($adminList) {
+                $deleteIds = [];
+                foreach($adminList as $k => $v) {
+                    $deleteIds[] = $v->id;
+                }
+                $deleteIds = array_values(array_diff($deleteIds, [$this->uid]));
+                if ($deleteIds) {
+                    Admin::destroy($deleteIds);
+                    model('AuthGroupAccess')->where('uid', 'in', $deleteIds)->delete();
+                    return json(['status'=>1,'msg'=>'删除成功！！！']);
+                }else{
+                    return json(['status'=>0,'msg'=>'不能越权删除以及删除自己']);
+                }
+            }
+            
+        }else{
+            $this->error('错错错！！！');
         }
     }
     

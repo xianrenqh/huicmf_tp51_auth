@@ -12,7 +12,7 @@
     </div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item to-index">
-            <a href="javascript:;" onclick="clearcache('清除缓存','{:url("index/public_clear")}','800','500')" title="清除缓存"><i class="iconfont icon-delete"></i> 清除缓存</a>
+            <a href="javascript:;" onclick="clearcache('清除缓存','{:url("public_clear")}')" title="清除缓存"><i class="iconfont icon-delete"></i> 清除缓存</a>
         </li>
         <li class="layui-nav-item">
             <i class="iconfont icon-profile"></i>
@@ -79,6 +79,7 @@
 <script>
     function clearcache(title,url){
         $.get(url,function (res) {
+            console.log(res);
             layer.msg(res.message, {
                 icon: 1,
                 time: 2000

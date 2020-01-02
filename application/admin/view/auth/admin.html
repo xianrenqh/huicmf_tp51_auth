@@ -114,7 +114,13 @@
         table.on('tool(role_list)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                WeAdminDel("{:url('admin_delete')}?id="+data.id);
+                /*WeAdminDel("{:url('admin_delete')}?id="+data.id);*/
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :data.id};
+                    posttips("{:url('admin_delete')}",postdata);
+                });
             } else if(obj.event === 'edit'){
                 WeAdminShow("编辑","{:url('admin_edit')}?id="+data.id,'800');
             }

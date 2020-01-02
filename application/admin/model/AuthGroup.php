@@ -15,7 +15,7 @@ class AuthGroup extends Model
 
     public function getNameAttr($value, $data)
     {
-        return __($value);
+    
     }
 
 }

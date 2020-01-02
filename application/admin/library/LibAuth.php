@@ -32,6 +32,12 @@ class LibAuth extends \lib\Auth
         return in_array('*', $this->getRuleIds($this->uid)) ? true : false;
     }
     
+    public function getGroups($uid = null)
+    {
+        $uid = is_null($uid) ? $this->uid : $uid;
+        return $this->auth->getGroups($uid);
+    }
+    
     /**
      * 取出当前管理员所拥有权限的管理员
      * @param boolean $withself 是否包含自身

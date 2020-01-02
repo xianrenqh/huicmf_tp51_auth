@@ -126,3 +126,34 @@ function array_children_count($array, $pid)
     }
     return $counter;
 }
+
+
+/**
+ * 列出目录下所有文件
+ *
+ * @param   string $path     路径
+ * @param   string $exts     扩展名
+ * @param   array  $list     增加的文件列表
+ * @return  array  所有满足条件的文件
+ */
+function dir_path($path) {
+    $path = str_replace('\\', '/', $path);
+    if (substr($path, -1) != '/') $path = $path . '/';
+    return $path;
+}
+
+/**
+ * 删除目录及目录下面的所有文件
+ *
+ * @param   string $dir      路径
+ * @return  bool   如果成功则返回 TRUE，失败则返回 FALSE
+ */
+function dir_delete($dir) {
+    $dir = dir_path($dir);
+    if (!is_dir($dir)) return FALSE;
+    $list = glob($dir.'*');
+    foreach($list as $v) {
+        is_dir($v) ? dir_delete($v) : @unlink($v);
+    }
+    return @rmdir($dir);
+}
