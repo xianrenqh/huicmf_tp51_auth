@@ -33,11 +33,12 @@ ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特
 
 ## 安装
 
-使用composer安装
+使用git进行安装
+~~~
+git clone https://github.com/xianrenqh/huicmf_tp51_auth.git
+~~~
 
-~~~
-composer create-project topthink/think tp
-~~~
+之后使用composer update进行更新
 
 启动服务
 
