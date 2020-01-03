@@ -1,0 +1,55 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+</style>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">常规管理</a><span lay-separator="">/</span>
+            <a><cite>数据还原</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+
+<div class="weadmin-body">
+    <table class="layui-table">
+        <thead>
+        <tr class="text-c">
+            <th>ID</th>
+            <th>文件名称</th>
+            <th>文件大小</th>
+            <th>备份时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name='data' id='vo' key='k'}
+        <tr class="text-c">
+            <td>{$k}</td>
+            <td>{$vo.file}</td>
+            <td>{$vo.size}</td>
+            <td>{$vo.date}</td>
+            <td class="td-manage" align="center" style="width: 160px">
+                <a title="还原" href="javascript:;" onclick="databack_import('{:url('import')}')" class="layui-btn layui-btn-sm layui-btn-normal" style="text-decoration:none">还原</a>
+                <a title="下载" href="{:url('download',['file'=>$vo.file])}" class="layui-btn layui-btn-sm" style="text-decoration:none">下载</a>
+                <a title="删除" href="javascript:;" data-href="{:url('delete',['file'=>$vo.file])}" class="layui-btn layui-btn-sm layui-btn-danger j-tr-del" style="text-decoration:none">删除</a></td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>
+
+{include file='footer'/}
+
+<script>
+    function databack_import(url) {
+        layer.confirm('确定要还原数据吗？',function(index){
+            window.location.href = url;
+        });
+    }
+
+</script>
+</body>
+</html>

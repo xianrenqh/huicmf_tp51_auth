@@ -15,4 +15,14 @@ namespace think;
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 
+// 定义目录分隔符
+define('DS', DIRECTORY_SEPARATOR);
+
+// 定义根目录
+define('ROOT_PATH', __DIR__ . DS . '..' . DS);
+
+// 定义应用目录
+define('APP_PATH', ROOT_PATH . 'application' . DS);
+
+
 Container::get('app')->bind('admin')->run()->send();
