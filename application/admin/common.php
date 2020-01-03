@@ -20,6 +20,7 @@ function check_auth($rule_name=''){
     return $Auth->check($rule_name,session('user_info.uid'));
 }
 
+
 /**
  * 数组层级缩进转换
  * @param array $array 源数组
