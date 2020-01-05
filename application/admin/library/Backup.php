@@ -67,7 +67,7 @@ class Backup
         if (!is_dir($backUpdir)) {
             @mkdir($backUpdir, 0755);
         }
-        $name = "backup-{$this->name}-{$date}";
+        $name = "backup-{$date}";
         $filename = $backUpdir . $name . ".zip";
 
         if ($zip->open($filename, ZIPARCHIVE::CREATE) !== true) {
@@ -157,9 +157,10 @@ class Backup
                         $new_lines = preg_replace('/\s\s+/', '\r\n\r\n', addslashes($data[$i]));
                         $cdata[] = "'" . $new_lines . "'";
                     }
+                    //$cdata = str_replace("''","'0'",$cdata);
                     $sqldump .= implode(', ', $cdata);
                     $sqldump .= ")";
-                    $sqldump .= ($c % 600 != 0 ? ($c_columns != $c ? ',' : ';') : '');
+                    $sqldump .= ($c % 600 != 0 ? ($c_columns != $c ? ',' : ';') : 'null');
                     # CHECK
                     if ($c % 600 == 0) {
                         $sqldump .= ";\n\n";

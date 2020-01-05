@@ -24,5 +24,6 @@ define('ROOT_PATH', __DIR__ . DS . '..' . DS);
 // 定义应用目录
 define('APP_PATH', ROOT_PATH . 'application' . DS);
 
+defined('RUNTIME_PATH') or define('RUNTIME_PATH', ROOT_PATH . 'runtime' . DS);
 
 Container::get('app')->bind('admin')->run()->send();

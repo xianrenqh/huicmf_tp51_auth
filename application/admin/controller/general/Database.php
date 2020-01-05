@@ -8,12 +8,13 @@
 
 namespace app\admin\controller\general;
 use app\admin\controller\Common;
+use app\admin\library\Backup;
 use think\Db;
 use think\facade\Debug;
-use think\exception\Exception;
-use app\admin\library\Backup;
+use think\Exception;
 use think\exception\PDOException;
 use ZipArchive;
+use database\Backup as LibBackup;
 
 class Database extends Common
 {
@@ -83,6 +84,79 @@ class Database extends Common
             return json(['message'=>'备份成功','status'=>1]);
         }
         return;
+    }
+    
+    /**
+     * 数据还原
+     *
+     */
+    public function restore()
+    {
+        $BackUp = config('backup.');
+        $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
+        $file = input('file');
+        if($file){
+            /*if (!preg_match("/^backup\-([a-z0-9_\-]+)\.zip$/i", $file)) {
+                $this->error('未知参数');
+            }*/
+            try {
+                $dir = RUNTIME_PATH . 'database' . DS;
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0755);
+                }
+                $file = $backupDir.$file;
+                if (class_exists('ZipArchive')) {
+                    $zip = new ZipArchive;
+                    if ($zip->open($file) !== true) {
+                        throw new Exception('无法打开备份文件');
+                    }
+                    if (!$zip->extractTo($dir)) {
+                        $zip->close();
+                        throw new Exception('无法解压备份文件');
+                    }
+                    $zip->close();
+                    $filename = basename($file);
+                    $sqlFile = $dir . str_replace('.zip', '.sql', $filename);
+                    if (!is_file($sqlFile)) {
+                        throw new Exception('未找到SQL文件');
+                    }
+                    $filesize = filesize($sqlFile);
+                    $list = Db::query('SELECT @@global.max_allowed_packet');
+                    if (isset($list[0]['@@global.max_allowed_packet']) && $filesize >= $list[0]['@@global.max_allowed_packet']) {
+                        Db::execute('SET @@global.max_allowed_packet = ' . ($filesize + 1024));
+                        //throw new Exception('备份文件超过配置max_allowed_packet大小，请修改Mysql服务器配置');
+                    }
+                    $sql = file_get_contents($sqlFile);
+                    if(preg_match('/.*;$/', trim($sql))){
+                        try {
+                            $sqlArr = array_filter(explode(";",trim($sql)));
+                            foreach($sqlArr as $k=>$v){
+                                $res = Db::execute($v);
+                            }
+                            $this->success('还原成功！！！');
+                        }catch (Exception $e){
+                            $this->error($e->getMessage());
+                        }
+                    } else{
+                        return 0;
+                    }
+                    
+                }
+                
+            }catch (Exception $e) {
+                $this->error($e->getMessage());
+            }catch (PDOException $e) {
+                $this->error($e->getMessage());
+            }
+        }else{
+            $this->error('错错错！！！');
+        }
+    }
+    
+    //数据类连接
+    public static function connect()
+    {
+        return Db::connect();
     }
     
     /**
@@ -254,6 +328,19 @@ class Database extends Common
             }
         }
         echo $r;
+    }
+    
+    
+    
+    /***************************************************************************************
+     *  这是第二种备份还原方案，引用了 extend/database里面的数据库操作类
+     */
+    public function test000000000()
+    {
+        $Data = new LibBackup();
+        $list = $Data->systemExport();  //备份
+        $list = $Data->import('1578137315');    //还原
+        dump($list);
     }
     
 }
