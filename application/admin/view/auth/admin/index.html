@@ -69,7 +69,7 @@
             elem: '#role_list'
             ,page: false
             ,where:{do:1}
-            ,method: 'post'
+            ,method: 'get'
             ,url: '{:url('index')}' //数据接口
             ,done: function(res){ //res 即为原始返回的数据
                 $("#total").html(res.count);

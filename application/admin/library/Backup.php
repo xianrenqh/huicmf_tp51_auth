@@ -110,6 +110,7 @@ class Backup
             $c_columns = $count_columns->fetchColumn();
             /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
             # MYSQL DUMP: Remove tables if they exists
+            $sqldump .= "\n\n";
             $sqldump .= "--\n";
             $sqldump .= "-- Remove the table if it exists\n";
             $sqldump .= "--\n\n";
@@ -141,7 +142,7 @@ class Backup
                     $rows[] = "`" . $row[0] . "`";
                 }
                 $sqldump .= implode(', ', $rows);
-                $sqldump .= ") VALUES\n";
+                $sqldump .= ") VALUES\n\n";
                 # COUNT
                 $c = 0;
                 # LOOP: Get the tables

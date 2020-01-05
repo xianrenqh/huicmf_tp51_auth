@@ -72,7 +72,7 @@ class Database extends Common
     public function backup()
     {
         $DataBase = config('database.');
-        $BackUp = config('backup.');
+        $BackUp = config('huiadmin.');
         $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
         if(input('post.dosubmit')){
             try {
@@ -92,7 +92,7 @@ class Database extends Common
      */
     public function restore()
     {
-        $BackUp = config('backup.');
+        $BackUp = config('huiadmin.');
         $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
         $file = input('file');
         if($file){
@@ -129,7 +129,7 @@ class Database extends Common
                     $sql = file_get_contents($sqlFile);
                     if(preg_match('/.*;$/', trim($sql))){
                         try {
-                            $sqlArr = array_filter(explode(";",trim($sql)));
+                            $sqlArr = array_filter(explode(";\n\n",trim($sql)));
                             foreach($sqlArr as $k=>$v){
                                 $res = Db::execute($v);
                             }
@@ -164,7 +164,7 @@ class Database extends Common
      */
     public function databack_list()
     {
-        $BackUp = config('backup.');
+        $BackUp = config('huiadmin.');
         $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
         $backuplist = [];
         foreach (glob($backupDir . "*.zip") as $filename) {
@@ -185,7 +185,7 @@ class Database extends Common
      */
     public function delete()
     {
-        $BackUp = config('backup.');
+        $BackUp = config('huiadmin.');
         $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
         $file =$backupDir.input('file');
         if(file_exists($file)){
@@ -201,7 +201,7 @@ class Database extends Common
      */
     public function download()
     {
-        $BackUp = config('backup.');
+        $BackUp = config('huiadmin.');
         $backupDir = ROOT_PATH ."public".DS. $BackUp['backupDir'];
         $file =input('file');
         if(file_exists($backupDir.$file)){

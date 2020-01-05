@@ -11,6 +11,7 @@ use think\Controller;
 use think\captcha\Captcha;
 use think\Db;
 use think\facade\{Cookie,Session,Cache};
+use app\admin\model\AdminLog;
 
 class Login extends Controller
 {
@@ -44,6 +45,7 @@ class Login extends Controller
                 Db::name('admin')->where('username',input('post.username'))->setInc('loginfailure');
                 return ['status'=>1002,'msg'=>'用户名或密码错误！！！'];
             }else{
+                AdminLog::setTitle('登录');
                 if($user_info['status']!='normal'){
                     return ['status'=>1003,'msg'=>'该用户已被禁止访问'];
                 }else{

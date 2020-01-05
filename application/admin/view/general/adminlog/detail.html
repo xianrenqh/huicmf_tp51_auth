@@ -1,0 +1,52 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th width="85">标题</th>
+            <th>内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>id</td>
+            <td>{$data.id}</td>
+        </tr>
+        <tr>
+            <td>admin_id</td>
+            <td>{$data.admin_id}</td>
+        </tr>
+        <tr>
+            <td>用户名</td>
+            <td>{$data.username}</td>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>{$data.url}</td>
+        </tr>
+        <tr>
+            <td>标题</td>
+            <td>{$data.title}</td>
+        </tr>
+        <tr>
+            <td>内容</td>
+            <td>{$data.content}</td>
+        </tr>
+        <tr>
+            <td>ip</td>
+            <td>{$data.ip}</td>
+        </tr>
+        <tr>
+            <td>useragent</td>
+            <td>{$data.useragent}</td>
+        </tr>
+        <tr>
+            <td>createtime</td>
+            <td>{$data.createtime|date='Y-m-d H:i:s'}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+{include file='footer'/}

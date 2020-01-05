@@ -1,0 +1,160 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+</style>
+
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">常规管理</a><span lay-separator="">/</span>
+            <a><cite>管理员日志</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <blockquote class="layui-elem-quote">
+        <b>管理员日志</b><br>
+        管理员可以查看自己所拥有的权限的管理员日志 <span style="color:#f00">【不能越权删除以及删除自己的日志】</span>
+    </blockquote>
+    <div class="layui-row demoTable" style="margin: 5px auto 15px">
+        <form class="layui-form layui-col-md12" action="javascript:;" id="form_admin_search">
+            {if(check_auth('general/adminlog/delete'))}
+            <div class="layui-inline" style="margin-right:15px;">
+                <a class="layui-btn layui-btn-danger" data-type="dels">批量删除</a>
+            </div>
+            {/if}
+            搜索：
+            <div class="layui-inline">
+                <input type="text" name="username" id="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" style="width:150px">
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="title" id="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">日期范围</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="createtime" id="createtime" placeholder=" - ">
+                </div>
+            </div>
+            <button class="layui-btn" data-type="reload" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>搜索</button>
+            <button class="layui-btn layui-btn-danger" type="reset"><i class="layui-icon">&#xe63f;</i>清空</button>
+        </form>
+    </div>
+
+    <table id="role_list" lay-filter="role_list"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="detail">详情</a>
+    {if(check_auth('general/adminlog/delete'))}
+    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    {/if}
+</script>
+
+</body>
+{include file='footer'/}
+<script>
+    layui.use(['laydate','table'], function(){
+        var table = layui.table,laydate = layui.laydate;
+        laydate.render({
+            elem: '#createtime'
+            ,range: true
+            ,max:"{php}echo date('Y-m-d',time()){/php}"
+        });
+        //第一个实例
+        table.render({
+            elem: '#role_list'
+            ,page: false
+            ,where:{do:1}
+            ,method: 'get'
+            ,url: '{:url('index')}' //数据接口
+            ,done: function(res){ //res 即为原始返回的数据
+                $("#total").html(res.count);
+            }
+            ,cols: [[ //表头
+                {type:'checkbox',LAY_CHECKED:false}
+                ,{field: 'id', title: 'ID', width:100,align:'center'}
+                ,{field: 'username', title: '用户名',width:140}
+                ,{field: 'title', title: '标题',width:260}
+                ,{field: 'url', title: 'URL'}
+                ,{field: 'ip', title: 'IP',width:170}
+                ,{field: 'createtime', title: '创建时间',width:220,align:'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:180}
+            ]]
+            ,id: 'testReload'
+            ,page:true
+            ,limit:10
+        });
+        var $ = layui.$, active = {
+            reload: function() {
+                //执行重载
+                table.reload('testReload', {
+                    page: {curr: 1},
+                    where: {
+                        key: {
+                            username: $('#username').val(),
+                            title: $('#title').val(),
+                            createtime: $('#createtime').val(),
+                        }
+                    }
+                });
+            },
+            dels: function(){ //批量删除
+                var ids = table_get_ids(table);
+                if(ids===false){
+                    return false;
+                }
+                $.post("{:url('delete')}",{
+                    ids:ids
+                },function (res) {
+                    layer.msg(res.msg);
+                    if(res.status==1){
+                        window.location.reload();
+                    }
+
+                })
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听行工具事件
+        table.on('tool(role_list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :data.id};
+                    posttips("{:url('delete')}",postdata);
+                });
+            } else if(obj.event === 'detail'){
+                WeAdminShow("查看详情","{:url('detail')}?id="+data.id,'850','550');
+            }
+        });
+    });
+
+    function table_get_ids(table) {
+        var checkStatus = table.checkStatus('testReload')
+            ,data = checkStatus.data;
+        if(data.length<1){
+            layer.msg('你没有选择任何数据');
+            return false;
+        }else{
+            var ids=[];
+            for(var i=0;i<data.length;i++){
+                ids +=data[i].id+',';
+            }
+            ids =ids.slice(0, -1);
+            var arr =ids.split(',');
+            for(var i in arr){
+                (arr[i])
+            }
+            return arr;
+        }
+    }
+</script>

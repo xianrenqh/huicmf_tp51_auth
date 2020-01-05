@@ -7,9 +7,12 @@
  */
 
 namespace app\admin\controller;
+use app\admin\library\LibAuth;
+use app\ApplicationName\controller\View;
 use think\Controller;
 use lib\Auth;
 use think\facade\Request;
+use think\Loader;
 
 class Common extends Controller
 {
@@ -17,7 +20,13 @@ class Common extends Controller
     public $uid;
     public $role_id;
     public $group_id;
+    public $breadcrumb;
     public function __construct(){
+    
+        $controllername = Loader::parseName(Request::controller());
+        $actionname = strtolower(Request::action());
+        $path = str_replace('.', '/', $controllername) . '/' . $actionname;
+        
         //初始化判断用户是否已经登陆
         $this->uid =session('user_info.uid');
         if(!$this->uid){
@@ -30,7 +39,13 @@ class Common extends Controller
             $groups = $this->auth->getGroups($this->uid);
             $this->group_id = $groups[0]['group_id'];
         }
-        
+    
+        // 设置面包屑导航数据
+        $LibAuth = new LibAuth();
+        $breadcrumb = $LibAuth->getBreadCrumb($path);
+        array_pop($breadcrumb);
+        $this->breadcrumb = $breadcrumb;
+       
     }
     
     

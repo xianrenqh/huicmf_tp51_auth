@@ -40,14 +40,14 @@ class Admin extends Common
     public function index()
     {
         
-        if(input('post.do')){
+        if(input('get.do')){
             $where = "1=1";
-            $page = input('post.page');
-            $limit = input('post.limit');
+            $page = input('get.page');
+            $limit = input('get.limit');
             $first = ($page - 1) * $limit;
             $field = "id,username,nickname,email,logintime,loginip,status";
             
-            $getkey = input('post.key');
+            $getkey = input('get.key');
             $username = $getkey['username'] ? $getkey['username'] : "";
             //$roles = $getkey['roles'] ? $getkey['roles'] : "";
             $status = $getkey['isuse'] == '' ? '' : $getkey['isuse'];

@@ -19,6 +19,14 @@ return[
     
     //登录失败超过N次是否允许重新登录
     'login_failure_retry'   => true,
+
+    //数据库备份文件夹
+    'backupDir' => '/databak/',
     
+    //不做备份的数据表
+    'backupIgnoreTables' => '',
+    
+    //是否开启后台管理员日志
+    'open_adminlog' => true
     
 ];
