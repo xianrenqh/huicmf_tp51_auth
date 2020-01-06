@@ -47,11 +47,11 @@ class Group extends Common
         $array = [];
         foreach ($data as $v) {
             $edit_tree =
-                '<a title=\'编辑权限\' href=\'javascript:;\' onclick=\'WeAdminShow("编辑权限","' . url(
+                '<a title=\'编辑角色组\' href=\'javascript:;\' onclick=\'WeAdminShow("编辑角色组","' . url(
                     'group_edit',
                     ['id' => $v['id']]
-                ) . '",800)\' style=\'text-decoration:none\'  class=\'layui-btn layui-btn-xs layui-btn-normal\'>编辑权限</a>';
-            if ( ! check_auth('auth/group_delete')) {
+                ) . '",800)\' style=\'text-decoration:none\'  class=\'layui-btn layui-btn-xs layui-btn-normal\'>编辑角色组</a>';
+            if ( ! check_auth('auth.group/group_delete')) {
                 $del_tree='';
             }else{
                 $del_tree =
@@ -81,7 +81,7 @@ class Group extends Common
      */
     public function group_add()
     {
-        if ( ! check_auth('auth/group_add')) {
+        if ( ! check_auth('auth.group/group_add')) {
             exit('2222');
         }
         if(input('post.dosubmit')){
@@ -129,7 +129,7 @@ class Group extends Common
      */
     public function group_edit()
     {
-        if ( ! check_auth('auth/group_edit')) {
+        if ( ! check_auth('auth.group/group_edit')) {
             exit('2222');
         }
         $row = AuthGroup::get(['id' => input('id')]);
@@ -234,7 +234,7 @@ class Group extends Common
      */
     public function group_delete()
     {
-        if ( ! check_auth('auth/group_delete')) {
+        if ( ! check_auth('auth.group/group_delete')) {
             exit('2222');
         }
         if (input('id')) {

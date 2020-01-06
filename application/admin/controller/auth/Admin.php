@@ -217,7 +217,7 @@ class Admin extends Common
      */
     public function admin_delete()
     {
-        if ( ! check_auth('auth/admin_delete')) {
+        if ( ! check_auth('auth.admin/admin_delete')) {
             exit('2222');
         }
         $ids = input('ids');

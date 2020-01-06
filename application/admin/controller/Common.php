@@ -68,11 +68,17 @@ class Common extends Controller
         $module = Request::module();
         $controller = Request::controller();
         $action = Request::action();
-        $rule1 = $module . '/' . $controller . '/' . $action;
+        if($module == 'admin'){
+            $rule1 = $controller . '/' . $action;
+        }else{
+            $rule1 = $module . '/' . $controller . '/' . $action;
+        }
+        
         if(!$this->auth->check($rule1, $this->uid))
         {
             //error2 ('您没有权限操作');
-            return json_encode(['status'=>0,'msg'=>'您没有权限操作','reload'=>0]);
+            //return json_encode(['status'=>0,'msg'=>'您没有权限操作','reload'=>0]);
+            $this->error('您没有权限操作！！！');
         }
     }
     

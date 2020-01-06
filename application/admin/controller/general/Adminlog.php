@@ -52,7 +52,7 @@ class Adminlog extends Common
      */
     public function detail()
     {
-        if ( ! check_auth('general/adminlog/detail')) {
+        if ( ! check_auth('general.adminlog/detail')) {
             exit('2222');
         }
         $id = input('get.id');

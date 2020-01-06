@@ -22,7 +22,7 @@ class Rule extends Common
      */
     public function index()
     {
-        if ( ! check_auth('auth/rule')) {
+        if ( ! check_auth('auth.rule/index')) {
             exit('抱歉，你没有访问权限！！！');
         }
         
@@ -45,7 +45,7 @@ class Rule extends Common
                     'rule_edit',
                     ['id' => $v['id'], 'pid' => $v['pid']]
                 ) . '",800)\' style=\'text-decoration:none\'  class=\'layui-btn layui-btn-xs layui-btn-normal\'>编辑</a>';
-            if ( !check_auth('rule/rule_delete')) {
+            if ( !check_auth('auth.rule/rule_delete')) {
                 $del_tree='';
             }else{
                 $del_tree =
@@ -108,7 +108,7 @@ class Rule extends Common
      */
     public function rule_add()
     {
-        if ( ! check_auth('auth/rule_add')) {
+        if ( ! check_auth('auth.rule/rule_add')) {
             exit('2222');
         }
         if (input('post.dosubmit')) {
@@ -146,7 +146,7 @@ class Rule extends Common
      */
     public function rule_edit()
     {
-        if ( ! check_auth('auth/rule_edit')) {
+        if ( ! check_auth('auth.rule/rule_edit')) {
             exit('2222');
         }
         
@@ -196,7 +196,7 @@ class Rule extends Common
      */
     public function rule_delete()
     {
-        if ( ! check_auth('auth/rule_delete')) {
+        if ( ! check_auth('auth.rule/rule_delete')) {
             exit('2222');
         }
         $id = input('id');
@@ -217,7 +217,7 @@ class Rule extends Common
      */
     public function rule_order()
     {
-        if ( ! check_auth('auth/rule_add')) {
+        if ( ! check_auth('auth.rule/rule_add')) {
             error2('您没有权限操作');
         }
         foreach (input('listorders') as $id => $listorder) {
