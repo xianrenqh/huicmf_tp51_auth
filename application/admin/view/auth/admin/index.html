@@ -21,10 +21,10 @@
             <div class="layui-inline">
                 <input type="text" name="username" id="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
             </div>
-            <div class="layui-input-inline" style="width: 160px;text-align: center">
+            <div class="layui-input-inline" style="">
                 <select name="roles" id="roles">
                     <option value="0">==请选择组别==</option>
-
+                    {$select_menus|raw}
                 </select>
             </div>
 

@@ -9,6 +9,7 @@
 namespace app\admin\controller\auth;
 
 
+use app\admin\controller\Auth;
 use app\admin\controller\Common;
 use lib\Random;
 use think\Db;
@@ -49,13 +50,39 @@ class Admin extends Common
             
             $getkey = input('get.key');
             $username = $getkey['username'] ? $getkey['username'] : "";
-            //$roles = $getkey['roles'] ? $getkey['roles'] : "";
+            $roles = $getkey['roles'] ? $getkey['roles'] : "";
             $status = $getkey['isuse'] == '' ? '' : $getkey['isuse'];
+    
+            $LibAuth = new LibAuth();
+            $role_id = $LibAuth->getChildrenGroupIds(true);
+            if(!empty($roles)){
+                if(in_array($roles,$role_id)){
+                    $uids = Db::name('auth_group_access')
+                        ->alias('a')
+                        ->field('uid')
+                        ->join('auth_group g','g.id = a.group_id')
+                        ->where('a.group_id',$roles)
+                        ->select();
+        
+                    $cha_ids = '';
+                    foreach ($uids as $v){
+                        $cha_ids.=$v['uid'].',';
+                    }
+                    $cha_idsArr = substr($cha_ids,0,strlen($cha_ids)-1);
+                }else{
+                    $this->error('参数错误');
+                }
+            }
+            
+            
             if ($username != '') {
                 $where .= " and username like '%$username%' ";
             }
             if ($status == 'normal' || $status == 'hidden') {
                 $where .= " and status ='$status' ";
+            }
+            if ($roles != '') {
+                $where .= " and id in ($cha_idsArr) ";
             }
             $list = Db::name('admin')->field($field)
                 ->where($where)
@@ -79,7 +106,27 @@ class Admin extends Common
             $data['data'] = $list;
             return json($data);
         }else{
-            return $this->fetch();
+    
+            $pid = input('pid') ? input('pid') : 0;
+            $tree = new Tree();
+    
+            $LibAuth = new LibAuth();
+            $role_id = $LibAuth->getChildrenGroupIds(true);
+            $data = Db::name('auth_group')->where('id', 'in', $role_id)->select();
+    
+            $array = [];
+            foreach ($data as $v) {
+                $v['selected'] = $v['id'] == $pid ? 'selected' : '';
+                $v['parentid'] = $v['pid'];
+                $v['title'] = $v['name'];
+                $array[] = $v;
+            }
+            $str = "<option value='\$id' \$selected> \$spacer \$title</option>";
+            $tree->init($array);
+            $group_data = $this->auth->getGroups($this->uid);
+            $select_menus = $tree->get_tree($group_data[0]['pid'], $str);
+            
+            return $this->fetch('',['select_menus'=>$select_menus]);
         }
     }
     

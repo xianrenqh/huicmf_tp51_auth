@@ -10,7 +10,7 @@ namespace app\admin\controller\general;
 use app\admin\controller\Common;
 use app\admin\library\Backup;
 use think\Db;
-use think\facade\Debug;
+use think\facade\{Debug,Cache};
 use think\Exception;
 use think\exception\PDOException;
 use ZipArchive;
@@ -124,7 +124,6 @@ class Database extends Common
                     $list = Db::query('SELECT @@global.max_allowed_packet');
                     if (isset($list[0]['@@global.max_allowed_packet']) && $filesize >= $list[0]['@@global.max_allowed_packet']) {
                         Db::execute('SET @@global.max_allowed_packet = ' . ($filesize + 1024));
-                        //throw new Exception('备份文件超过配置max_allowed_packet大小，请修改Mysql服务器配置');
                     }
                     $sql = file_get_contents($sqlFile);
                     if(preg_match('/.*;$/', trim($sql))){
@@ -133,6 +132,7 @@ class Database extends Common
                             foreach($sqlArr as $k=>$v){
                                 $res = Db::execute($v);
                             }
+                            Cache::clear();
                             $this->success('还原成功！！！');
                         }catch (Exception $e){
                             $this->error($e->getMessage());
@@ -144,9 +144,9 @@ class Database extends Common
                 }
                 
             }catch (Exception $e) {
-                $this->error($e->getMessage());
+                return json(['code'=>0,'msg'=>$e->getMessage()]);
             }catch (PDOException $e) {
-                $this->error($e->getMessage());
+                return json(['code'=>0,'msg'=>$e->getMessage()]);
             }
         }else{
             $this->error('错错错！！！');
