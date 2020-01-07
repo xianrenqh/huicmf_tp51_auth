@@ -1,35 +1,20 @@
 ![](https://box.kancloud.cn/5a0aaa69a5ff42657b5c4715f3d49221) 
 
-ThinkPHP 5.1（LTS版本） —— 12载初心，你值得信赖的PHP框架
+Huicmf 3.0 —— 念念不忘 必有回響，你值得信赖的CMF
 ===============
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/top-think/framework/badges/quality-score.png?b=5.1)](https://scrutinizer-ci.com/g/top-think/framework/?branch=5.1)
-[![Build Status](https://travis-ci.org/top-think/framework.svg?branch=master)](https://travis-ci.org/top-think/framework)
-[![Total Downloads](https://poser.pugx.org/topthink/framework/downloads)](https://packagist.org/packages/topthink/framework)
-[![Latest Stable Version](https://poser.pugx.org/topthink/framework/v/stable)](https://packagist.org/packages/topthink/framework)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D5.6-8892BF.svg)](http://www.php.net/)
-[![License](https://poser.pugx.org/topthink/framework/license)](https://packagist.org/packages/topthink/framework)
+[![Total Downloads](https://poser.pugx.org/xianrenqh/huicmf_tp51/downloads)](https://packagist.org/packages/xianrenqh/huicmf_tp51)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.0-8892BF.svg)](http://www.php.net/)
+[![License](https://poser.pugx.org/xianrenqh/huicmf_tp51/license)](https://packagist.org/packages/xianrenqh/huicmf_tp51)
 
-ThinkPHP5.1对底层架构做了进一步的改进，减少依赖，其主要特性包括：
+HuiCMF3.0基于ThinkPHP5.1框架进行二次开发，其主要特性包括：
 
- + 采用容器统一管理对象
- + 支持Facade
- + 注解路由支持
- + 路由跨域请求支持
- + 配置和路由目录独立
- + 取消系统常量
- + 助手函数增强
- + 类库别名机制
- + 增加条件查询
- + 改进查询机制
- + 配置采用二级
- + 依赖注入完善
- + 支持`PSR-3`日志规范
- + 中间件支持（V5.1.6+）
- + Swoole/Workerman支持（V5.1.18+）
+ + 使用Auth进行权限控制
+ + （二开Auth，控制器方法名包含public_，放行权限，不做验证）
+ + 角色组继承父级角色，权限继承父级权限
 
 
-> ThinkPHP5的运行环境要求PHP5.6以上。
+> HuiCMF3.0的运行环境要求PHP7.0以上。
 
 ## 安装
 
