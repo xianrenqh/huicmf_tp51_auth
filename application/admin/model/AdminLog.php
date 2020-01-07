@@ -89,7 +89,6 @@ class AdminLog extends Model
             }
             $title = implode(' ', $title);
         }
-        
         if(config('huiadmin.open_adminlog')){
             self::create(
                 [

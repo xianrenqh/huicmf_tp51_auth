@@ -146,11 +146,13 @@ class LibAuth extends \lib\Auth
             $this->getRuleList();
         }
         foreach ($this->auth->rules as $rule) {
+            $rule['name'] = str_replace(".","/",$rule['name']);  //如果有.，替换为/
+     
             if (isset($pathArr[$rule['name']])) {
                 $rule['title'] = $rule['title'];
                 $rule['url'] = url($rule['name']);
-                $titleArr[$pathArr[$rule['name']]] = $rule['title'];
                 $menuArr[$pathArr[$rule['name']]] = $rule;
+                $titleArr[$pathArr[$rule['name']]] = $rule['title'];
             }
         }
         ksort($menuArr);

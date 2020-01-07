@@ -59,7 +59,7 @@
     function dosub(obj) {
         $.ajax({
             type: 'POST',
-            url: '{:url('public_update')}',
+            url: '{:url('update')}',
             data: $(obj).serialize(),
             dataType: "json",
             success: function (res) {

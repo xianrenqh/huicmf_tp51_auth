@@ -19,7 +19,7 @@ class Profile extends Common
         return $this->fetch('',['data'=>$data]);
     }
     
-    public function public_update()
+    public function update()
     {
         $param = input('post.');
         $res = model('admin')->saveData($param);

@@ -223,7 +223,7 @@ class Rule extends Common
         foreach (input('listorders') as $id => $listorder) {
             Db::name('auth_rule')->where(['id' => $id])->update(['weigh' => $listorder]);
         }
-        $this->success('操作成功！', 'rule', 1, 2);
+        $this->success('操作成功！', 'index', 1, 2);
     }
     
     
