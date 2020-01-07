@@ -205,7 +205,7 @@ class Admin extends Common
             $scope =  implode(',',$group_idss);
             $data111['group_ids']=$scope;
             
-            $group_names = $this->get_auth_group_name($scope);
+            $group_names = $this->public_get_auth_group_name($scope);
             $data111['group_names']=$group_names;
             $hidden = $this->uid==$data111['id']?1:0;
             return $this->fetch('',['data'=>$data111,'hidden'=>$hidden]);
@@ -252,7 +252,7 @@ class Admin extends Common
     /**
      * 点击选择组别
      */
-    public function change_auth_group()
+    public function public_change_auth_group()
     {
         if(input('do')){
             $data = Db::name('auth_group')
@@ -265,7 +265,7 @@ class Admin extends Common
                 $group_idss[]= ($v['group_id']);
             }
             foreach($data as $k=>$v) {
-                $data[$k]['level'] = $this->get_level($v['id'],$data);
+                $data[$k]['level'] = $this->public_get_level($v['id'],$data);
                 //$data[$k]['level'] = array2level($data,$v['pid'],1);
                 $data[$k]['title'] = $data[$k]['name'];
             }
@@ -281,7 +281,7 @@ class Admin extends Common
             return json($returndata);
         }else{
             $id = input('id');
-            return $this->fetch('',['id'=>$id]);
+            return $this->fetch('change_auth_group',['id'=>$id]);
         }
     }
     
@@ -289,7 +289,7 @@ class Admin extends Common
     /**
      * 根据group_id 获取name
      */
-    public function get_auth_group_name($ppp='')
+    public function public_get_auth_group_name($ppp='')
     {
         if($ppp){
             $param = explode(",",$ppp);
@@ -317,12 +317,12 @@ class Admin extends Common
      * @param $array
      * @param $i
      */
-    private function get_level($id, $array=array(), $i=0) {
+    private function public_get_level($id, $array=array(), $i=0) {
         foreach($array as $n=>$value){
             if($value['id'] == $id){
                 if($value['pid']) return $i;
                 $i++;
-                return $this->get_level($value['pid'],$array,$i);
+                return $this->public_get_level($value['pid'],$array,$i);
             }
         }
     }

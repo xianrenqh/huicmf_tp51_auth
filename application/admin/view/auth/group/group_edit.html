@@ -92,7 +92,7 @@
             var authtree = layui.authtree;
             var form = layui.form;
             $.ajax({
-                url: "{:url('group_rule_priv2',['do'=>1,'gid'=>$data.id])}?pid=" + pid,
+                url: "{:url('public_group_rule_priv2',['do'=>1,'gid'=>$data.id])}?pid=" + pid,
                 dataType: 'json',
                 success: function (res) {
                     if(res.status!=1){

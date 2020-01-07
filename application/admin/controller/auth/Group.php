@@ -280,7 +280,7 @@ class Group extends Common
     /**
      *  角色组的权限列表，添加调用
      */
-    public function group_rule_priv()
+    public function public_group_rule_priv()
     {
         $id = input('pid');
         if($id==1){
@@ -290,7 +290,7 @@ class Group extends Common
             $data = Db::name('auth_rule')->where('id','in',$rules['rules'])->select();
         }
         foreach($data as $k=>$v) {
-            $data[$k]['level'] = $this->get_level($v['id'],$data);
+            $data[$k]['level'] = $this->public_get_level($v['id'],$data);
         }
         $data=array2level($data);
         $returndata = [
@@ -307,7 +307,7 @@ class Group extends Common
      *  角色组的权限列表，修改调用，
      *  麻痹的， 这里写的好乱。。。  我自己都晕倒了
      */
-    public function group_rule_priv2()
+    public function public_group_rule_priv2()
     {
         $id = input('pid');
         $gid = input('gid');
@@ -332,7 +332,7 @@ class Group extends Common
         }
         
         foreach($data as $k=>$v) {
-            $data[$k]['level'] = $this->get_level($v['id'],$data);
+            $data[$k]['level'] = $this->public_get_level($v['id'],$data);
         }
         $getRuleIds = Db::name('auth_group')->field('rules')->where('id',$gid)->find();
         $getRuleIds=explode(",",$getRuleIds['rules']);
@@ -356,14 +356,17 @@ class Group extends Common
      * @param $array
      * @param $i
      */
-    private function get_level($id, $array=array(), $i=0) {
+    private function public_get_level($id, $array=array(), $i=0) {
         foreach($array as $n=>$value){
             if($value['id'] == $id){
                 if($value['pid']) return $i;
                 $i++;
-                return $this->get_level($value['pid'],$array,$i);
+                return $this->public_get_level($value['pid'],$array,$i);
             }
         }
     }
+    
+    
+    
     
 }

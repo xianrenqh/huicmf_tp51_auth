@@ -45,7 +45,7 @@
         layui.use(['authtree'], function () {
             var authtree = layui.authtree;
             $.ajax({
-                url: "{:url('change_auth_group',['do'=>1])}?id={$id}",
+                url: "{:url('public_change_auth_group',['do'=>1])}?id={$id}",
                 dataType: 'json',
                 success: function (res) {
                     $("#tags").val(res.data.checkedId);
@@ -106,7 +106,7 @@
     }
 
     function get_auth_group_name(arr) {
-        $.post("{:url('get_auth_group_name')}",{arr:arr},function (res) {
+        $.post("{:url('public_get_auth_group_name')}",{arr:arr},function (res) {
             $("#tags_name").val(res);
         })
     }

@@ -132,5 +132,6 @@ class Index extends Common
     {
         return $this->fetch('public_checkicon');
     }
+
     
 }

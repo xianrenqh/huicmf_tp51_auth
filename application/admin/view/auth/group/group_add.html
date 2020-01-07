@@ -89,7 +89,7 @@
         layui.use(['authtree'], function () {
             var authtree = layui.authtree;
             $.ajax({
-                url: "{:url('group_rule_priv',['do'=>1])}?pid=" + pid,
+                url: "{:url('public_group_rule_priv',['do'=>1])}?pid=" + pid,
                 dataType: 'json',
                 success: function (res) {
                     // 如果后台返回的不是树结构，请使用 authtree.listConvert 转换
