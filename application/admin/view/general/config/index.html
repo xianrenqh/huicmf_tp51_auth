@@ -1,0 +1,408 @@
+{include file='header'/}
+<style>
+    .layui-form-label{width: 12%;}
+    .layui-tab-title li{ background: #e8e8e8;color:#000;border-right:1px solid #fff;}
+    .layui-tab-title .layui-this{background: #222;color:#fff;padding: 2px 15px 0;}
+</style>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">常规管理</a><span lay-separator="">/</span>
+            <a><cite>系统设置</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本设置</li>
+                <li>安全设置</li>
+                <li>邮件设置</li>
+                <li>附件设置</li>
+            </ul>
+            <div class="layui-tab-content" style="margin-top: 20px;">
+
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="15%">站点名称</th>
+                            <th>变量值</th>
+                            <th width="12%">变量名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>站点名称</td>
+                            <td>
+                                <input type="text"  name="site_name" value="{$data.site_name}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>site_name</td>
+                        </tr>
+                        <tr>
+                            <td>站点根网址</td>
+                            <td>
+                                <input type="text"  name="site_url" value="{$data.site_url}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>site_url</td>
+                        </tr><tr>
+                            <td>网站关键词</td>
+                            <td>
+                                <input type="text"  name="site_keyword" value="{$data.site_keyword}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>site_keyword</td>
+                        </tr>
+                        <tr>
+                            <td>网站版权信息</td>
+                            <td>
+                                <input type="text"  name="site_copyright" value="{$data.site_copyright}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>site_copyright</td>
+                        </tr>
+                        <tr>
+                            <td>网站备案号</td>
+                            <td>
+                                <input type="text"  name="site_beian" value="{$data.site_beian}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td>site_beian</td>
+                        </tr>
+                        <tr>
+                            <td>网站描述</td>
+                            <td>
+                                <textarea placeholder="统计代码" class="layui-textarea" id="site_description" name="site_code">{$data.site_description}</textarea>
+                            </td>
+                            <td>site_description</td>
+                        </tr>
+                        <tr>
+                            <td>统计代码</td>
+                            <td>
+                                <textarea placeholder="统计代码" class="layui-textarea" id="site_code" name="site_code">{$data.site_code}</textarea>
+                            </td>
+                            <td>site_code</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="layui-tab-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="15%">站点名称</th>
+                            <th>变量值</th>
+                            <th width="12%">变量名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>禁止登录后台的IP列表</td>
+                            <td>
+                                <textarea class="layui-textarea" name="admin_prohibit_ip" placeholder="匹配IP段用“*”占位，如192.168.*.*，多个IP地址请用英文逗号“,”分割">{$data.admin_prohibit_ip}</textarea>
+                                匹配IP段用“*”占位多个IP用“,”分割
+                            </td>
+                            <td>admin_prohibit_ip</td>
+                        </tr>
+                        <tr>
+                            <td>启用后台管理操作日志</td>
+                            <td>
+                                <input type="radio" name="admin_log" value="1" title="启用" {if ($data.admin_log==1)}checked{/if}>
+                                <input type="radio" name="admin_log" value="0" title="禁用" {if ($data.admin_log==0)}checked{/if}>
+                            </td>
+                            <td>admin_log</td>
+                        </tr>
+                        <tr>
+                            <td>后台登录验证码</td>
+                            <td>
+                                <input type="radio" name="login_code" value="1" title="字母验证码" {if ($data.login_code==1)}checked{/if}>
+                                <input type="radio" name="login_code" value="0" title="关闭" {if ($data.login_code==0)}checked{/if}>
+                            </td>
+                            <td>login_code</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="layui-tab-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="15%">站点名称</th>
+                            <th>变量值</th>
+                            <th width="12%">变量名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>SMTP服务器</td>
+                            <td>
+                                <input type="text"  name="mail_server" value="{$data.mail_server}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_server</td>
+                        </tr>
+                        <tr>
+                            <td>SMTP端口号</td>
+                            <td>
+                                <input type="text"  name="mail_port" value="{$data.mail_port}" lay-verify="required"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_port</td>
+                        </tr>
+                        <tr>
+                            <td>发件人地址</td>
+                            <td>
+                                <input type="text"  name="mail_from" value="{$data.mail_from}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_from</td>
+                        </tr>
+                        <tr>
+                            <td>SMTP端口号</td>
+                            <td>
+                                <input type="text"  name="mail_port" value="{$data.mail_port}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_port</td>
+                        </tr>
+                        <tr>
+                            <td>验证用户名</td>
+                            <td>
+                                <input type="text"  name="mail_user" value="{$data.mail_user}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_user</td>
+                        </tr>
+                        <tr>
+                            <td>验证密码</td>
+                            <td>
+                                <input type="text"  name="mail_pass" value="{$data.mail_pass}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_pass</td>
+                        </tr>
+                        <tr>
+                            <td>站点默认邮箱</td>
+                            <td>
+                                <input type="text"  name="mail_inbox" value="{$data.mail_inbox}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td>mail_inbox</td>
+                        </tr>
+                        <tr>
+                            <td>邮件设置测试</td>
+                            <td>
+                                <div class="layui-input-inline" style="width: 50%">
+                                <input type="text"  name="mail_to" value="" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <a class="layui-btn layui-btn-normal" href="javascript:;" onclick="isEmail(this.value)">测试发送</a> [先保存，在发送]
+                                </div>
+                            </td>
+                            <td>mail_to</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="layui-tab-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="15%">站点名称</th>
+                            <th>变量值</th>
+                            <th width="12%">变量名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>允许上传附件大小（KB）</td>
+                            <td>
+                                <div class="layui-input-inline" >
+                                    <input type="text"  name="upload_maxsize" value="{$data.upload_maxsize}"  autocomplete="off" class="layui-input">
+                                </div>
+                                [最大限制不能超过服务器“upload_max_filesize”配置]
+                            </td>
+                            <td>upload_maxsize</td>
+                        </tr>
+                        <tr>
+                            <td>允许上传附件类型</td>
+                            <td>
+                                <input type="text"  name="upload_types" value="{$data.upload_types}"  autocomplete="off" class="layui-input">
+                            </td>
+                            <td>upload_types</td>
+                        </tr>
+                        <tr>
+                            <td>是否开启图片水印</td>
+                            <td>
+                                <input type="radio" name="watermark_enable" value="1" title="开启" {if ($data.watermark_enable==1)}checked{/if}>
+                                <input type="radio" name="watermark_enable" value="0" title="关闭" {if ($data.watermark_enable==0)}checked{/if}>
+                            </td>
+                            <td>watermark_enable</td>
+                        </tr>
+                        <tr>
+                            <td>水印图片名称</td>
+                            <td>
+                                <div class="layui-input-inline" >
+                                    <input type="text" name="watermark_name" value="{$data.watermark_name}"  autocomplete="off" class="layui-input">
+                                </div>
+                                [水印存放路径:public/static/water]
+                            </td>
+                            <td>watermark_name</td>
+                        </tr>
+                        <tr>
+                            <td>水印的位置</td>
+                            <td>
+                                <input type="radio" name="watermark_position" value="1" title="顶部居左" {if ($data.watermark_position==1)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="2" title="顶部居中" {if ($data.watermark_position==2)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="3" title="顶部居右" {if ($data.watermark_position==3)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="4" title="中部居左" {if ($data.watermark_position==4)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="5" title="中部居中" {if ($data.watermark_position==5)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="6" title="中部居右" {if ($data.watermark_position==6)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="7" title="顶部居左" {if ($data.watermark_position==7)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="8" title="底部居中" {if ($data.watermark_position==8)}checked{/if}>
+                                <input type="radio" name="watermark_position" value="9" title="底部居右" {if ($data.watermark_position==9)}checked{/if}>
+                            </td>
+                            <td>watermark_position</td>
+                        </tr>
+                        <tr>
+                            <td>水印透明度</td>
+                            <td>
+                                <div class="layui-input-inline"  style="width:65%;margin:18px 0;">
+                                    <div id="slideTest2" class="demo-slider"></div>
+                                    <input type="hidden" name="watermark_touming" id="watermark_touming">
+                                </div>
+                                [水印透明度设置]
+                            </td>
+                            <td>watermark_touming</td>
+                        </tr>
+                        <tr>
+                            <td>保存方式</td>
+                            <td>
+                                <div class="layui-input-inline">
+                                    <select name="upload_mode" lay-filter="upload_mode">
+                                        <option value="local" {if ($data.upload_mode=='local')}selected{/if}>本地保存</option>
+                                        <option value="Ftp" {if ($data.upload_mode=='Ftp')}selected{/if}>FTP存储</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="margin-left:30px;">
+                                    <div class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if}>
+                                    FTP存储：
+                                    <div class="layui-input-inline">
+                                        <a href="javascript:;" class="layui-btn layui-btn-normal" onclick="check_ftp()">点击测试FTP连接</a>
+                                    </div>
+                                    <span style="color:#f00"> [先保存，再测试]</span>
+                                </div>
+                            </td>
+                            <td>upload_mode</td>
+                        </tr>
+                        <tr>
+                            <td>存储路径</td>
+                            <td>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="ftp_path" placeholder="存储路径" value="{$data.ftp_path}" class="layui-input" >
+                                </div>
+                                [前后斜杠不要少了]
+                            </td>
+                            <td>ftp_path</td>
+                        </tr>
+                        <tr class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if} >
+                              <td>服务器地址</td>
+                              <td>
+                                  <input type="text" name="ftp_host" id="ftp_host" placeholder="ip或域名" value="{$data.ftp_host}" class="layui-input" >
+                              </td>
+                              <td>ftp_host</td>
+                        </tr>
+                        <tr class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if} >
+                            <td>ftp端口</td>
+                            <td>
+                                <input type="text" name="ftp_port" id="ftp_port" placeholder="端口号" value="{$data.ftp_port}" class="layui-input" >
+                            </td>
+                            <td>ftp_port</td>
+                        </tr>
+                        <tr class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if} >
+                            <td>ftp账号</td>
+                            <td>
+                                <input type="text" name="ftp_user" id="ftp_user" placeholder="ftp账号" value="{$data.ftp_user}" class="layui-input" >
+                            </td>
+                            <td>ftp_user</td>
+                        </tr>
+                        <tr class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if} >
+                            <td>ftp密码</td>
+                            <td>
+                                <input type="text" name="ftp_pwd" id="ftp_pwd" placeholder="ftp密码" value="{$data.ftp_pwd}" class="layui-input" >
+                            </td>
+                            <td>ftp_pwd</td>
+                        </tr>
+                        <tr class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if} >
+                            <td>外链URL地址</td>
+                            <td>
+                                <input type="text" name="ftp_url" id="ftp_url" placeholder="外链URL" value="{$data.ftp_url}" class="layui-input" >
+                            </td>
+                            <td>ftp_url</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-form-item " >
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline" style="width: 80%">
+                <input type="hidden" name="dosubmit" value="1">
+                <input class="layui-btn" type="submit" value="立即保存" lay-submit="" >
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+{include file='footer'/}
+<script>
+    layui.use(['form','element','slider'], function(){
+        var $ = layui.jquery
+            ,slider = layui.slider
+            ,form = layui.form
+            ,element = layui.element;
+        form.verify({
+            siteUrl:[
+                /^http(.+)\/$/
+                ,'站点根网址格式为：http://xiaohuihui.net.cn/，请以“/”结尾！'
+            ]
+        });
+        form.on('select(upload_mode)', function(data){
+            console.log(data.value);
+            $('.upload_mode').hide();
+            $('.mode_'+ data.value).show();
+        });
+        //定义初始值
+        slider.render({
+            elem: '#slideTest2'
+            ,value: '{$data.watermark_touming}'
+            ,theme: '#FF5722' //主题色
+            ,input: true //输入框
+        });
+    });
+
+    //测试ftp连接是否正常
+    function check_ftp() {
+        var ftp_host = $("#ftp_host").val();
+        var ftp_port = $("#ftp_port").val();
+        var ftp_user = $("#ftp_user").val();
+        var ftp_pwd = $("#ftp_pwd").val();
+        if(ftp_host==''||ftp_port==''||ftp_user==''||ftp_pwd==''){
+            layer.msg('FTP的4项配置不能为空');
+            return false;
+        }
+        var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+        $.post("{:url('public_check_ftp')}",{
+            ftp_host:ftp_host,
+            ftp_port:ftp_port,
+            ftp_user:ftp_user,
+            ftp_pwd:ftp_pwd
+        },function (res) {
+            layer.close(index);
+            layer.msg(res.msg,{icon:res.icon});
+        })
+    }
+</script>

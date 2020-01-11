@@ -45,3 +45,28 @@ function get_address($ip){
         return '未知';
     }
 }
+
+
+/**
+ * 获取系统配置信息
+ * @param $key 键值，可为空，为空获取整个数组
+ * @return array|string
+ */
+function get_config($key = '')
+{
+    if(cache('configs')){
+        $configs= cache('configs');
+    }else{
+        $data = Db::name('config')->where('status',1)->select();
+        $configs = array();
+        foreach($data as $val){
+            $configs[$val['name']] = $val['value'];
+        }
+        cache('configs',$configs);
+    }
+    if(!$key){
+        return $configs;
+    }else{
+        return array_key_exists($key, $configs) ? $configs[$key] : '';
+    }
+}
