@@ -8,9 +8,6 @@
 
 return[
     
-    //是否开启后台登录验证码
-    'login_captcha'         => false,
-    
     //允许登录失败几次
     'login_failure_times'   =>  5,
     
@@ -25,8 +22,5 @@ return[
     
     //不做备份的数据表
     'backupIgnoreTables' => '',
-    
-    //是否开启后台管理员日志
-    'open_adminlog' => true
-    
+
 ];

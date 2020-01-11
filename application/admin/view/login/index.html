@@ -23,7 +23,7 @@
         <hr class="hr15">
         <input name="password" id="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" required="required">
 
-        {if config('huiadmin.login_captcha')}
+        {if get_config('login_code')}
         <hr class="hr15">
         <img src="{:url('verify')}" id="imgVcode" alt="captcha" title="点击刷新验证码" border="0" class="verifyimg" onclick="this.src=this.src+'?'" style="float:right;height: 50px;"/>
         <input type="text" name="code" id="code" class="login_input verify_input" lay-verify="required"  placeholder="验证码" required="required" style="float:left; width: 40%">

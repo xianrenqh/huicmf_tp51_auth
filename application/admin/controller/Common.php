@@ -21,8 +21,10 @@ class Common extends Controller
     public $role_id;
     public $group_id;
     public $breadcrumb;
+    public static $ip;
     public function __construct(){
-    
+        self::$ip = ip();
+        self::check_ip();
         $controllername = Loader::parseName(Request::controller());
         $actionname = strtolower(Request::action());
         $path = str_replace('.', '/', $controllername) . '/' . $actionname;
@@ -82,7 +84,27 @@ class Common extends Controller
         }
     }
     
-    
+    /**
+     * 后台IP禁止判断
+     */
+    final private function check_ip(){
+        $admin_prohibit_ip = get_config('admin_prohibit_ip');
+        if(!$admin_prohibit_ip) return true;
+        $arr = explode(',', $admin_prohibit_ip);
+        foreach($arr as $val){
+            //是否是IP段
+            if(strpos($val,'*')){
+                if(strpos(self::$ip, str_replace('.*', '', $val)) !== false) {
+                    error2("你在IP禁止段内,禁止访问！~~~");
+                }
+            }else{
+                //不是IP段,用绝对匹配
+                if(self::$ip == $val) {
+                    error2("IP地址绝对匹配,禁止访问！~~~");
+                }
+            }
+        }
+    }
 
     
 }

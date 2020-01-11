@@ -11,6 +11,7 @@ namespace app\admin\controller\general;
 use app\admin\controller\Common;
 use think\Db;
 use lib\FtpLib;
+use lib\PhpMail;
 
 class Config extends  Common
 {
@@ -28,7 +29,15 @@ class Config extends  Common
      */
     public function save()
     {
-    
+        if (input('post.dosubmit')) {
+            foreach (input('post.') as $key => $value) {
+                $arr[$key] = $value;
+                $value = htmlspecialchars($value);
+                Db::name('config')->strict(false)->where(['name' => $key])->update(['value' => $value]);
+                cache('configs',null);
+            }
+            return json(['message' => "保存成功", 'icon' => 2]);
+        }
     }
     
     
@@ -47,6 +56,19 @@ class Config extends  Common
         else{
             return json(['code'=>1,'msg'=>'FTP连接成功','icon'=>1]);
         }
+    }
+    
+    /*
+* 发送测试邮件
+*/
+    public function public_mail_test()
+    {
+        $mail_to =input('mail_to');
+        $phpmail = new PhpMail();
+        $mail_title = "【测试】这是一封测试邮件";
+        $mail_body = "<h2>这是一封测试邮件，测试是否发送成功。</h2><br>发送时间：".date("Y-m-d H:i:s",time());
+        $sendmail = $phpmail->email($mail_to,$mail_title,$mail_body);
+        return $sendmail;
     }
     
 }

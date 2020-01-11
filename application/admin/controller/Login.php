@@ -21,7 +21,7 @@ class Login extends Controller
         $captcha = new Captcha();
         if(input('post.dosubmit')){
             
-            if(config('huiadmin.login_captcha')){
+            if(get_config('login_code')){
                 if( !captcha_check(input('code') )){
                     return json(['status'=>1001,'msg'=>'验证码输出错误，请重新输入！！！']);
                 }
