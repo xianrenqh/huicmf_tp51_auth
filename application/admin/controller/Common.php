@@ -75,7 +75,6 @@ class Common extends Controller
         }else{
             $rule1 = $module . '/' . $controller . '/' . $action;
         }
-        
         if(!$this->auth->check($rule1, $this->uid))
         {
             //error2 ('您没有权限操作');
