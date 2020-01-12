@@ -30,9 +30,15 @@ class Rule extends Common
         $tree->icon =
             ['&nbsp;&nbsp;&nbsp;│ ', '&nbsp;&nbsp;&nbsp;├─ ', '&nbsp;&nbsp;&nbsp;└─ '];
         $tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-        $data = Db::name('auth_rule')
-            ->order('weigh ASC')
-            ->select();
+        
+        if(cache('cache_auth_rule')){
+            $data = cache('cache_auth_rule');
+        }else{
+            $data = Db::name('auth_rule')
+                ->order('weigh ASC')
+                ->select();
+            cache('cache_auth_rule',$data);
+        }
         $array = [];
         foreach ($data as $v) {
             $add_tree =
@@ -95,6 +101,7 @@ class Rule extends Common
             $res = 0;
         }
         if ($res) {
+            Cache::clear();
             return json(['status' => 1, 'msg' => '状态更改成功', 'reload' => 1]);
         } else {
             return json(
@@ -206,6 +213,7 @@ class Rule extends Common
         }*/
         $res = Db::name('auth_rule')->where('id',$id)->whereOr('pid',$id)->delete();
         if($res){
+            Cache::clear();
             return json(['status'=>1,'msg'=>'操作成功~~~']);
         }else{
             return json(['status'=>0,'msg'=>'操作失败！！！']);
@@ -223,6 +231,7 @@ class Rule extends Common
         foreach (input('listorders') as $id => $listorder) {
             Db::name('auth_rule')->where(['id' => $id])->update(['weigh' => $listorder]);
         }
+        Cache::clear();
         $this->success('操作成功！', 'index', 1, 2);
     }
     
