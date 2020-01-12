@@ -18,8 +18,13 @@ class Config extends  Common
     
     public function index()
     {
-        $datalist = Db::name('config')->select();
-        $data= array_column($datalist,'value','name');
+        if(cache('cache_configs')){
+            $data = cache('cache_configs');
+        }else{
+            $datalist = Db::name('config')->select();
+            $data= array_column($datalist,'value','name');
+            cache('cache_configs',$data);
+        }
         return $this->fetch('',['data'=>$data]);
     }
     
@@ -34,7 +39,7 @@ class Config extends  Common
                 $arr[$key] = $value;
                 $value = htmlspecialchars($value);
                 Db::name('config')->strict(false)->where(['name' => $key])->update(['value' => $value]);
-                cache('configs',null);
+                cache('cache_configs',null);
             }
             return json(['message' => "保存成功", 'icon' => 2]);
         }

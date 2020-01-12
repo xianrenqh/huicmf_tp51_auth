@@ -43,6 +43,11 @@ http://localhost:8000
 composer update topthink/framework
 ~~~
 
+## 代码里已用到的缓存名称
+cache_auth_rule  
+cache_auth_rules  
+menu_list_(管理员id)
+cache_configs
 
 ## 在线手册
 
