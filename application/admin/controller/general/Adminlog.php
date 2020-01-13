@@ -30,7 +30,7 @@ class Adminlog extends Common
      */
     public function add()
     {
-        $res = model('admin_log')->record();
+        //$res = model('admin_log')->record();
     }
     
     /**
