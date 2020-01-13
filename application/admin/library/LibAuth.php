@@ -137,7 +137,7 @@ class LibAuth extends \lib\Auth
         }
         $titleArr = [];
         $menuArr = [];
-    
+        
         $urlArr = explode('/', $path);
         foreach ($urlArr as $index => $item) {
             $pathArr[implode('/', array_slice($urlArr, 0, $index + 1))] = $index;

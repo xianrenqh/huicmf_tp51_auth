@@ -209,17 +209,17 @@ class Auth
         }
         //读取用户组所有权限规则
         if(cache('cache_auth_rules')){
-            $rules_all = cache('cache_auth_rules');
+            $this->rules = cache('cache_auth_rules');
         }else{
-            $rules_all = Db::name($this->config['auth_rule'])->where($where)->select();
-            cache('cache_auth_rules',$rules_all);
+            $this->rules = Db::name($this->config['auth_rule'])->where($where)->select();
+            cache('cache_auth_rules',$this->rules);
         }
         //循环规则，判断结果。
         $rulelist = []; //
         if (in_array('*', $ids)) {
             $rulelist[] = "*";
         }
-        foreach ($rules_all as $rule) {
+        foreach ($this->rules as $rule) {
             //超级管理员无需验证condition
             if (!empty($rule['condition']) && !in_array('*', $ids)) {
                 //根据condition进行验证
