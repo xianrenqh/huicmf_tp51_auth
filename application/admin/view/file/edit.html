@@ -1,18 +1,5 @@
 {include file='header'/}
-<link rel="stylesheet" href="__LIB__codemirror/lib/codemirror.css">
-<link rel="stylesheet" href="__LIB__codemirror/theme/monokai.css">
-<style>
-    .ace_header{position:relative;height:35px;background:#565656}
-    .ace_header span{float:left;height:35px;line-height:35px;padding:0 15px;font-size:13px;text-align:center;color:#fff;border-right:1px solid #4c4c4c;cursor:pointer}
-    .ace_header span i{margin-right:5px}
-    .ace_header span .fa{margin-right:5px}
-    .ace_header span:hover{background:#2f2f2f}
-    .ace_header .pull-down{display:inline-block;position:absolute;z-index:999;right:0;height:35px;line-height:35px;padding:0 14px;font-size:15px;color:#fff;background:#292929;cursor:pointer}
-    .helps_left{width:50%;float:left}
-    .helps_conter{padding:25px;overflow:hidden}
-    .helps_conter .helps_item{margin-bottom:10px;display:inline-block;border-left:3px solid #20a53a;padding-left:5px;font-size:15px}
-    .helps_conter .helps_box{margin-bottom:20px;font-size:14px;padding-left:10px;line-height:25px}
-</style>
+
 <body>
 <div class="subbody">
     <!--form表单-->
@@ -33,24 +20,6 @@
             <input type="hidden" name="dosubmit" id="dosubmit" value="1">
             <input type="hidden" name="filename" id="filename" value="{$filename}">
         </div>
-
-        <!--<div class="ace_toolbar_menu" style="display:none">
-            <div class="menu-item menu-themes" style="display: none;">
-                <div class="menu-title">设置编辑器主题</div>
-                <ul></ul>
-            </div>
-            <div class="menu-item menu-history" style="display: none;">
-                <div class="menu-title">文件历史版本</div>
-                <ul></ul>
-            </div>
-        </div>-->
-
-        <!--<div class="layui-form-item">
-            <div class="layui-input-block">
-                <a class="layui-btn" onclick="save_file()">立即提交</a>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>-->
     </form>
 </div>
 {include file='footer'/}
@@ -62,7 +31,7 @@
     var height = $(window).height();
     $("#editor").css('height',height-35);
     var editor = ace.edit("editor");
-    theme = "monokai";//主题 eclipse/monokai
+    theme = "{$aceTheme}";//主题 eclipse/monokai
     language = "{$ext}";//程序语言
     switch (language) {
         case "md":
@@ -147,6 +116,31 @@
                 break;
             //主题
             case 'themes':
+                layer_index2=layer.open({
+                    type:1,
+                    offset:'0px;',
+                    area:['400px', '180px'],
+                    title:'设置编辑器主题',
+                    shadeClose: true, //开启遮罩关闭
+                    content:'<div class="layui-form-item" style="padding-top:20px;">\n' +
+                        '            <div class="layui-inline" style="margin-left:58px;">\n' +
+                        '                <select id="change_ace_themes" name="change_ace_themes" style="width:180px;height:35px;">\n' +
+                        '                 <option value="tomorrow_night_bright" {if($aceTheme=="tomorrow_night_bright")}selected{/if}>tomorrow_night_bright</option>\n' +
+                        '                 <option value="eclipse" {if($aceTheme=="eclipse")}selected{/if}>eclipse</option>\n' +
+                        '                 <option value="monokai" {if($aceTheme=="monokai")}selected{/if}>monokai</option>\n' +
+                        '                 <option value="tomorrow" {if($aceTheme=="tomorrow")}selected{/if}>tomorrow</option>\n' +
+                        '                </select>\n' +
+                        '            </div>\n' +
+                        '        </div>'
+                });
+                $('#change_ace_themes').change(function(){
+                    var theme_val = $("#change_ace_themes").val();
+                    editor.setTheme("ace/theme/"+theme_val);
+                    $.post("{:url('ace_editor_config')}",{
+                        type:'setTheme',
+                        text:theme_val
+                    })
+                });
                 break;
             case 'helps':
                 layer.open({

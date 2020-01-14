@@ -23,6 +23,9 @@ return[
     //不做备份的数据表
     'backupIgnoreTables' => '',
     
+    //ace代码编辑器字体
     'ace_editor_fontSize'=>'15',
+    
+    'ace_editor_Theme'=>'monokai',
 
 ];

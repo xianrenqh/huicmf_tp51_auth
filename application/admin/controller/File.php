@@ -186,7 +186,8 @@ class File extends Common
                 'code' => $code,
                 'ext' => strtolower($ext),
                 'filename'=>$data,
-                'fontSize'=>config('huiadmin.ace_editor_fontSize')
+                'fontSize'=>config('huiadmin.ace_editor_fontSize'),
+                'aceTheme'=>config('huiadmin.ace_editor_Theme'),
             ]);
         }
     }
@@ -316,6 +317,9 @@ class File extends Common
         switch($type){
             case "fontSize":
                 setconfig('huiadmin',['ace_editor_fontSize'],[$text]);
+                break;
+            case "setTheme":
+                setconfig('huiadmin',['ace_editor_Theme'],[$text]);
                 break;
         }
     }

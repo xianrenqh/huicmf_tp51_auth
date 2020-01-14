@@ -27,3 +27,15 @@ pre {
     border-radius: 4px;
     color: #333;
 }
+
+.ace_header{position:relative;height:35px;background:#565656}
+.ace_header span{float:left;height:35px;line-height:35px;padding:0 15px;font-size:13px;text-align:center;color:#fff;border-right:1px solid #4c4c4c;cursor:pointer}
+.ace_header span i{margin-right:5px}
+.ace_header span .fa{margin-right:5px}
+.ace_header span:hover{background:#2f2f2f}
+.ace_header .pull-down{display:inline-block;position:absolute;z-index:999;right:0;height:35px;line-height:35px;padding:0 14px;font-size:15px;color:#fff;background:#292929;cursor:pointer}
+.helps_left{width:50%;float:left}
+.helps_conter{padding:25px;overflow:hidden}
+.helps_conter .helps_item{margin-bottom:10px;display:inline-block;border-left:3px solid #20a53a;padding-left:5px;font-size:15px}
+.helps_conter .helps_box{margin-bottom:20px;font-size:14px;padding-left:10px;line-height:25px}
+#change_ace_themes option{height:30px; line-height:30px;font-size-adjust: inherit;font-size:20px;margin-bottom:5px;}
