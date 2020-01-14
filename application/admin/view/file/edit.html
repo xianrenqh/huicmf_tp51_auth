@@ -1,122 +1,246 @@
 {include file='header'/}
 <link rel="stylesheet" href="__LIB__codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="__LIB__codemirror/theme/monokai.css">
+<style>
+    .ace_header{position:relative;height:35px;background:#565656}
+    .ace_header span{float:left;height:35px;line-height:35px;padding:0 15px;font-size:13px;text-align:center;color:#fff;border-right:1px solid #4c4c4c;cursor:pointer}
+    .ace_header span i{margin-right:5px}
+    .ace_header span .fa{margin-right:5px}
+    .ace_header span:hover{background:#2f2f2f}
+    .ace_header .pull-down{display:inline-block;position:absolute;z-index:999;right:0;height:35px;line-height:35px;padding:0 14px;font-size:15px;color:#fff;background:#292929;cursor:pointer}
+    .helps_left{width:50%;float:left}
+    .helps_conter{padding:25px;overflow:hidden}
+    .helps_conter .helps_item{margin-bottom:10px;display:inline-block;border-left:3px solid #20a53a;padding-left:5px;font-size:15px}
+    .helps_conter .helps_box{margin-bottom:20px;font-size:14px;padding-left:10px;line-height:25px}
+</style>
 <body>
 <div class="subbody">
-
     <!--form表单-->
     <form class="layui-form" style="height: 100%;">
 
-        <div class="layui-form-item" style="height: 100%;">
-            <textarea id="text" name="text" placeholder="请输入内容" class="layui-textarea">{$code|raw}</textarea>
+
+        <div class="ace_header">
+            <span class="saveFile"><i class="iconfont icon-newshot"></i></i>保存</span>
+            <span class="refreshs"><i class="iconfont icon-refresh" aria-hidden="true"></i>刷新</span>
+            <span class="searchs"><i class="iconfont icon-search_light" aria-hidden="true"></i>搜索</span>
+            <span class="replaces"><i class="iconfont icon-order" aria-hidden="true"></i>替换</span>
+            <span class="fontSize"><i class="iconfont icon-write" aria-hidden="true"></i>字体</span>
+            <span class="themes"><i class="iconfont icon-filter" aria-hidden="true"></i>主题</span>
+            <span class="helps"><i class="iconfont icon-question" aria-hidden="true"></i>帮助</span>
+        </div>
+        <div class="" style="height: 100%;">
+            <div id="editor" class="ace_editor" style="min-height:400px;height:92%;">{$code|raw}</div>
             <input type="hidden" name="dosubmit" id="dosubmit" value="1">
             <input type="hidden" name="filename" id="filename" value="{$filename}">
         </div>
-        <div class="layui-form-item">
+
+        <!--<div class="ace_toolbar_menu" style="display:none">
+            <div class="menu-item menu-themes" style="display: none;">
+                <div class="menu-title">设置编辑器主题</div>
+                <ul></ul>
+            </div>
+            <div class="menu-item menu-history" style="display: none;">
+                <div class="menu-title">文件历史版本</div>
+                <ul></ul>
+            </div>
+        </div>-->
+
+        <!--<div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="addData">立即提交</button>
+                <a class="layui-btn" onclick="save_file()">立即提交</a>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
-        </div>
+        </div>-->
     </form>
 </div>
 {include file='footer'/}
-<script src="__LIB__codemirror/lib/codemirror.js"></script>
-<script src="__LIB__codemirror/mode/htmlmixed/htmlmixed.js"></script>
-<script src="__LIB__codemirror/mode/php/php.js"></script>
-<script src="__LIB__codemirror/mode/css/css.js"></script>
-<script src="__LIB__codemirror/mode/javascript/javascript.js"></script>
-<script src="__LIB__codemirror/mode/xml/xml.js"></script>
-<script src="__LIB__codemirror/mode/sql/sql.js"></script>
-<script src="__LIB__codemirror/mode/markdown/markdown.js"></script>
-<script src="__LIB__codemirror/mode/clike/clike.js"></script>
-
-<!--支持代码折叠-->
-<link rel="stylesheet" href="__LIB__codemirror/addon/fold/foldgutter.css"/>
-<script src="__LIB__codemirror/addon/fold/foldcode.js"></script>
-<script src="__LIB__codemirror/addon/fold/foldgutter.js"></script>
-<script src="__LIB__codemirror/addon/fold/brace-fold.js"></script>
-<script src="__LIB__codemirror/addon/fold/comment-fold.js"></script>
-
-<!--括号匹配-->
-<link rel="stylesheet" src="__LIB__codemirror/addon/lint/lint.css">
-<script src="__LIB__codemirror/addon/lint/lint.js"></script>
-<script src="__LIB__codemirror/addon/lint/json-lint.js"></script>
-<script src="__LIB__codemirror/addon/lint/css-lint.js"></script>
-<script src="__LIB__codemirror/addon/lint/javascript-lint.js"></script>
-
-<script src="__LIB__codemirror/keymap/sublime.js"></script>
-
-<!--自动补全-->
-<link rel="stylesheet" href="__LIB__codemirror/addon/hint/show-hint.css">
-<script src="__LIB__codemirror/addon/hint/show-hint.js"></script>
-<script src="__LIB__codemirror/addon/hint/anyword-hint.js"></script>
-
-<link rel="stylesheet" href="__LIB__codemirror/addon/dialog/dialog.css">
-<script src="__LIB__codemirror/addon/dialog/dialog.js"></script>
-<!--搜索-->
-<link rel="stylesheet" href="__LIB__codemirror/addon/search/matchesonscrollbar.css">
-<script src="__LIB__codemirror/addon/search/searchcursor.js"></script>
-<script src="__LIB__codemirror/addon/search/search.js"></script>
-<script src="__LIB__codemirror/addon/scroll/annotatescrollbar.js"></script>
-<script src="__LIB__codemirror/addon/search/matchesonscrollbar.js"></script>
-<script src="__LIB__codemirror/addon/search/jump-to-line.js"></script>
+<script src="__LIB__ace-builds/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="__LIB__ace-builds/src-min/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
 
 <script>
-    layui.use(['element', 'form', 'layer'], function () {
-        var form = layui.form
-            ,layer = layui.layer
-            , $ = layui.jquery;
-        var mycode = CodeMirror.fromTextArea(document.getElementById('text'),{
-            gutters:["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
-            lineNumbers:true,
-            theme:"monokai",
-            lint: true,
-            keyMap: "default", // 快键键风格
-            lineWrapping:true,   //代码检测器
-            foldGutter: true,    //代码折叠
-            autofocus: true,    //自动聚焦
-            matchBrackets:true, //括号匹配
-            //智能提示
-            extraKeys:{"Ctrl-/":"autocomplete"}//ctrl-/ 唤起智能提示
-        });
-        var ext = '{$ext}';
-        if(ext == 'html'){
-            ext = 'htmlmixed';
-        }else if(ext == 'js' || ext == 'json'){
-            ext = 'javascript';
-        }else if(ext == 'sql'){
-            ext = 'sql';
-        }else if(ext == 'md'){
-            ext = 'markdown';
-        }else{
-            ext = 'php';
-        }
-        mycode.setOption('mode',ext);
-        mycode.setSize('auto','100%');
-
-        //监听提交
-        form.on('submit(addData)', function (data) {
-            data.field.text = $.base64.encode(mycode.getValue());
-            var m = layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.8});
-            var url = "{:url('file/edit')}";
-            $.post(url, data.field, function (res) {
-                if (res.code == 1) {
-
-                    layer.msg(res.msg,{icon:1},function () {
-                        //刷新父页面
-                        layer.close(m);
-                        parent.location.reload();
-                    });
-                } else {
-                    layer.close(m);
-                    layer.msg(res.msg);
-                }
-            }, 'json');
-            return false;
-        });
+    var layer_index =null;
+    var height = $(window).height();
+    $("#editor").css('height',height-35);
+    var editor = ace.edit("editor");
+    theme = "monokai";//主题 eclipse/monokai
+    language = "{$ext}";//程序语言
+    switch (language) {
+        case "md":
+            language = "markdown";
+            break;
+        case "txt":
+            language = "text";
+            break;
+    }
+    editor.setTheme("ace/theme/"+theme);
+    editor.session.setMode("ace/mode/"+language);
+    editor.setFontSize({$fontSize});	//字体大小
+    document.getElementById("editor").style.lineHeight="25px";//设置行高;
+    editor.setReadOnly(false);//设置只读（true时只读，用于展示代码）
+    //自动换行,设置为off关闭
+    editor.setOption("wrap", "free");
+    ace.require("ace/ext/language/tools");
+    //以下部分是设置输入代码提示的
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true,
+        wrap: true,
     });
-</script>
+    editor.setHighlightActiveLine(true); //代码高亮
+    editor.setHighlightGutterLine(true);
+    editor.setHighlightSelectedWord(true);
+    editor.setShowPrintMargin(true);
+    editor.getSession().setUseWorker(false);
+    editor.getSession().setUseWrapMode(true); //支持代码折叠
+    editor.selection.getCursor(); //获取光标所在行或列
+    editor.session.getLength(); //获取总行数
+    editor.getSession().setUseSoftTabs(true);
+    //editor.getValue()//获取内容
+    //editor.setValue(editor.getValue());//设置内容
+    editor.getSession().on('change', function(e) {
+        if(e.id){
+            console.log('更改了代码');
+        }
+    });
+    //ctrl+s保存
+    editor.commands.addCommands([{
+        name: 'save', bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+        exec: function(editor) { save_file(this, 'ace'); }
+    }]);
 
-</body>
-</html>
+    // 状态
+    $('.ace_header span').click(function (e) {
+        var type =  $(this).attr('class'),editor_item =  ace.edit("editor");
+        switch(type){
+            case 'saveFile': //保存当时文件
+                save_file();
+                break;
+            case 'refreshs': //刷新文件
+                window.location.reload();
+                break;
+            // 搜索
+            case 'searchs':
+                editor_item.execCommand('find');
+                break;
+            // 替换
+            case 'replaces':
+                editor_item.execCommand('replace');
+                break;
+            // 字体
+            case 'fontSize':
+                layer_index=layer.open({
+                    type:1,
+                    offset:'0px;',
+                    area:['400px', '130px'],
+                    title:'设置编辑器字体大小',
+                    shadeClose: true, //开启遮罩关闭
+                    content:'<div class="layui-form-item" style="padding-top:20px;">\n' +
+                        '            <div class="layui-inline" style="margin-left:58px;">\n' +
+                        '                <input type="number" class="layui-input layui-input-inline fontSizeInput" value="{$fontSize}">\n' +
+                        '            </div>\n' +
+                        '            <div class="layui-inline">\n' +
+                        '                <a href="javascript:;" class="layui-btn" onclick="_editor_save(\'fontSize\',$(\'.fontSizeInput\').val())">保存</a>\n' +
+                        '            </div>\n' +
+                        '        </div>'
+                });
+                break;
+            //主题
+            case 'themes':
+                break;
+            case 'helps':
+                layer.open({
+                    type:1,
+                    area:['70%', '90%'],
+                    title:'帮助',
+                    shadeClose: true, //开启遮罩关闭
+                    content:'<div class="helps_conter">\
+							<div class="helps_left">\
+								<div class="helps_item">常用快捷键:</div>\
+								<div class="helps_box">\
+									ctrl+s&nbsp;&nbsp;保存</br>\
+									ctrl+a&nbsp;&nbsp;全选&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+x&nbsp;&nbsp;剪切</br>\
+									ctrl+c&nbsp;&nbsp;复制&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+v&nbsp;&nbsp;粘贴</br>\
+									ctrl+z&nbsp;&nbsp;撤销&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+y&nbsp;&nbsp;反撤销</br>\
+									ctrl+f&nbsp;&nbsp;查找&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+h;&nbsp;替换</br>\
+									win+alt+0&nbsp;&nbsp;折叠所有</br>\
+									win+alt+shift+0&nbsp;&nbsp;展开所有</br>\
+									esc&nbsp;&nbsp;[退出搜索,取消自动提示...]</br>\
+									ctrl-shift-s&nbsp;&nbsp;预览</br>\
+									ctrl-shift-e&nbsp;&nbsp;显示&关闭函数\
+								</div>\
+								<div class="helps_item">选择:</div>\
+								<div class="helps_box">\
+									鼠标框选——拖动</br>\
+									shift+home/end/up/left/down/right</br>\
+									shift+pageUp/PageDown&nbsp;&nbsp;上下翻页选中</br>\
+									ctrl+shift+ home/end&nbsp;&nbsp;当前光标到头尾</br>\
+									alt+鼠标拖动&nbsp;&nbsp;块选择</br>\
+									ctrl+alt+g&nbsp;&nbsp;批量选中当前并进入多标签编辑</br>\
+								</div>\
+							</div>\
+							<div class="helps_left">\
+								<div class="helps_item">光标移动:</div>\
+								<div class="helps_box">\
+									home/end/up/left/down/right</br>\
+									ctrl+home/end&nbsp;&nbsp;光标移动到文档首/尾</br>\
+									ctrl+p&nbsp;&nbsp;跳转到匹配的标签</br>\
+									pageUp/PageDown&nbsp;&nbsp;光标上下翻页</br>\
+									alt+left/right&nbsp;&nbsp;光标移动到行首位</br>\
+									shift+left/right&nbsp;&nbsp;光标移动到行首&尾</br>\
+									ctrl+l&nbsp;&nbsp;跳转到指定行</br>\
+									ctrl+alt+up/down&nbsp;&nbsp;上(下)增加光标</br>\
+								</div>\
+								<div class="helps_item">编辑:</div>\
+								<div class="helps_box">\
+									ctrl+/&nbsp;&nbsp;注释&取消注释&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+alt+a&nbsp;&nbsp;左右对齐</br>\
+									table&nbsp;&nbsp;tab对齐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shift+table&nbsp;&nbsp;整体前移table</br>\
+									delete&nbsp;&nbsp;删除&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ctrl+d&nbsp;&nbsp;删除整行</br>\
+									ctrl+delete&nbsp;&nbsp;删除该行右侧单词</br>\
+									ctrl/shift+backspace&nbsp;&nbsp;删除左侧单词</br>\
+									alt+shift+up/down&nbsp;&nbsp;复制行并添加到上(下面)面</br>\
+									alt+delete&nbsp;&nbsp;删除光标右侧内容</br>\
+									alt+up/down&nbsp;&nbsp;当前行和上一行(下一行交换)</br>\
+									ctrl+shift+d&nbsp;&nbsp;复制行并添加到下面</br>\
+									ctrl+delete&nbsp;&nbsp;删除右侧单词</br>\
+									ctrl+shift+u&nbsp;&nbsp;转换成小写</br>\
+									ctrl+u&nbsp;&nbsp;选中内容转换成大写</br>\
+								</div>\
+							</div>\
+						</div>'
+                });
+                break;
+        }
+    });
+
+    function save_file() {
+        $.post("{:url('file/edit')}",{
+            dosubmit:1,
+            text:$.base64.encode(editor.getValue()),
+            filename:$("#filename").val(),
+        },function (res) {
+            if (res.code == 1) {
+                layer.msg(res.msg,{icon:1});
+            } else {
+                layer.close(m);
+                layer.msg(res.msg);
+            }
+        },'json');
+    }
+
+    function _editor_save(save_type,text) {
+        if(!isNaN(text) && (Number(text)>11 && Number(text)<=30) ){
+                editor.setFontSize(Number(text));
+                $.post("{:url('ace_editor_config')}",{
+                    type:save_type,
+                    text:text
+                },function (res) {
+                    layer.close(layer_index);
+                })
+        }else{
+            layer.msg('字体设置范围：12-30');
+        }
+    }
+
+
+</script>

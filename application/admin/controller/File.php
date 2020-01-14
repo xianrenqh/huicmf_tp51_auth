@@ -8,7 +8,7 @@
  */
 
 namespace app\admin\controller;
-
+use think\facade\Config;
 
 class File extends Common
 {
@@ -185,7 +185,8 @@ class File extends Common
             return $this->fetch('edit', [
                 'code' => $code,
                 'ext' => strtolower($ext),
-                'filename'=>$data
+                'filename'=>$data,
+                'fontSize'=>config('huiadmin.ace_editor_fontSize')
             ]);
         }
     }
@@ -307,5 +308,17 @@ class File extends Common
         
         return $size;
     }
+    
+    public function ace_editor_config()
+    {
+        $type = input('post.type');
+        $text = input('post.text');
+        switch($type){
+            case "fontSize":
+                setconfig('huiadmin',['ace_editor_fontSize'],[$text]);
+                break;
+        }
+    }
+    
     
 }

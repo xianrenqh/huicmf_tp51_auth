@@ -22,5 +22,7 @@ return[
     
     //不做备份的数据表
     'backupIgnoreTables' => '',
+    
+    'ace_editor_fontSize'=>'15',
 
 ];

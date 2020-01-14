@@ -70,3 +70,27 @@ function get_config($key = '')
         return array_key_exists($key, $configs) ? $configs[$key] : '';
     }
 }
+
+/**
+ * 修改config的函数
+ * @param $string 配置名 ，字符串
+ * @param $arr2 配置前缀，数组
+ * @param $arr3 数据变量，数组
+ * @return bool 返回状态
+ */
+function setconfig($filename , $pat, $rep)
+{
+    if (is_array($pat) and is_array($rep)) {
+        for ($i = 0; $i < count($pat); $i++) {
+            $pats[$i] = '/\'' . $pat[$i] . '\'(.*?),/';
+            $reps[$i] = "'". $pat[$i]. "'". "=>" . "'".$rep[$i] ."',";
+        }
+        $fileurl = ROOT_PATH.'config/'.$filename.'.php' ;
+        $string = file_get_contents($fileurl); //加载配置文件
+        $string = preg_replace($pats, $reps, $string); // 正则查找然后替换
+        file_put_contents($fileurl, $string); // 写入配置文件
+        return true;
+    } else {
+        return false;
+    }
+}

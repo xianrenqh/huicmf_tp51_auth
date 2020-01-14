@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+    <script src="src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="src/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+
+    #editor {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="editor" class="ace_editor" style="min-height:400px"><textarea class="ace_text-input">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>
+
+</textarea>
+</div>
+<script>
+    var editor = ace.edit("editor");
+    theme = "monokai";//主题
+    language = "html";//程序语言
+    editor.setTheme("ace/theme/"+theme);
+    editor.session.setMode("ace/mode/"+language);
+    editor.setFontSize(17);	//字体大小
+    document.getElementById("editor").style.lineHeight="25px";//设置行高;
+    editor.setReadOnly(false);//设置只读（true时只读，用于展示代码）
+    //自动换行,设置为off关闭
+    editor.setOption("wrap", "free");
+    ace.require("src/ext-language_tools");
+    //以下部分是设置输入代码提示的
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+    editor.setHighlightActiveLine(true); //代码高亮
+    editor.setShowPrintMargin(true);
+    editor.getSession().setUseWorker(false);
+    editor.getSession().setUseWrapMode(true); //支持代码折叠
+    editor.selection.getCursor(); //获取光标所在行或列
+    editor.gotoLine(lineNumber); //跳转到行
+    editor.session.getLength(); //获取总行数
+    // editor.insert("Something cool");
+    editor.getSession().setUseSoftTabs(true);
+</script>
+
+</body>
+</html>
