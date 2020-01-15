@@ -277,3 +277,14 @@ function getpic($file,$height = 30)
     }
     return '';
 }
+
+
+/**
+ * 获取内容中的图片
+ * @param string $content 内容
+ * @return string
+ */
+function match_img($content){
+    preg_match('/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/', $content, $match);
+    return !empty($match) ? $match[1] : '';
+}
