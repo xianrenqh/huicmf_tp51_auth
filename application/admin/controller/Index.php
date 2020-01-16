@@ -91,7 +91,12 @@ class Index extends Common
      */
     public function public_welcome()
     {
-        echo "欢迎页面";
+        return $this->fetch('welcome');
+    }
+    
+    public function public_welcome_xiugai()
+    {
+        return $this->fetch('welcome_xiugai');
     }
     
     //清除所有缓存文件
