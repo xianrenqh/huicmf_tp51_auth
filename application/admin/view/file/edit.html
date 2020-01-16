@@ -139,7 +139,7 @@
                 $('#change_ace_themes').change(function(){
                     var theme_val = $("#change_ace_themes").val();
                     editor.setTheme("ace/theme/"+theme_val);
-                    $.post("{:url('ace_editor_config')}",{
+                    $.get("{:url('ace_editor_config')}",{
                         type:'setTheme',
                         text:theme_val
                     })
@@ -228,7 +228,7 @@
     function _editor_save(save_type,text) {
         if(!isNaN(text) && (Number(text)>11 && Number(text)<=30) ){
                 editor.setFontSize(Number(text));
-                $.post("{:url('ace_editor_config')}",{
+                $.get("{:url('ace_editor_config')}",{
                     type:save_type,
                     text:text
                 },function (res) {

@@ -312,8 +312,8 @@ class File extends Common
     
     public function ace_editor_config()
     {
-        $type = input('post.type');
-        $text = input('post.text');
+        $type = input('get.type');
+        $text = input('get.text');
         switch($type){
             case "fontSize":
                 setconfig('huiadmin',['ace_editor_fontSize'],[$text]);
