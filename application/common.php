@@ -94,3 +94,95 @@ function setconfig($filename , $pat, $rep)
         return false;
     }
 }
+
+
+/**
+ * 返回经addslashes处理过的字符串或数组
+ * @param $string 需要处理的字符串或数组
+ * @return mixed
+ */
+function new_addslashes($string){
+    if(!is_array($string)) return addslashes($string);
+    foreach($string as $key => $val) $string[$key] = new_addslashes($val);
+    return $string;
+}
+
+
+/**
+ * 返回经stripslashes处理过的字符串或数组
+ * @param $string 需要处理的字符串或数组
+ * @return mixed
+ */
+function new_stripslashes($string) {
+    if(!is_array($string)) return stripslashes($string);
+    foreach($string as $key => $val) $string[$key] = new_stripslashes($val);
+    return $string;
+}
+
+
+/**
+ * 返回经htmlspecialchars处理过的字符串或数组
+ * @param $obj 需要处理的字符串或数组
+ * @return mixed
+ */
+function new_html_special_chars($string) {
+    if(!is_array($string)) return htmlspecialchars($string,ENT_QUOTES,'utf-8');
+    foreach($string as $key => $val) $string[$key] = new_html_special_chars($val);
+    return $string;
+}
+
+
+/**
+ * 转义 javascript 代码标记
+ *
+ * @param $str
+ * @return mixed
+ */
+function trim_script($str) {
+    if(is_array($str)){
+        foreach ($str as $key => $val){
+            $str[$key] = trim_script($val);
+        }
+    }else{
+        $str = preg_replace ( '/\<([\/]?)script([^\>]*?)\>/si', '&lt;\\1script\\2&gt;', $str );
+        $str = preg_replace ( '/\<([\/]?)iframe([^\>]*?)\>/si', '&lt;\\1iframe\\2&gt;', $str );
+        $str = preg_replace ( '/\<([\/]?)frame([^\>]*?)\>/si', '&lt;\\1frame\\2&gt;', $str );
+        $str = str_replace ( 'javascript:', 'javascript：', $str );
+    }
+    return $str;
+}
+
+
+/**
+ * 将字符串转换为数组
+ *
+ * @param	string	$data	字符串
+ * @return	array	返回数组格式，如果，data为空，则返回空数组
+ */
+function string2array($data) {
+    $data = trim($data);
+    if($data == '') return array();
+    
+    if(strpos($data, '{\\')===0) $data = stripslashes($data);
+    $array=json_decode($data,true);
+    return $array;
+}
+
+
+/**
+ * 将数组转换为字符串
+ *
+ * @param	array	$data		数组
+ * @param	bool	$isformdata	如果为0，则不使用new_stripslashes处理，可选参数，默认为1
+ * @return	string	返回字符串，如果，data为空，则返回空
+ */
+function array2string($data, $isformdata = 1) {
+    if($data == '' || empty($data)) return '';
+    
+    if($isformdata) $data = new_stripslashes($data);
+    if (version_compare(PHP_VERSION,'5.3.0','<')){
+        return addslashes(json_encode($data));
+    }else{
+        return addslashes(json_encode($data,JSON_FORCE_OBJECT));
+    }
+}
