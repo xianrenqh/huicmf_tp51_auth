@@ -1,0 +1,93 @@
+{include file='header'/}
+<body>
+<div class="weadmin-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a><span lay-separator="">/</span>
+        <a href="">模块管理</a><span lay-separator="">/</span>
+        <a><cite>友情链接管理</cite></a>
+    </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="weadmin-block">
+        <button class="layui-btn" onclick="WeAdminShow('添加友情链接','{:url('add')}','800')"><i class="layui-icon"></i>添加友情链接</button>
+        <div class="layui-inline" style="margin-right:15px;">
+            <a class="layui-btn layui-btn-danger" data-type="dels"><i class="iconfont icon-delete"></i> 批量删除</a>
+        </div>
+        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
+    </div>
+    <table id="role_list" lay-filter="role_list"></table>
+</div>
+
+{include file='footer'/}
+<script>
+    layui.use(['table'], function(){
+        var table = layui.table;
+        table.render({
+            elem: '#role_list'
+            ,page: false
+            ,where:{do:1}
+            ,method: 'post'
+            ,url: '{:url('index')}' //数据接口
+            ,done: function(res){ //res 即为原始返回的数据
+                $("#total").html(res.count);
+            }
+            ,cols: [[ //表头
+                {type:'checkbox',LAY_CHECKED:false}
+                ,{field: 'id', title: 'ID', width:100,align:'center'}
+                ,{field: 'username', title: '用户名',width:140}
+                ,{field: 'title', title: '标题',width:260}
+                ,{field: 'url', title: 'URL'}
+                ,{field: 'ip', title: 'IP',width:170}
+                ,{field: 'createtime', title: '创建时间',width:220,align:'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:180}
+            ]]
+            ,id: 'testReload'
+            ,page:true
+            ,limit:10
+        });
+        var $ = layui.$, active = {
+            reload: function() {
+                //执行重载
+                table.reload();
+            },
+            dels: function(){ //批量删除
+                var ids = table_get_ids(table);
+                if(ids===false){
+                    return false;
+                }
+                $.post("{:url('delete')}",{
+                    ids:ids
+                },function (res) {
+                    layer.msg(res.msg);
+                    if(res.status==1){
+                        window.location.reload();
+                    }
+
+                })
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听行工具事件
+        table.on('tool(role_list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :data.id};
+                    posttips("{:url('delete')}",postdata);
+                });
+            } else if(obj.event === 'detail'){
+                WeAdminShow("查看详情","{:url('detail')}?id="+data.id,'850','550');
+            }
+        });
+    });
+</script>
+</body>
+</html>
