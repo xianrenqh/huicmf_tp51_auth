@@ -1,0 +1,125 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="we-red">*</span>网站名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>网站网址
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="url" name="url" value="{$data.url}" lay-verify="required|siteUrl" autocomplete="off" class="layui-input" placeholder="形式例如：http://www.baidu.com">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站长姓名</label>
+            <div class="layui-input-block">
+                <input type="text" id="username" name="username" value="{$data.username}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">站长邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" id="email" name="email" value="{$data.email}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接类型</label>
+            <div class="layui-input-block" id="linktype">
+                <input type="radio" name="linktype" value="0" title="文字链接" {if($data.linktype==0)}checked{/if}>
+                <input type="radio" name="linktype" value="1" title="图片链接" {if($data.linktype==1)}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">网站Logo</label>
+            <div class="layui-input-inline" style="width: 45%">
+                <input type="text" name="logo"  value="{$data.logo}"  onmouseover="hui_img_preview('logo',this.value)" onmouseout="layer.closeAll();" id="logo" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn" id="test1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">网站介绍：</label>
+            <div class="layui-input-block" >
+                <textarea placeholder="网站介绍" class="layui-textarea" id="msg" name="msg">{$data.msg}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">排序</label>
+            <div class="layui-input-inline">
+                <input type="text" id="listorder" name="listorder" value="{$data.listorder}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block" id="status">
+                <input type="radio" name="status" value="1" title="启用" {if($data.status==1)}checked{/if}>
+                <input type="radio" name="status" value="0" title="禁用" {if($data.status==0)}checked{/if}>
+            </div>
+        </div>
+        <input type="hidden" name="dosubmit" value="1">
+        <input type="hidden" name="id" value="{$data.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn"  lay-submit="" >确定</button>
+        </div>
+    </form>
+</div>
+{include file='footer'/}
+</body>
+</html>
+<script>
+    layui.use(['form','upload'], function() {
+        var form = layui.form,
+            upload = layui.upload;
+        form.render();
+        form.verify({
+            siteUrl:[
+                /^http(.+)$/
+                ,'站点根网址格式为：http://www.baidu.com'
+            ]
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: "{:url('upload/index')}"
+            ,field:"Filedata"
+            ,done: function(res){
+                console.log(res.src)
+                if(res.status==1){
+                    $("#logo").val(res.src);
+                }
+            }
+
+        })
+    });
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>

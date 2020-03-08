@@ -155,6 +155,7 @@ class LibAuth extends \lib\Auth
                 $titleArr[$pathArr[$rule['name']]] = $rule['title'];
             }
         }
+        
         ksort($menuArr);
         $this->breadcrumb = $menuArr;
         return $this->breadcrumb;

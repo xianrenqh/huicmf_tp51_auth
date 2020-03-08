@@ -12,6 +12,7 @@ use app\admin\controller\Common;
 use think\Db;
 use lib\FtpLib;
 use lib\PhpMail;
+use think\facade\Cache;
 
 class Config extends  Common
 {
@@ -39,7 +40,7 @@ class Config extends  Common
                 $arr[$key] = $value;
                 $value = htmlspecialchars($value);
                 Db::name('config')->strict(false)->where(['name' => $key])->update(['value' => $value]);
-                cache('cache_configs',null);
+                Cache::clear();
             }
             return json(['message' => "保存成功", 'icon' => 2]);
         }

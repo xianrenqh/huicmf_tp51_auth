@@ -1,3 +1,4 @@
+/*
 console.log("" +
     "\n" +
     "//                            _ooOoo_  \n" +
@@ -22,6 +23,7 @@ console.log("" +
     "//                  佛祖保佑             永无BUG \n" +
     "" +
     "");
+    */
 /*
  * @Author: https://github.com/WangEn
  * @Author: https://gitee.com/lovetime/

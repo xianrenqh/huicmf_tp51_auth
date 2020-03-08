@@ -10,13 +10,36 @@
         <i class="layui-icon">&#xe9aa;</i></a>
 </div>
 <div class="weadmin-body">
-    <div class="weadmin-block">
+    <div class="weadmin-block demoTable">
         <button class="layui-btn" onclick="WeAdminShow('添加友情链接','{:url('add')}','800')"><i class="layui-icon"></i>添加友情链接</button>
         <div class="layui-inline" style="margin-right:15px;">
             <a class="layui-btn layui-btn-danger" data-type="dels"><i class="iconfont icon-delete"></i> 批量删除</a>
         </div>
         <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
     </div>
+    <script type="text/html" id="status">
+        {{#  if(d.status =='1'){ }}
+        <span class="layui-badge layui-bg-green"> 已启用 </span>
+        {{#  } else { }}
+        <span class="layui-badge layui-bg-danger"> 已禁用 </span>
+        {{#  } }}
+    </script>
+    <script type="text/html" id="linktype">
+        {{#  if(d.linktype =='0'){ }}
+        <span class="layui-badge layui-bg-blue"> 文字链接 </span>
+        {{#  } else { }}
+        <span class="layui-badge layui-bg-cyan"> 图片链接 </span>
+        {{#  } }}
+    </script>
+    <script type="text/html" id="logo">
+        {{#  if(d.logo !=''){ }}
+        <img src="{{d.logo}}" onmouseover="hui_img_preview('logo2','{{d.logo}}')" onmouseout="layer.closeAll();" id="logo2" width="40" >
+        {{#  } }}
+</script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    </script>
     <table id="role_list" lay-filter="role_list"></table>
 </div>
 
@@ -24,7 +47,7 @@
 <script>
     layui.use(['table'], function(){
         var table = layui.table;
-        table.render({
+        var tableIns = table.render({
             elem: '#role_list'
             ,page: false
             ,where:{do:1}
@@ -35,13 +58,15 @@
             }
             ,cols: [[ //表头
                 {type:'checkbox',LAY_CHECKED:false}
-                ,{field: 'id', title: 'ID', width:100,align:'center'}
-                ,{field: 'username', title: '用户名',width:140}
-                ,{field: 'title', title: '标题',width:260}
-                ,{field: 'url', title: 'URL'}
-                ,{field: 'ip', title: 'IP',width:170}
-                ,{field: 'createtime', title: '创建时间',width:220,align:'center'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:180}
+                ,{field:'listorder', title:'排序', width:85, align:'center',edit: 'text'}
+                ,{field: 'name', title: '网站名称'}
+                ,{field: 'url', title: '网站url'}
+                ,{field: 'logo', title: '网站logo',width:150,templet: '#logo',align:'center'}
+                ,{field: 'username', title: '站长姓名',width:100}
+                ,{field: 'linktype', title: '链接类型',width:100,templet: '#linktype'}
+                ,{field: 'status', title: '状态',templet: '#status',align:'center',width:90}
+                ,{field: 'addtime', title: '添加时间',width:180,align:'center'}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:150}
             ]]
             ,id: 'testReload'
             ,page:true
@@ -57,15 +82,12 @@
                 if(ids===false){
                     return false;
                 }
-                $.post("{:url('delete')}",{
-                    ids:ids
-                },function (res) {
-                    layer.msg(res.msg);
-                    if(res.status==1){
-                        window.location.reload();
-                    }
-
-                })
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :ids};
+                    posttips("{:url('delete')}",postdata);
+                });
             }
         };
         $('.demoTable .layui-btn').on('click', function() {
@@ -83,11 +105,46 @@
                     var postdata ={ids :data.id};
                     posttips("{:url('delete')}",postdata);
                 });
-            } else if(obj.event === 'detail'){
-                WeAdminShow("查看详情","{:url('detail')}?id="+data.id,'850','550');
+            } else if(obj.event === 'edit'){
+                WeAdminShow("编辑","{:url('edit')}?id="+data.id,'850');
             }
         });
+
+        //监听单元格编辑
+        table.on('edit(role_list)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.post("{:url('listorder_edit')}",{
+                id:data.id,
+                value:value
+            },function (res) {
+                layer.msg(res.msg);
+                tableIns.reload();
+            })
+        });
+
     });
+
+    function table_get_ids(table) {
+        var checkStatus = table.checkStatus('testReload')
+            ,data = checkStatus.data;
+        if(data.length<1){
+            layer.msg('你没有选择任何数据');
+            return false;
+        }else{
+            var ids=[];
+            for(var i=0;i<data.length;i++){
+                ids +=data[i].id+',';
+            }
+            ids =ids.slice(0, -1);
+            var arr =ids.split(',');
+            for(var i in arr){
+                (arr[i])
+            }
+            return arr;
+        }
+    }
 </script>
 </body>
 </html>

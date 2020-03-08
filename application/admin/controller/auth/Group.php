@@ -14,6 +14,7 @@ use think\Db;
 use lib\Tree;
 use lib\Tree2;
 use app\admin\model\AuthGroup;
+use think\facade\Cache;
 
 class Group extends Common
 {
@@ -186,6 +187,7 @@ class Group extends Common
                     }
                     model("AuthGroup")->saveAll($childparams);
                     Db::commit();
+                    Cache::clear();
                     return json(['status' => 1, 'msg' => '修改成功！']);
                 }catch (Exception $e){
                     Db::rollback();
@@ -269,6 +271,7 @@ class Group extends Common
             }
             $count = AuthGroup::where('id', 'in', $ids)->delete();
             if ($count) {
+                Cache::clear();
                 return json(['status'=>1,'msg'=>'删除成功']);
             }
             
