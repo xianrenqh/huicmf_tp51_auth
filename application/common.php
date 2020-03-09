@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
-
+use lib\HuiTpl;
 
 /**
  * 获取请求ip
@@ -185,4 +185,51 @@ function array2string($data, $isformdata = 1) {
     }else{
         return addslashes(json_encode($data,JSON_FORCE_OBJECT));
     }
+}
+
+/**
+ *  提示信息页面跳转
+ *
+ * @param     string  $msg      消息提示信息
+ * @param     string  $gourl    跳转地址
+ * @param     int     $limittime  限制时间
+ * @return    void
+ */
+function showmsg($msg, $gourl, $limittime='3') {
+    $gourl = empty($gourl) ? HTTP_REFERER : $gourl;
+    $stop = $gourl!='stop' ? false : true;
+    include(Env::get('root_path').'extend'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'message.tpl');
+    if(config('app.app_debug')){
+        exit;
+    }
+}
+
+/**
+ * 模板调用
+ *
+ * @param $module
+ * @param $template
+ * @return unknown_type
+ */
+function template($module = '', $template = 'index')
+{
+    if(!$module) $module = 'index';
+    $template_c = Env::get('runtime_path').$module.DIRECTORY_SEPARATOR;
+    $template_path = !defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
+    $filename = $template.'.html';
+    $tplfile = $template_path.$filename;
+    if(!is_file($tplfile)) {
+        showmsg(str_replace(Env::get('root_path'),"",$tplfile).' 模板不存在！','stop');
+    }
+    if(!is_dir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR)){
+        @mkdir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR, 0777, true);
+    }
+    $template = md5($template_path.$template);
+    $template_c = $template_c.$template.'.tpl.php';
+    if(!is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
+        $HuiTPL = new HuiTpl();
+        $compile = $HuiTPL->tpl_replace(@file_get_contents($tplfile));
+        file_put_contents($template_c, $compile);
+    }
+    return $template_c;
 }

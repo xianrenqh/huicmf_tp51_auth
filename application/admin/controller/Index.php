@@ -109,7 +109,7 @@ class Index extends Common
             return json(['status' => 0, 'message' => 'runtime目录不存在']);
         }
         $p = scandir($path);
-        $arr = ['cache','temp','log'];
+        $arr = config('huiadmin.runtime_dir');
         foreach ($p as $val) {
             if ( ! in_array($val, $arr)) {
                 continue;

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+这是测试模板文件
+{$title}
+<br>
+
+{m:link field="url,logo,name" limit="20"}
+{loop $data $v}
+<li><a href="{$v[url]}" target="_blank">{$v[name]}</a></li>
+{/loop}
+
+
+{m:get sql="SELECT * FROM hui_link WHERE status=1 ORDER By id DESC" limit="10"}
+{loop $data $v}
+<a href="{$v[url]}">{$v[name]}</a>
+{/loop}
+
+</body>
+</html>

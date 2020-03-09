@@ -27,5 +27,8 @@ return[
     'ace_editor_fontSize'=>'14',
     
     'ace_editor_Theme'=>'monokai',
+    
+    //清除缓存，runtime文件夹下的目录
+    'runtime_dir'=>['cache','temp','log','index']
 
 ];

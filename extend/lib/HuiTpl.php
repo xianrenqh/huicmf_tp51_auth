@@ -8,7 +8,6 @@
  */
 
 namespace lib;
-use lib\HuiTag;
 
 class HuiTpl
 {
@@ -55,7 +54,6 @@ class HuiTpl
         $str = preg_replace_callback("/".$this->template_tag_left."(\\$[a-zA-Z0-9_\[\]\'\"\$\x7f-\xff]+)".$this->template_tag_right."/s",  array($this, 'addquote'), $str);
         $str = preg_replace_callback("/".$this->template_tag_left."m:(\w+)\s+([^}]+)".$this->template_tag_right."/i", array($this, 'hui_tag_callback'), $str);
         
-        $str = "<?php defined('IN_YZMPHP') or exit('No permission resources.'); ?>" . $str;
         return $str;
     }
     
@@ -74,7 +72,7 @@ class HuiTpl
             $datas[$v[1]] = $v[2];
         }
         $return = isset($datas['return']) && trim($datas['return']) ? trim($datas['return']) : 'data';
-        $str = '$tag = new HuiTag()';
+        $str ='include_once(str_replace("/public", "/extend/lib/HuiTag.php", $_SERVER[\'DOCUMENT_ROOT\']));$tag = new \lib\HuiTag();';
         $str .= 'if(method_exists($tag, \''.$action.'\')) {';
         $str .= '$'.$return.' = $tag->'.$action.'('.self::arr_to_html($datas).');';
         if(isset($datas['page'])) $str .= '$pages = $tag->pages();';
