@@ -5,22 +5,45 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script type="text/javascript">
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', <?php echo $jsApiParameters; ?>,
+                function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if(res.err_msg=='get_brand_wcpay_request:ok'){
+                    alert('支付成功！');
+                }else{
+                    alert('支付失败：'+res.err_code+res.err_desc+res.err_msg);
+                }
+            });
+        }
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            } else {
+                jsApiCall();
+            }
+        }
+    </script>
 </head>
 <body>
-这是测试模板文件
-{$title}
-<br>
 
-{m:link field="url,logo,name" limit="20"}
-{loop $data $v}
-<li><a href="{$v[url]}" target="_blank">{$v[name]}</a></li>
-{/loop}
-
-
-{m:get sql="SELECT * FROM hui_link WHERE status=1 ORDER By id DESC" limit="10"}
-{loop $data $v}
-<a href="{$v[url]}">{$v[name]}</a>
-{/loop}
+<br/>
+<font color="#9ACD32"><b>该笔订单支付金额为<span style="color:#f00;font-size:50px"><?php echo $payAmount?>元</span>钱</b></font><br/><br/>
+<div align="center">
+    <button style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" type="button" onclick="callpay()" >立即支付</button>
+</div>
 
 </body>
 </html>
