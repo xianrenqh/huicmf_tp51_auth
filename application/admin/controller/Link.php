@@ -31,6 +31,7 @@ class Link extends Common
             $list = Db::name('link')->order('listorder asc,addtime desc')->select();
             for($i=0;$i<count($list);$i++){
                 $list[$i]['addtime'] = date("Y-m-d H:i:s",$list[$i]['addtime']);
+                $list[$i]['link_status'] = $this->check($list[$i]['id']);
             }
             $total = Db::name('link')->count();
             $data['code'] = 0;
@@ -110,6 +111,52 @@ class Link extends Common
         }else{
             $this->error('错错错！！！');
         }
+    }
+    
+    //检测url
+    public function check($list_id='')
+    {
+        if($list_id!=''){
+            $id = $list_id;
+        }else{
+            $id = input('id');
+        }
+        $where = [];
+        $where['id'] = ['eq', $id];
+        $res = model('Link')->infoData($where);
+        if ($res['code'] > 1) {
+            return json($res);
+        }
+        $url = $res['info']['url'];
+        $site_url = parse_url(get_config('site_url'));
+        $site_url = $site_url['host'];
+        $html = cmf_curl_get($url);
+        $res = [];
+        $res['code'] = 1;
+        $res['msg'] = '';
+        $msg = '';
+        $code = 1;
+        
+        $ok = ' 友链正常';
+        $err = ' 友链异常';
+        
+        $msg .= '[' . $site_url . ']';
+        if (strpos($html, $site_url) !== false) {
+            $code = 1;
+            $msg .= $ok;
+            $link_status = '<span class="layui-badge layui-bg-green"> 正常 </span>';
+        } else {
+            $code = 101;
+            $msg .= $err;
+            $link_status = '<span class="layui-badge layui-bg-red"> 异常 </span>';
+        }
+        if($list_id!=''){
+            return $link_status;
+        }else{
+            $res['msg'] = $msg;
+            return json($res);
+        }
+        
     }
     
 }

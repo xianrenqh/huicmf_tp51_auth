@@ -37,6 +37,7 @@
         {{#  } }}
 </script>
     <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-sm layui-btn-success" onclick="check('{{d.id}}')">检测</a>
         <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
     </script>
@@ -66,7 +67,8 @@
                 ,{field: 'linktype', title: '链接类型',width:100,templet: '#linktype'}
                 ,{field: 'status', title: '状态',templet: '#status',align:'center',width:90}
                 ,{field: 'addtime', title: '添加时间',width:180,align:'center'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:150}
+                ,{field: 'link_status', title: '友链状态',align:'center',width:90}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:200}
             ]]
             ,id: 'testReload'
             ,page:true
@@ -144,6 +146,13 @@
             }
             return arr;
         }
+    }
+    function check(id) {
+        $.post("{:url('check')}",{
+            id:id
+        },function (res) {
+            layer.msg(res.msg);
+        })
     }
 </script>
 </body>
