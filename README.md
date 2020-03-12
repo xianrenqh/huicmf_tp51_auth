@@ -51,8 +51,28 @@ cache_configs
 
 ## 在线手册
 
+## api接口文档生成说明（apidoc）
+系统api接口文档 生成 依赖第三方工具apidoc  如果你要使用则必须先安装apidoc  
+先安装node.js  如下链接下载安装  
+64 位安装包下载地址 :   
+https://nodejs.org/dist/v12.13.1/node-v12.13.1-x64.msi  
+安装完成以后 开始安装 apidoc 
+
+命令行：npm install apidoc -g
+
+安装成功以后 开始生成接口文档  
+
+1、进入api目录 注意不要在其他目录生成（api目录默认会有apidoc.json 配置文件）  
+  
+2、执行生成命令：  
+apidoc -i ./ -o ../../public/doc    
+(执行目录为api目录 生成文档路径为 public/doc)
+
+
+
 + [完全开发手册](https://www.kancloud.cn/manual/thinkphp5_1/content)
 + [升级指导](https://www.kancloud.cn/manual/thinkphp5_1/354155) 
+
 
 ## 目录结构
 
