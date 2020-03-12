@@ -14,8 +14,8 @@ namespace think;
 require __DIR__ . '/../thinkphp/base.php';
 // 支持事先使用静态方法设置Request对象和Config对象
 
-//yzmphp根路径
-define('YZMPHP_PATH', dirname(__FILE__));
+//前端JS,IMG,CSS等URL地址
+define('STATIC_URL', '/static/index/');
 
 // 执行应用并响应
 Container::get('app')->run()->send();

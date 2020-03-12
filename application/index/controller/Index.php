@@ -7,11 +7,16 @@
  * Info:
  */
 namespace app\index\controller;
+use think\Env;
+
 class Index{
     
     public function index()
     {
-        $title = "测试模板";
+        $site = get_config();
+        $seo_title = $site['site_name'];
+        $keywords = $site['site_keyword'];
+        $description = $site['site_description'];
         include template('index','index');
     }
     

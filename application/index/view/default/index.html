@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{$seo_title}</title>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <meta http-equiv="mobile-agent" content="format=xhtml;url={$site[site_url]}index.php?m=mobile">
+    <script type="text/javascript" src="{STATIC_URL}js/jquery.2.2.4.min.js"></script>
 </head>
 <body>
-{$title}
+{$site[site_name]}
 </body>
 </html>
