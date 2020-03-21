@@ -43,6 +43,21 @@ class HuiTag
     
     
     /**
+     * 轮播图标签
+     * @param $data
+     */
+    public function banner($data) {
+        $field = isset($data['field']) ? $data['field'] : '*';
+        $order = 'listorder ASC,id DESC';
+        $limit = isset($data['limit']) ? $data['limit'] : '20';
+        $typeid = isset($data['typeid']) ? intval($data['typeid']) : 0;
+        $where = $typeid ? '`status` = 1 AND typeid='.$typeid : '`status` = 1';
+        $banner = Db::name('banner');
+        return $banner->field($field)->where($where)->order($order)->limit($limit)->select();
+    }
+    
+    
+    /**
      * 自定义SQL标签
      * @param $data
      */
