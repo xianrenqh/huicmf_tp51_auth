@@ -35,7 +35,12 @@
 
         <div class="layui-form-item">
             <label class="layui-form-label">图片地址</label>
-
+            <div class="layui-input-inline" style="width: 45%">
+                <input type="text" name="image" value="{$data.image}" onmouseover="hui_img_preview('image',this.value)" onmouseout="layer.closeAll();" id="image" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn" id="test1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">排序</label>
@@ -64,6 +69,30 @@
 {include file='footer'/}
 
 <script>
+    layui.use(['form','upload'], function() {
+        var form = layui.form,
+            upload = layui.upload;
+        form.render();
+        form.verify({
+            siteUrl:[
+                /^http(.+)$/
+                ,'站点根网址格式为：http://www.baidu.com'
+            ]
+        });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: "{:url('upload/index')}"
+            ,field:"Filedata"
+            ,done: function(res){
+                console.log(res.src)
+                if(res.status==1){
+                    $("#image").val(res.src);
+                }
+            }
+
+        })
+    });
     function dosub(obj) {
         if($("input[name='title']").val()==''){
             layer.msg('标题名称不能为空！');
@@ -82,16 +111,16 @@
             url: '{:url('edit')}',
             data: $(obj).serialize(),
             dataType: "json",
-            success: function (msg) {
-                if(msg.status == 1){
-                    layer.msg(msg.message, {
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
                         icon: 1,
                         time: 2000
                     }, function(){
                         parent.location.reload();
                     });
                 }else{
-                    layer.msg(msg.message);
+                    layer.msg(res.msg);
                 }
             }
         });

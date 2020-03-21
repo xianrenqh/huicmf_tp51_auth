@@ -38,29 +38,91 @@ class Banner extends Common
     
     public function add()
     {
-        return $this->fetch('banner_add');
+        if(input('dosubmit')){
+            $post_data =input('post.');
+            $post_data['inputtime'] = time();
+            $res = Db::name('banner')->data($post_data)->strict(false)->insert();
+            if ($res==1) {
+                return json(['status' => 1, 'icon' => 1, 'msg' => '操作成功~~~']);
+            } else {
+                return json(['status' => 0, 'icon' => 2, 'msg' => '操作失败!!!']);
+            }
+    
+        }else{
+            $types = Db::name('banner_type')->select();
+            return $this->fetch('banner_add',['types' => $types]);
+        }
     }
     
     public function edit()
     {
         $id = input('post.id');
         if (input('post.dosubmit')) {
-            if (Db::name('banner')->where('id', Request::param('id'))->strict(false)->update(Request::post())) {
-                return_json(array('status' => 1, 'icon' => 1, 'message' => '操作成功~~~'));
+            $update = Db::name('banner')->where('id',$id )->data(input('post.'))->strict(false)->update();
+            if ($update==1) {
+                return json(['status' => 1, 'icon' => 1, 'msg' => '操作成功~~~']);
             } else {
-                return_json(array('status' => 0, 'icon' => 2, 'message' => '操作失败！！！'));
+                return json(['status' => 0, 'icon' => 2, 'msg' => '操作失败！！！']);
             }
         } else {
             $types = Db::name('banner_type')->select();
             $data = Db::name('banner')->find(input('post.id'));
-            //$form_image = $Form->image('image', $data['image']);
             return $this->fetch('banner_edit', ['types' => $types, 'data' => $data]);
         }
     }
     
     public function delete()
     {
+        $res = Db::name('banner')->delete(input('id'));
+        if ($res==1) {
+            $this->success('操作成功！！！');
+        } else {
+            $this->error('操作失败！！！');
+        }
+    }
     
+    /**
+     * 添加banner分类
+     */
+    public function cat_add()
+    {
+        $param = input('post.');
+        if (!empty($param['dosubmit'])) {
+            $getname = Db::name('banner_type')->where('name', $param['name'])->find();
+            if($getname){
+                return json(['status' => 0, 'msg' => '分类名称已存在，请重新输入']);
+            }else{
+                $typeid = Db::name('banner_type')->data($param)->strict(false)->insert();
+                switch ($typeid) {
+                    case true:
+                        $html = "<option value='" . $typeid . "' selected>" . $getname . "</option>";
+                        return json(array('status' => 1, 'msg' => '操作成功~~，请选择！！', 'html' => $html));
+                        break;
+                    case false:
+                        return json(array('status' => 0, 'msg' => '操作失败~~'));
+                }
+            }
+        }else{
+            return $this->fetch();
+        }
+    }
+    
+    /**
+     * banner分类管理
+     */
+    public function cat_manage()
+    {
+        if (input('id')) {
+            if (Db::name('banner_type')->delete(input('id'))) {
+                return json(['status'=>1,'msg'=>'操作成功']);
+            } else {
+                return json(['status'=>0,'msg'=>'操作失败']);
+            }
+        }else{
+            $data = Db::name('banner_type')->select();
+            return $this->fetch('cat_manage', ['data' => $data]);
+        }
+        
     }
     
     /**

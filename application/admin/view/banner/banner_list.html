@@ -17,7 +17,7 @@
     <div class="layui-row demoTable" style="margin: 5px auto 15px">
         <div class="weadmin-block">
             <a class="layui-btn" onclick="WeAdminShow('增加幻灯','{:url('add')}','800')" href="javascript:;"><i class="layui-icon layui-icon-add-circle-fine"></i> 增加幻灯</a>
-            <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total"></span> 条</span>
+            <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total">{$total}</span> 条</span>
         </div>
         <form method="post" action="{:url('del')}" id="myform">
             <table class="layui-table" style="text-align: center">
@@ -64,7 +64,7 @@
 </html>
 <script>
     function del(id){
-        WeAdminDel("{:url('del')}?id="+id);
+        WeAdminDel("{:url('delete')}?id="+id);
     }
     function edit(id) {
         WeAdminShow("编辑","{:url('edit')}?id="+id,'880');
