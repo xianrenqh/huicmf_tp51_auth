@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 09/03/2020 11:14:42
+ Date: 21/03/2020 13:55:44
 */
 
 SET NAMES utf8mb4;
@@ -38,16 +38,12 @@ CREATE TABLE `hui_admin`  (
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'normal' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'b55290613f3b270df15b1dc78e84332c', 'wnBg7G', '/assets/img/avatar.png', 'admin@fastadmin.net', 0, 1583712610, '127.0.0.1', 1492186163, 1583655724, '62465acf-babd-44d8-96a1-51535702f218', 'normal');
-INSERT INTO `hui_admin` VALUES (2, 'qinhui', '秦辉', '0ae6c64458602cf828ccf2462cbae331', 'Q8Dx7j', '/assets/img/avatar.png', '762229008@qq.com', 0, 1579144758, '127.0.0.1', 1577182414, 1578380468, 'b7dbdc33-eac7-440e-88d4-c902a96e7f1d', 'normal');
-INSERT INTO `hui_admin` VALUES (3, 'liujiangchao', '刘江超', '11050808fc47de3eac0f407943c9adb7', 'uERc7t', '/assets/img/avatar.png', '123@qq.com', 0, 1577182688, '127.0.0.1', 1577182612, 0, '', 'normal');
-INSERT INTO `hui_admin` VALUES (4, 'liuyang', '刘洋', '2a41efbae9070e239be203ffad9a95b3', 'e1g2zT', '', 'liuyang@qq.com', 0, 1577956082, '127.0.0.1', 1577955991, 1578301906, '', 'normal');
-INSERT INTO `hui_admin` VALUES (5, 'miaowenjie', '苗文杰', '55a651b2afb2c83b59f00c16aab2839a', 'RrCoNy', '', '123@qq.com', 0, 0, '', 1577956057, 0, '', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1584770131, '127.0.0.1', 1492186163, 1583655724, '62465acf-babd-44d8-96a1-51535702f218', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -65,44 +61,7 @@ CREATE TABLE `hui_admin_log`  (
   `createtime` int(10) DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hui_admin_log
--- ----------------------------
-INSERT INTO `hui_admin_log` VALUES (1, 1, 'admin', '/admin.php/general.database/backup.html', '常规管理', '{\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655608);
-INSERT INTO `hui_admin_log` VALUES (2, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655617);
-INSERT INTO `hui_admin_log` VALUES (3, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655624);
-INSERT INTO `hui_admin_log` VALUES (4, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655673);
-INSERT INTO `hui_admin_log` VALUES (5, 1, 'admin', '/admin.php/link/add.html', '', '{\"name\":\"Baidu\",\"url\":\"http:\\/\\/www.baidu.com\",\"username\":\"\\u767e\\u5ea6\",\"email\":\"\",\"linktype\":\"0\",\"logo\":\"\",\"msg\":\"\",\"listorder\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655691);
-INSERT INTO `hui_admin_log` VALUES (6, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655693);
-INSERT INTO `hui_admin_log` VALUES (7, 1, 'admin', '/admin.php/general.profile/update.html', '常规管理 修改资料', '{\"username\":\"admin\",\"email\":\"admin@fastadmin.net\",\"nickname\":\"Admin\",\"dosubmit\":\"1\",\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655724);
-INSERT INTO `hui_admin_log` VALUES (8, 1, 'admin', '/admin.php/file/edit.html', '', '{\"dosubmit\":\"1\",\"filename\":\"E%3A%5Cwwwroot%5C2001hui_tp51_auth%5Cpublic%5C.htaccess\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655840);
-INSERT INTO `hui_admin_log` VALUES (9, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655878);
-INSERT INTO `hui_admin_log` VALUES (10, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655884);
-INSERT INTO `hui_admin_log` VALUES (11, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655956);
-INSERT INTO `hui_admin_log` VALUES (12, 1, 'admin', '/admin.php/link/index.html', '', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583655970);
-INSERT INTO `hui_admin_log` VALUES (13, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656007);
-INSERT INTO `hui_admin_log` VALUES (14, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656041);
-INSERT INTO `hui_admin_log` VALUES (15, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656063);
-INSERT INTO `hui_admin_log` VALUES (16, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656068);
-INSERT INTO `hui_admin_log` VALUES (17, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656072);
-INSERT INTO `hui_admin_log` VALUES (18, 1, 'admin', '/admin.php/link/edit.html', '修改链接', '{\"name\":\"Baidu\",\"url\":\"http:\\/\\/www.baidu.com\",\"username\":\"\\u767e\\u5ea6\",\"email\":\"\",\"linktype\":\"0\",\"logo\":\"\",\"msg\":\"\",\"listorder\":\"0\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656081);
-INSERT INTO `hui_admin_log` VALUES (19, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656087);
-INSERT INTO `hui_admin_log` VALUES (20, 1, 'admin', '/admin.php/link/edit.html', '修改链接', '{\"name\":\"Baidu\",\"url\":\"http:\\/\\/www.baidu.com\",\"username\":\"\\u767e\\u5ea6\",\"email\":\"\",\"linktype\":\"0\",\"logo\":\"\",\"msg\":\"\",\"listorder\":\"0\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656134);
-INSERT INTO `hui_admin_log` VALUES (21, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656159);
-INSERT INTO `hui_admin_log` VALUES (22, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656160);
-INSERT INTO `hui_admin_log` VALUES (23, 1, 'admin', '/admin.php/auth.rule/rule_edit.html', '权限管理 修改菜单规则', '{\"ismenu\":\"0\",\"pid\":\"26\",\"title\":\"\\u6dfb\\u52a0\\u53cb\\u60c5\\u94fe\\u63a5\",\"name\":\"link\\/add\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"1\",\"id\":\"39\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656187);
-INSERT INTO `hui_admin_log` VALUES (24, 1, 'admin', '/admin.php/auth.rule/rule_edit.html', '权限管理 修改菜单规则', '{\"ismenu\":\"0\",\"pid\":\"26\",\"title\":\"\\u4fee\\u6539\\u53cb\\u60c5\\u94fe\\u63a5\",\"name\":\"link\\/edit\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"2\",\"id\":\"40\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656192);
-INSERT INTO `hui_admin_log` VALUES (25, 1, 'admin', '/admin.php/auth.rule/rule_edit.html', '权限管理 修改菜单规则', '{\"ismenu\":\"0\",\"pid\":\"26\",\"title\":\"\\u5220\\u9664\\u53cb\\u60c5\\u94fe\\u63a5\",\"name\":\"link\\/delete\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"3\",\"id\":\"41\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656196);
-INSERT INTO `hui_admin_log` VALUES (26, 1, 'admin', '/admin.php/auth.rule/rule_edit.html', '权限管理 修改菜单规则', '{\"ismenu\":\"0\",\"pid\":\"26\",\"title\":\"\\u53cb\\u60c5\\u94fe\\u63a5\\u6392\\u5e8f\",\"name\":\"link\\/listorder_edit\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"4\",\"id\":\"42\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656200);
-INSERT INTO `hui_admin_log` VALUES (27, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656204);
-INSERT INTO `hui_admin_log` VALUES (28, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656207);
-INSERT INTO `hui_admin_log` VALUES (29, 1, 'admin', '/admin.php/link/edit.html', '修改友情链接', '{\"name\":\"Baidu\",\"url\":\"http:\\/\\/www.baidu.com\",\"username\":\"\\u767e\\u5ea6\",\"email\":\"\",\"linktype\":\"0\",\"logo\":\"\",\"msg\":\"\",\"listorder\":\"0\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656214);
-INSERT INTO `hui_admin_log` VALUES (30, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656216);
-INSERT INTO `hui_admin_log` VALUES (31, 1, 'admin', '/admin.php/general.config/save.html', '常规管理 保存设置', '{\"site_name\":\"HuiCmf - \\u6f14\\u793a\\u7ad93\",\"site_url\":\"http:\\/\\/test2.com\\/\",\"site_keyword\":\"huicmf\",\"site_copyright\":\"Powered By HuiCMF\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf \\u00a9 2018-2020 \\u5c0f\\u7070\\u7070\\u5de5\\u4f5c\\u5ba4\",\"site_beian\":\"\\u4eacICP\\u5907666666\\u53f7\",\"site_code\":\"\",\"admin_prohibit_ip\":\"\",\"admin_log\":\"0\",\"login_code\":\"0\",\"mail_server\":\"smtp.exmail.qq.com\",\"mail_port\":\"465\",\"mail_user\":\"\",\"mail_pass\":\"\",\"mail_inbox\":\"\",\"mail_to\":\"\",\"upload_maxsize\":\"3048\",\"upload_types\":\"zip|rar|mp3|mp4|jpg|jpeg|png|gif|bmp\",\"watermark_enable\":\"1\",\"watermark_name\":\"mark.png\",\"watermark_position\":\"9\",\"watermark_touming\":\"73\",\"upload_mode\":\"local\",\"file_path\":\"\\/uploads\\/\",\"ftp_host\":\"45.32.214.79\",\"ftp_port\":\"21\",\"ftp_user\":\"ftp_com\",\"ftp_pwd\":\"sJ65wTnhmYPe2k5A\",\"ftp_url\":\"http:\\/\\/222.com\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656255);
-INSERT INTO `hui_admin_log` VALUES (32, 1, 'admin', '/admin.php/link/edit.html', '修改友情链接', '{\"name\":\"Baidu\",\"url\":\"http:\\/\\/www.baidu.com\",\"username\":\"\\u767e\\u5ea6\",\"email\":\"\",\"linktype\":\"0\",\"logo\":\"\",\"msg\":\"\",\"listorder\":\"0\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656259);
-INSERT INTO `hui_admin_log` VALUES (33, 1, 'admin', '/admin.php/general.config/save.html', '常规管理 保存设置', '{\"site_name\":\"HuiCmf - \\u6f14\\u793a\\u7ad93\",\"site_url\":\"http:\\/\\/test2.com\\/\",\"site_keyword\":\"huicmf\",\"site_copyright\":\"Powered By HuiCMF\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf \\u00a9 2018-2020 \\u5c0f\\u7070\\u7070\\u5de5\\u4f5c\\u5ba4\",\"site_beian\":\"\\u4eacICP\\u5907666666\\u53f7\",\"site_code\":\"\",\"admin_prohibit_ip\":\"\",\"admin_log\":\"0\",\"login_code\":\"0\",\"mail_server\":\"smtp.exmail.qq.com\",\"mail_port\":\"465\",\"mail_user\":\"\",\"mail_pass\":\"\",\"mail_inbox\":\"\",\"mail_to\":\"\",\"upload_maxsize\":\"3048\",\"upload_types\":\"zip|rar|mp3|mp4|jpg|jpeg|png|gif|bmp\",\"watermark_enable\":\"1\",\"watermark_name\":\"mark.png\",\"watermark_position\":\"9\",\"watermark_touming\":\"73\",\"upload_mode\":\"local\",\"file_path\":\"\\/uploads\\/\",\"ftp_host\":\"45.32.214.79\",\"ftp_port\":\"21\",\"ftp_user\":\"ftp_com\",\"ftp_pwd\":\"sJ65wTnhmYPe2k5A\",\"ftp_url\":\"http:\\/\\/222.com\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1583656284);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hui_auth_group
@@ -117,17 +76,12 @@ CREATE TABLE `hui_auth_group`  (
   `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分组表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分组表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_group
 -- ----------------------------
 INSERT INTO `hui_auth_group` VALUES (1, 0, '超级管理员', '*', 1490883540, 149088354, 'normal');
-INSERT INTO `hui_auth_group` VALUES (2, 1, '项目总监', '25,26,39,40,41,42,38,28,35,36,37,1,21,22,18,19,2,3,15,16,5,12,13', 1490883540, 1583654563, 'normal');
-INSERT INTO `hui_auth_group` VALUES (3, 2, '程序部', '1,21,22,18,19,2,3,15,16,5,12,13', 1490883540, 1583655455, 'normal');
-INSERT INTO `hui_auth_group` VALUES (4, 3, '普通员工', '1,18,21,22,2,3,15,16,5', 1577708214, 1583655455, 'normal');
-INSERT INTO `hui_auth_group` VALUES (5, 2, '策划组', '1,18,2,3,5', 1577771823, 1583654563, 'normal');
-INSERT INTO `hui_auth_group` VALUES (6, 2, '竞价组', '1,2,5', 1577771853, 1583654563, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_auth_group_access
@@ -145,11 +99,6 @@ CREATE TABLE `hui_auth_group_access`  (
 -- Records of hui_auth_group_access
 -- ----------------------------
 INSERT INTO `hui_auth_group_access` VALUES (1, 1);
-INSERT INTO `hui_auth_group_access` VALUES (2, 3);
-INSERT INTO `hui_auth_group_access` VALUES (3, 4);
-INSERT INTO `hui_auth_group_access` VALUES (4, 4);
-INSERT INTO `hui_auth_group_access` VALUES (5, 4);
-INSERT INTO `hui_auth_group_access` VALUES (5, 5);
 
 -- ----------------------------
 -- Table structure for hui_auth_rule
@@ -173,7 +122,7 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
@@ -202,7 +151,7 @@ INSERT INTO `hui_auth_rule` VALUES (21, 'file', 1, 'general.profile/index', '个
 INSERT INTO `hui_auth_rule` VALUES (22, 'file', 21, 'general.profile/update', '修改资料', 'icon-round_text_fill', '', '', 0, 1578379925, 1578382485, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (23, 'file', 4, 'general.database/backup', '数据库备份', 'icon-round_text_fill', '', '', 0, 1578382377, 0, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (24, 'file', 4, 'general.database/restore', '数据库还原', 'icon-round_text_fill', '', '', 0, 1578382416, 0, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (25, 'file', 0, 'modules', '模块管理', 'icon-cascades', '', '', 1, 1578529506, 1578810283, 10, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (25, 'file', 0, 'modules', '模块管理', 'icon-cascades', '', '', 1, 1578529506, 1584759866, 10, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (26, 'file', 25, 'link/index', '友情链接管理', 'icon-round_link_fill', '', '', 1, 1578529679, 1578876536, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (27, 'file', 1, 'general.config/index', '系统设置', 'icon-repairfill', '', '', 1, 1578529853, 1578529870, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (28, 'file', 25, 'file/index', '文件管理器', 'icon-form_fill_light', '', '', 1, 1578529983, 1578886060, 99, 'normal');
@@ -220,6 +169,38 @@ INSERT INTO `hui_auth_rule` VALUES (39, 'file', 26, 'link/add', '添加友情链
 INSERT INTO `hui_auth_rule` VALUES (40, 'file', 26, 'link/edit', '修改友情链接', 'icon-round_text_fill', '', '', 0, 1583654520, 1583656192, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (41, 'file', 26, 'link/delete', '删除友情链接', 'icon-round_text_fill', '', '', 0, 1583654534, 1583656196, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (42, 'file', 26, 'link/listorder_edit', '友情链接排序', 'icon-round_text_fill', '', '', 0, 1583654550, 1583656200, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (43, 'file', 25, 'banner/index', '幻灯片管理', 'icon-picfill', '', '', 1, 1584002150, 1584002267, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (44, 'file', 43, 'banner/add', '添加幻灯片', 'icon-round_text_fill', '', '', 0, 1584002283, 0, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (45, 'file', 43, 'banner/edit', '修改幻灯片', 'icon-round_text_fill', '', '', 0, 1584002307, 0, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (46, 'file', 43, 'banner/delete', '删除幻灯片', 'icon-round_text_fill', '', '', 0, 1584002403, 0, 3, 'normal');
+
+-- ----------------------------
+-- Table structure for hui_banner
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_banner`;
+CREATE TABLE `hui_banner`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `image` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `url` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `listorder` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `typeid` tinyint(2) UNSIGNED NOT NULL DEFAULT 0,
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '1显示0隐藏',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `status`(`status`) USING BTREE,
+  INDEX `typeid`(`typeid`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for hui_banner_type
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_banner_type`;
+CREATE TABLE `hui_banner_type`  (
+  `tid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`tid`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Table structure for hui_config
@@ -244,8 +225,8 @@ CREATE TABLE `hui_config`  (
 -- Records of hui_config
 -- ----------------------------
 INSERT INTO `hui_config` VALUES (1, 'site_name', 1, '站点名称', 'HuiCmf - 演示站3', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (2, 'site_url', 1, '站点跟网址', 'http://test2.com/', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (3, 'admin_log', 3, '启用后台管理操作日志', '0', 'radio', '', 1, '');
+INSERT INTO `hui_config` VALUES (2, 'site_url', 1, '站点跟网址', 'http://test.xiaohuihui.club/', 'string', '', 1, '');
+INSERT INTO `hui_config` VALUES (3, 'admin_log', 3, '启用后台管理操作日志', '1', 'radio', '', 1, '');
 INSERT INTO `hui_config` VALUES (4, 'site_keyword', 1, '站点关键字', 'huicmf', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (5, 'site_copyright', 1, '网站版权信息', 'Powered By HuiCMF内容管理系统 © 2018-2020 小灰灰工作室', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (6, 'site_beian', 1, '站点备案号', '京ICP备666666号', 'string', '', 1, '');
@@ -292,11 +273,6 @@ CREATE TABLE `hui_link`  (
   `addtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_typeid`(`typeid`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of hui_link
--- ----------------------------
-INSERT INTO `hui_link` VALUES (1, 1, 0, 'Baidu', 'http://www.baidu.com', '', '', '百度', '', 0, 1, 1583656301);
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
