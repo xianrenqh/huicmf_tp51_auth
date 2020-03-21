@@ -121,10 +121,13 @@ class Rule extends Common
         if (input('post.dosubmit')) {
             $param = input('post.');
             $param['createtime'] = time();
-            Db::name('auth_rule')
-                ->strict(false)
-                ->data($param)
-                ->insert();
+            //查询规则名称是否存在
+            $cha_name = Db::name('auth_rule')->where('name',$param['name'])->find();
+            if($cha_name){
+                return json(['status'=>0,'msg'=>'此规则名称已存在，请重新输入！！！']);
+            }
+            
+            $insert = Db::name('auth_rule')->strict(false)->data($param)->insert();
             
             Cache::clear();
             return json(['status' => 1, 'msg' => '添加成功！']);

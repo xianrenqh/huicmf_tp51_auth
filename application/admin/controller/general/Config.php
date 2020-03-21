@@ -47,7 +47,9 @@ class Config extends  Common
     }
     
     
-    //测试ftp连接
+    /**
+     * 测试ftp连接
+     */
     public function public_check_ftp()
     {
         $post_data = input();
@@ -64,9 +66,10 @@ class Config extends  Common
         }
     }
     
-    /*
-* 发送测试邮件
-*/
+    
+    /**
+     * 送测试邮件
+     */
     public function public_mail_test()
     {
         $mail_to =input('mail_to');
@@ -75,6 +78,119 @@ class Config extends  Common
         $mail_body = "<h2>这是一封测试邮件，测试是否发送成功。</h2><br>发送时间：".date("Y-m-d H:i:s",time());
         $sendmail = $phpmail->email($mail_to,$mail_title,$mail_body);
         return $sendmail;
+    }
+    
+    /**
+     * 自定义配置
+     */
+    public function user_config()
+    {
+        $data = Db::name('config')->where('type', '99')->paginate(10);
+        $total = Db::name('config')->where('type', '99')->count();
+        return $this->fetch('',['data'=>$data,'total'=>$total]);
+    }
+    
+    /**
+     * 添加自定义配置
+     */
+    public function user_config_add()
+    {
+        if(input('post.dosubmit')){
+            $param = input('post.');
+            //查询数据库是否存在配置名称name
+            $cha = Db::name('config')->where('name',$param['name'])->find();
+            if(is_array($cha)){
+                return json(['status'=>0,'msg'=>'配置名称已存在，请修改']);
+            }
+            if($param['fieldtype']=="radio" || $param['fieldtype']=="select"  ){
+                $setting = array2string(explode('|', rtrim($param['setting'][$param['fieldtype']], '|')));
+            }else{
+                $setting = "";
+            }
+            $data = [
+                'name'=>$param['name'],
+                'fieldtype'=>$param['fieldtype'],
+                'type'=>99,
+                'title'=>$param['title'],
+                'status'=>1,
+                'value'=>$param['value'][$param['fieldtype']],
+                'setting'=>$setting
+            ];
+            $insert = Db::name('config')->data($data)->strict(false)->insert();
+            Cache::set('cache_configs', null);
+            if ($insert) {
+                return json(['status'=>1,'msg'=>'操作成功~~~']);
+            } else {
+                return json(['status'=>0,'msg'=>'操作失败！！！']);
+            }
+        }else{
+            return $this->fetch();
+        }
+    }
+    
+    /**
+     * 修改自定义配置
+     */
+    public function user_config_edit()
+    {
+        if(input('dosubmit')){
+            $param = input('post.');
+            $data = Db::name('config')->where('id',$param['id'])->find();
+            if($data['fieldtype']=='radio' || $data['fieldtype']=='select'){
+                $setting = string2array($data['setting']);
+                $data = ['title'=>$param['title'],'value'=>$setting[$param['value']],'status'=>$param['status']];
+            }else{
+                $data = ['title'=>$param['title'],'value'=>$param['value'],'status'=>$param['status']];
+            }
+            
+            $update_id = Db::name('config')->where('id', input('post.id'))->data($data)->strict(false)->update();
+            Cache::set('cache_configs', null);
+            if ($update_id) {
+                return json(['status'=>1,'msg'=>'修改成功~~~']);
+            }else{
+                return json(['status'=>0,'msg'=>'修改失败或者你没有做任何修改！！！']);
+            }
+        }else{
+            $data = Db::name('config')->where('id',input('id'))->find();
+            if($data['fieldtype']=='radio'){
+                $setting = string2array($data['setting']);
+                $setting_data = "";
+                foreach($setting as $k=>$v){
+                    $checked = $data['value']==$v?"checked":'';
+                    $setting_data.= '<input type="radio" name="value" value="'.$k.'" title="'.$v.'" '.$checked.'>';
+                }
+            }
+            elseif($data['fieldtype']=='select'){
+                $setting = string2array($data['setting']);
+                $setting_data = "";
+                foreach($setting as $k=>$v){
+                    $selected = $data['value']==$v?"selected":'';
+                    $setting_data .='<option value="'.$k.'" '.$selected.'>'.$v.'</option>';
+                }
+            }
+            else{
+                $setting_data='';
+            }
+            return $this->fetch('',['data'=>$data,'setting_data'=>$setting_data]);
+        }
+    }
+    
+    /**
+     * 删除自定义配置
+     */
+    public function user_config_del()
+    {
+        $res = Db::name('config')->where('id','in',input('id'))->delete();
+        Cache::set('cache_configs', null);
+        $this->success('操作成功');
+    }
+    
+    /*
+* 根据字段类型获取html
+*/
+    public function public_gethtml($ftype = '', $val = '', $setting = '')
+    {
+        public_gethtml($ftype, $val, $setting);
     }
     
 }

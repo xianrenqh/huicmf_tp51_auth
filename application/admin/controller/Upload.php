@@ -58,6 +58,14 @@ class Upload extends Common
     
     
     /**
+     * 上传框
+     */
+    public function upload_box()
+    {
+    
+    }
+    
+    /**
      * 获取上传类型
      */
     private function _get_upload_types()
@@ -95,5 +103,6 @@ class Upload extends Common
             return false;
         }
     }
+    
     
 }

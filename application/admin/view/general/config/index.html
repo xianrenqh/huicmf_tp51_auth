@@ -18,14 +18,15 @@
     <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)">
         <div class="layui-tab">
             <ul class="layui-tab-title">
-                <li class="layui-this">基本设置</li>
+                <li >基本设置</li>
                 <li>安全设置</li>
                 <li>邮件设置</li>
                 <li>附件设置</li>
+                <li class="layui-this">支付设置</li>
             </ul>
             <div class="layui-tab-content" style="margin-top: 20px;">
 
-                <div class="layui-tab-item layui-show">
+                <div class="layui-tab-item">
                     <table class="layui-table">
                         <thead>
                         <tr>
@@ -329,6 +330,40 @@
                     </table>
                 </div>
 
+
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th width="15%">站点名称</th>
+                            <th>变量值</th>
+                            <th width="12%">变量名</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>支付方式</td>
+                            <td>
+                                <div class="layui-input-inline">
+                                    <select name="pay_mode" lay-filter="pay_mode">
+                                        <option value="qiye" {if ($data.pay_mode=='qiye')}selected{/if}>【官方】-企业支付</option>
+                                        <option value="mazhifu" {if ($data.pay_mode=='mazhifu')}selected{/if}>【三方】-码支付</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-inline" style="margin-left:30px;">
+                                    <div class="upload_mode mode_Ftp" {if ($data.upload_mode!='Ftp')} style="display:none"{/if}>
+                                    FTP存储：
+                                    <div class="layui-input-inline">
+                                        <a href="javascript:;" class="layui-btn layui-btn-normal" onclick="check_ftp()">点击测试FTP连接</a>
+                                    </div>
+                                    <span style="color:#f00"> [先保存，再测试]</span>
+                                </div>
+                            </td>
+                            <td>pay_mode</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="layui-form-item " >
