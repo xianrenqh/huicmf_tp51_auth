@@ -185,12 +185,5 @@ class Config extends  Common
         $this->success('操作成功');
     }
     
-    /*
-* 根据字段类型获取html
-*/
-    public function public_gethtml($ftype = '', $val = '', $setting = '')
-    {
-        public_gethtml($ftype, $val, $setting);
-    }
     
 }

@@ -1,0 +1,84 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>支付名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" class="layui-input readonly-bg" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AppID</label>
+            <div class="layui-input-block">
+                <input type="text" name="config[app_id]" value="{$data.config.app_id}" autocomplete="off" class="layui-input" placeholder="微信支付申请对应的公众号的APPID">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商户应用私钥</label>
+            <div class="layui-input-block">
+                <textarea name="config[merchant_private_key]" class="layui-textarea"  placeholder="">{$data.config.merchant_private_key}</textarea>&nbsp;
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付宝公钥</label>
+            <div class="layui-input-block">
+                <textarea name="config[alipay_public_key]" class="layui-textarea"  placeholder="">{$data.config.alipay_public_key}</textarea>&nbsp;
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="desc" class="layui-textarea"  placeholder="描述">{:htmlspecialchars_decode($data.desc)}</textarea>&nbsp;
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="enabled" class="layui-form-label">是否启用</label>
+            <div class="layui-input-block" id="enabled">
+                <input type="radio" name="enabled" value="1" title="启用" {if($data.enabled==1)}checked{/if}>
+                <input type="radio" name="enabled" value="0" title="禁用" {if($data.enabled==0)}checked{/if}>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="id" value="{$data.id}">
+            <button class="layui-btn"  lay-submit=""type="submit"   value="1" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+
+<script>
+    layui.use(['form'], function() {
+        var form = layui.form;
+        form.render();
+    });
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>
