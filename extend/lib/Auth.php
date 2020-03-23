@@ -36,13 +36,13 @@ use think\facade\Request;
  */
 class Auth
 {
-
+    
     /**
      * @var object 对象实例
      */
     protected static $instance;
     protected $rules = [];
-
+    
     /**
      * 当前请求实例
      * @var Request
@@ -57,7 +57,7 @@ class Auth
         'auth_rule'         => 'auth_rule', // 权限规则表
         'auth_user'         => 'user', // 用户信息表
     ];
-
+    
     public function __construct()
     {
         if ($auth = config('auth.auth')) {
@@ -66,7 +66,7 @@ class Auth
         // 初始化request
         $this->request = Request::instance();
     }
-
+    
     /**
      * 初始化
      * @access public
@@ -78,10 +78,10 @@ class Auth
         if (is_null(self::$instance)) {
             self::$instance = new static($options);
         }
-
+        
         return self::$instance;
     }
-
+    
     /**
      * 检查权限
      * @param string|array $name     需要验证的规则列表,支持逗号分隔的权限规则或索引数组
@@ -112,7 +112,7 @@ class Auth
         if ('url' == $mode) {
             $REQUEST = unserialize(strtolower(serialize($this->request->param())));
         }
-
+        
         foreach ($rulelist as $rule) {
             $query = preg_replace('/^.+\?/U', '', $rule);
             if ('url' == $mode && $query != $rule) {
@@ -144,10 +144,10 @@ class Auth
         if ('and' == $relation && empty($diff)) {
             return true;
         }
-
+        
         return false;
     }
-
+    
     /**
      * 根据用户id获取用户组,返回值为数组
      * @param  int $uid 用户id
@@ -161,7 +161,7 @@ class Auth
         if (isset($groups[$uid])) {
             return $groups[$uid];
         }
-
+        
         // 执行查询
         $user_groups = Db::name($this->config['auth_group_access'])
             ->alias('aga')
@@ -172,7 +172,7 @@ class Auth
         $groups[$uid] = $user_groups ?: [];
         return $groups[$uid];
     }
-
+    
     /**
      * 获得权限规则列表
      * @param int $uid 用户id
@@ -187,14 +187,14 @@ class Auth
         if (2 == $this->config['auth_type'] && Session::has('_rule_list_' . $uid)) {
             return Session::get('_rule_list_' . $uid);
         }
-
+        
         // 读取用户规则节点
         $ids = $this->getRuleIds($uid);
         if (empty($ids)) {
             $_rulelist[$uid] = [];
             return [];
         }
-
+        
         // 筛选条件
         /*$where = [
             'status' => 'normal'
@@ -242,7 +242,7 @@ class Auth
         }
         return array_unique($rulelist);
     }
-
+    
     public function getRuleIds($uid)
     {
         //读取用户所属用户组
@@ -254,7 +254,7 @@ class Auth
         $ids = array_unique($ids);
         return $ids;
     }
-
+    
     /**
      * 获得用户资料
      * @param int $uid 用户id
@@ -263,14 +263,15 @@ class Auth
     protected function getUserInfo($uid)
     {
         static $user_info = [];
-
+        
         $user = Db::name($this->config['auth_user']);
         // 获取用户表主键
         $_pk = is_string($user->getPk()) ? $user->getPk() : 'uid';
         if (!isset($user_info[$uid])) {
             $user_info[$uid] = $user->where($_pk, $uid)->find();
         }
-
+        
         return $user_info[$uid];
     }
+    
 }

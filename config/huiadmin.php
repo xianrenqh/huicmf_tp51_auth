@@ -29,6 +29,6 @@ return[
     'ace_editor_Theme'=>'monokai',
     
     //清除缓存，runtime文件夹下的目录
-    'runtime_dir'=>['cache','temp','log','index']
+    'runtime_dir'=>['cache','temp','log','index','database']
 
 ];

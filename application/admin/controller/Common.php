@@ -50,10 +50,7 @@ class Common extends Controller
        
     }
     
-    
-    /**
-     * 不做验证的
-     */
+    //不做验证的
     final private function not_check_priv()
     {
         $allow = config('auth.not_check_priv');
@@ -63,9 +60,7 @@ class Common extends Controller
         }
     }
     
-    /**
-     * 权限判断
-     */
+    //权限判断
     final private function check_priv() {
         $module = Request::module();
         $controller = Request::controller();
@@ -83,9 +78,7 @@ class Common extends Controller
         }
     }
     
-    /**
-     * 后台IP禁止判断
-     */
+    //后台IP禁止判断
     final private function check_ip(){
         $admin_prohibit_ip = get_config('admin_prohibit_ip');
         if(!$admin_prohibit_ip) return true;
@@ -104,5 +97,6 @@ class Common extends Controller
             }
         }
     }
+    
     
 }

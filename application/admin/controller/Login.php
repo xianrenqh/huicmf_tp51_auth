@@ -7,26 +7,38 @@
  */
 
 namespace app\admin\controller;
+use lib\Random;
+use think\App;
 use think\Controller;
 use think\captcha\Captcha;
 use think\Db;
+use think\Request;
 use think\facade\{Cookie,Session,Cache};
 use app\admin\model\AdminLog;
 
+
 class Login extends Controller
 {
+    protected $request;
+    public $logined = false; //登录状态
+    public function __construct(Request $request) {
+        $this->request = $request;
+    }
     
     public function index()
     {
+        $url = $this->request->get('url', 'index/index');
+        if ($this->isLogin()) {
+            $this->success("你已经登录，无需重复登录",$url);
+        }
+    
         $captcha = new Captcha();
         if(input('post.dosubmit')){
-            
             if(get_config('login_code')){
                 if( !captcha_check(input('code') )){
                     return json(['status'=>1001,'msg'=>'验证码输出错误，请重新输入！！！']);
                 }
             }
-            
             $user_info = Db::name('admin')->where('username',input('post.username'))->find();
             if(empty($user_info['username'])){
                 return json(['status'=>1002,'msg'=>'用户名或密码错误！']);
@@ -49,21 +61,26 @@ class Login extends Controller
                 if($user_info['status']!='normal'){
                     return ['status'=>1003,'msg'=>'该用户已被禁止访问'];
                 }else{
+                    $token = Random::uuid();
                     $user_session_info = [
                         'uid'        => $user_info['id'],
                         'username'  => $user_info['username'],
                         'nickname'  => $user_info['nickname'],
                         'logintime'=> $user_info['logintime'],
                         'loginip'  => $user_info['loginip'],
+                        'token' => $token,
                     ];
                     Cache::clear();
                     session('user_info', $user_session_info);
-                    $data = ['loginip'=>ip(),'loginfailure'=>0,'logintime'=>time()];
+                    $data = ['loginip'=>ip(),'loginfailure'=>0,'logintime'=>time(),'token'=>$token];
                     Db::name('admin')->where('username',input('post.username'))->data($data)->update();
                     return['status'=>1,'msg'=>'登录成功，正在跳转~~~'];
                 }
             }
         }else{
+            //获取微信用户信息
+            $appid = '';
+            $appKey = '';
             return $this->fetch();
         }
     }
@@ -76,21 +93,35 @@ class Login extends Controller
     }
     
     /**
+     * 检测是否登录
+     *
+     * @return boolean
+     */
+    public function isLogin()
+    {
+        if (session('user_info.uid')) {
+            return true;
+        }
+    }
+    
+    /**
      * 退出
      */
     public function logout()
     {
         Session::clear();
         Cookie::clear();
-        $this->success('退出成功！', 'index');
+        $this->success('退出成功！', 'login/index');
     }
+    
+
     
     /**
      *获取bing背景图
      */
     public function getbing_bgpic(){
         $idx = input('idx');
-        $api = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=$idx&n=1";
+        $api = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=$idx&n=1";
         $data = self::object2array(json_decode(self::get_url($api)));
         $pic_url = $data['images'][0]->{'url'}; //获取数据里的图片地址
         if($pic_url){
