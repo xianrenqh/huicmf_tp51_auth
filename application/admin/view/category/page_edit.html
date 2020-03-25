@@ -1,0 +1,156 @@
+{include file='header'/}
+<style>
+    .layui-tab-item{margin-bottom:15px;}
+</style>
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本选项</li>
+                <li>模板设置</li>
+                <li>SEO设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <span class="we-red">*</span>父级分类
+                        </label>
+                        <div class="layui-input-inline" style="width:343px">
+                            <select name="pid">
+                                <option value="0">做为一级栏目</option>
+                                {$select_cate|raw}
+                            </select>
+                        </div>
+                        <div class="layui-input-inline we-red" style="margin-top:10px;">[ 不允许调整到子级栏目下 ]</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="we-red">*</span>栏目名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" class="layui-input xv_hanzi" >
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">拼音目录</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="nickname" name="nickname" value="{$data.nickname}" autocomplete="off" class="layui-input xv_pinyin" placeholder="默认自动转换">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目图片</label>
+                        <div class="layui-input-inline" style="width: 45%">
+                            <input type="text" name="image"  value="{$data.image}"  onmouseover="hui_img_preview('image',this.value)" onmouseout="layer.closeAll();" id="image" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline" style="width: 120px">
+                            <button type="button" class="layui-btn" id="image1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-inline">
+                            <input type="number" id="weigh" name="weigh" value="{$data.weigh}" autocomplete="off" class="layui-input" placeholder="请输入数字">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="status" class="layui-form-label">是否显示</label>
+                        <div class="layui-input-inline" id="status">
+                            <input type="radio" name="status" value="1" title="显示" {if($data.status) eq 1}checked{/if}>
+                            <input type="radio" name="status" value="0" title="不显示" {if($data.status) eq 0}checked{/if}>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="we-red">*</span>单页面模板</label>
+                        <div class="layui-input-inline" style="width:343px">
+                            <select name="category_template" id="category_template">
+                                {foreach name='page_temp' id='vo' key='key'}
+                                <option value="{$key}" {if($data.category_template eq $key)}selected{/if}>{$vo.' ('.$key.')'}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SEO标题</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="seo_title" name="seo_title" value="{$data.seo_title}" autocomplete="off" class="layui-input" placeholder="SEO标题">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SEO关键词</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="seo_keywords" name="seo_keywords" value="{$data.seo_keywords}" autocomplete="off" class="layui-input" placeholder="SEO关键词">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SEO描述</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="seo_description" name="seo_description" value="{$data.seo_description}" autocomplete="off" class="layui-input" placeholder="SEO描述">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="id" value="{$data.id}">
+            <button class="layui-btn"  lay-submit=""type="submit"   value="1" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+<script type="text/javascript" src="__STATIC_ADMIN__js/jquery.pinyin.js"></script>
+</body>
+</html>
+<script>
+    layui.use(['form','upload'], function() {
+        var form = layui.form,
+            upload = layui.upload;
+        form.render();
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#image1'
+            , url: "{:url('upload/index')}"
+            ,field:"Filedata"
+            ,done: function(res){
+                if(res.status==1){
+                    $("#image").val(res.src);
+                }
+            }
+
+        })
+    });
+    function dosub(obj) {
+        var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
+        if(!reg.test($("input[name='nickname']").val())){
+            layer.msg('栏目目录只能以英文字符开始，且不能包含特殊字符！',{icon:2});
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '{:url('edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>

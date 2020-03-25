@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 21/03/2020 19:19:48
+ Date: 25/03/2020 16:29:49
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1584770131, '127.0.0.1', 1492186163, 1583655724, '62465acf-babd-44d8-96a1-51535702f218', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585094903, '127.0.0.1', 1492186163, 1583655724, '6bee97b9-e4c7-4e27-b710-3bb69196851e', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -61,101 +61,7 @@ CREATE TABLE `hui_admin_log`  (
   `createtime` int(10) DEFAULT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hui_admin_log
--- ----------------------------
-INSERT INTO `hui_admin_log` VALUES (1, 1, 'admin', '/admin.php/general.database/backup.html', '常规管理 数据库备份', '{\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584770329);
-INSERT INTO `hui_admin_log` VALUES (2, 1, 'admin', '/admin.php/general.database/optimize.html', '常规管理 优化表', '{\"table\":[\"hui_admin\",\"hui_admin_log\",\"hui_auth_group\",\"hui_auth_group_access\",\"hui_auth_rule\",\"hui_banner\",\"hui_banner_type\",\"hui_config\",\"hui_link\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584770528);
-INSERT INTO `hui_admin_log` VALUES (3, 1, 'admin', '/admin.php/general.database/repair.html', '常规管理 修复表', '{\"table\":[\"hui_admin\",\"hui_admin_log\",\"hui_auth_group\",\"hui_auth_group_access\",\"hui_auth_rule\",\"hui_banner\",\"hui_banner_type\",\"hui_config\",\"hui_link\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584770529);
-INSERT INTO `hui_admin_log` VALUES (4, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584770602);
-INSERT INTO `hui_admin_log` VALUES (5, 1, 'admin', '/admin.php/link/index.html', '友情链接管理', '{\"page\":\"1\",\"limit\":\"10\",\"do\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584770636);
-INSERT INTO `hui_admin_log` VALUES (6, 1, 'admin', '/admin.php/general.config/public_check_ftp.html', '常规管理 测试FTP连接', '{\"ftp_host\":\"45.32.214.79\",\"ftp_port\":\"21\",\"ftp_user\":\"ftp_com\",\"ftp_pwd\":\"sJ65wTnhmYPe2k5A\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584772725);
-INSERT INTO `hui_admin_log` VALUES (7, 1, 'admin', '/admin.php/general.config/save.html', '常规管理 保存设置', '{\"site_name\":\"HuiCmf - \\u6f14\\u793a\\u7ad93\",\"site_url\":\"http:\\/\\/test.xiaohuihui.club\\/\",\"site_keyword\":\"huicmf\",\"site_copyright\":\"Powered By HuiCMF\\u5185\\u5bb9\\u7ba1\\u7406\\u7cfb\\u7edf \\u00a9 2018-2020 \\u5c0f\\u7070\\u7070\\u5de5\\u4f5c\\u5ba4\",\"site_beian\":\"\\u4eacICP\\u5907666666\\u53f7\",\"site_code\":\"\",\"admin_prohibit_ip\":\"\",\"admin_log\":\"1\",\"login_code\":\"0\",\"mail_server\":\"smtp.exmail.qq.com\",\"mail_port\":\"465\",\"mail_user\":\"\",\"mail_pass\":\"\",\"mail_inbox\":\"\",\"mail_to\":\"\",\"upload_maxsize\":\"3048\",\"upload_types\":\"zip|rar|mp3|mp4|jpg|jpeg|png|gif|bmp\",\"watermark_enable\":\"1\",\"watermark_name\":\"mark.png\",\"watermark_position\":\"9\",\"watermark_touming\":\"73\",\"upload_mode\":\"local\",\"file_path\":\"\\/uploads\\/\",\"ftp_host\":\"45.32.214.79\",\"ftp_port\":\"21\",\"ftp_user\":\"ftp_com\",\"ftp_pwd\":\"sJ65wTnhmYPe2k5A\",\"ftp_url\":\"http:\\/\\/222.com\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584772725);
-INSERT INTO `hui_admin_log` VALUES (8, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"1\",\"title\":\"\\u81ea\\u5b9a\\u4e49\\u914d\\u7f6e\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-settings_light\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"3\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774186);
-INSERT INTO `hui_admin_log` VALUES (9, 1, 'admin', '/admin.php/auth.rule/rule_edit.html', '权限管理 修改菜单规则', '{\"ismenu\":\"1\",\"pid\":\"1\",\"title\":\"\\u81ea\\u5b9a\\u4e49\\u914d\\u7f6e\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-settings_light\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"3\",\"id\":\"49\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774297);
-INSERT INTO `hui_admin_log` VALUES (10, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"49\",\"title\":\"\\u6d4b\\u8bd5\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774594);
-INSERT INTO `hui_admin_log` VALUES (11, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"49\",\"title\":\"\\u6d4b\\u8bd5\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774602);
-INSERT INTO `hui_admin_log` VALUES (12, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"49\",\"title\":\"\\u6d4b\\u8bd5\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774635);
-INSERT INTO `hui_admin_log` VALUES (13, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"49\",\"title\":\"asdf\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-round_text_fill\",\"condition\":\"asdf\",\"status\":\"normal\",\"weigh\":\"0\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774648);
-INSERT INTO `hui_admin_log` VALUES (14, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"1\",\"pid\":\"49\",\"title\":\"asdf\",\"name\":\"general.config\\/user_config\",\"icon\":\"icon-round_text_fill\",\"condition\":\"asdf\",\"status\":\"normal\",\"weigh\":\"0\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774725);
-INSERT INTO `hui_admin_log` VALUES (15, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"0\",\"pid\":\"49\",\"title\":\"\\u6dfb\\u52a0\\u81ea\\u5b9a\\u4e49\\u914d\\u7f6e\",\"name\":\"general.config\\/user_config_add\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774811);
-INSERT INTO `hui_admin_log` VALUES (16, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"0\",\"pid\":\"49\",\"title\":\"\\u4fee\\u6539\\u81ea\\u5b9a\\u4e49\\u914d\\u7f6e\",\"name\":\"general.config\\/user_config_edit\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"2\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774864);
-INSERT INTO `hui_admin_log` VALUES (17, 1, 'admin', '/admin.php/auth.rule/rule_add.html', '权限管理 添加菜单规则', '{\"ismenu\":\"0\",\"pid\":\"49\",\"title\":\"\\u5220\\u9664\\u81ea\\u5b9a\\u4e49\\u914d\\u7f6e\",\"name\":\"general.config\\/user_config_delete\",\"icon\":\"icon-round_text_fill\",\"condition\":\"\",\"status\":\"normal\",\"weigh\":\"3\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584774947);
-INSERT INTO `hui_admin_log` VALUES (18, 1, 'admin', '/admin.php/general.database/backup.html', '常规管理 数据库备份', '{\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584775136);
-INSERT INTO `hui_admin_log` VALUES (19, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776112);
-INSERT INTO `hui_admin_log` VALUES (20, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"attachment\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776115);
-INSERT INTO `hui_admin_log` VALUES (21, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"radio\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776116);
-INSERT INTO `hui_admin_log` VALUES (22, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"select\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776117);
-INSERT INTO `hui_admin_log` VALUES (23, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776120);
-INSERT INTO `hui_admin_log` VALUES (24, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776301);
-INSERT INTO `hui_admin_log` VALUES (25, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776426);
-INSERT INTO `hui_admin_log` VALUES (26, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776586);
-INSERT INTO `hui_admin_log` VALUES (27, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776605);
-INSERT INTO `hui_admin_log` VALUES (28, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776631);
-INSERT INTO `hui_admin_log` VALUES (29, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"attachment\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776633);
-INSERT INTO `hui_admin_log` VALUES (30, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776656);
-INSERT INTO `hui_admin_log` VALUES (31, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776664);
-INSERT INTO `hui_admin_log` VALUES (32, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776806);
-INSERT INTO `hui_admin_log` VALUES (33, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776873);
-INSERT INTO `hui_admin_log` VALUES (34, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"attachment\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584776878);
-INSERT INTO `hui_admin_log` VALUES (35, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"textarea\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584777974);
-INSERT INTO `hui_admin_log` VALUES (36, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584777975);
-INSERT INTO `hui_admin_log` VALUES (37, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"textarea\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778024);
-INSERT INTO `hui_admin_log` VALUES (38, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"select\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778026);
-INSERT INTO `hui_admin_log` VALUES (39, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"radio\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778030);
-INSERT INTO `hui_admin_log` VALUES (40, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"attachment\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778032);
-INSERT INTO `hui_admin_log` VALUES (41, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"textarea\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778128);
-INSERT INTO `hui_admin_log` VALUES (42, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"image\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778135);
-INSERT INTO `hui_admin_log` VALUES (43, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"attachment\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778136);
-INSERT INTO `hui_admin_log` VALUES (44, 1, 'admin', '/admin.php/general.config/public_gethtml.html', '常规管理', '{\"fieldtype\":\"radio\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584778137);
-INSERT INTO `hui_admin_log` VALUES (45, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"textarea\",\"value\":\"\",\"setting\":\"\",\"title\":\"11\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779395);
-INSERT INTO `hui_admin_log` VALUES (46, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"radio\",\"value\":\"\",\"setting\":\"\",\"title\":\"11\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779411);
-INSERT INTO `hui_admin_log` VALUES (47, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"textarea\",\"value\":\"\",\"setting\":\"\",\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779500);
-INSERT INTO `hui_admin_log` VALUES (48, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"textarea\",\"value\":\"\",\"setting\":\"\",\"title\":\"1\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779525);
-INSERT INTO `hui_admin_log` VALUES (49, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"textarea\",\"value\":\"\",\"setting\":\"\",\"title\":\"1\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779540);
-INSERT INTO `hui_admin_log` VALUES (50, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"11222\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":\"\",\"title\":\"33\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779639);
-INSERT INTO `hui_admin_log` VALUES (51, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"1\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"11222\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":\"\",\"title\":\"33\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584779659);
-INSERT INTO `hui_admin_log` VALUES (52, 1, 'admin', '/admin.php/upload/index.html', '', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784393);
-INSERT INTO `hui_admin_log` VALUES (53, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asfs\",\"fieldtype\":\"image\",\"value\":{\"textarea\":\"\",\"image\":\"\\/uploads\\/20200321\\/a7c0b569b8a7cedec3ed6b3799f0577f.png\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"asf\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784469);
-INSERT INTO `hui_admin_log` VALUES (54, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asf_asfa\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784581);
-INSERT INTO `hui_admin_log` VALUES (55, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asf_\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784586);
-INSERT INTO `hui_admin_log` VALUES (56, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"_ASDFSAD\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784589);
-INSERT INTO `hui_admin_log` VALUES (57, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584784634);
-INSERT INTO `hui_admin_log` VALUES (58, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785072);
-INSERT INTO `hui_admin_log` VALUES (59, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"123\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785091);
-INSERT INTO `hui_admin_log` VALUES (60, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785097);
-INSERT INTO `hui_admin_log` VALUES (61, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785253);
-INSERT INTO `hui_admin_log` VALUES (62, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"mail_port\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785531);
-INSERT INTO `hui_admin_log` VALUES (63, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"mail_port\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785536);
-INSERT INTO `hui_admin_log` VALUES (64, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"mail_port1\",\"fieldtype\":\"radio\",\"value\":{\"textarea\":\"123456789\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\\u7537\",\"select\":\"\"},\"setting\":{\"radio\":\"\\u7537|\\u5973\",\"select\":\"\"},\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785564);
-INSERT INTO `hui_admin_log` VALUES (65, 1, 'admin', '/admin.php/upload/index.html', '', '[]', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785979);
-INSERT INTO `hui_admin_log` VALUES (66, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"imagessss\",\"fieldtype\":\"image\",\"value\":{\"textarea\":\"\",\"image\":\"\\/uploads\\/20200321\\/095d3341acfc5557ad1af2028920662a.png\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\\u56fe\\u56fe\\u56fe\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584785983);
-INSERT INTO `hui_admin_log` VALUES (67, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"sasf\",\"fieldtype\":\"select\",\"value\":{\"textarea\":\"\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\\u5b58\\u50a8\"},\"setting\":{\"radio\":\"\",\"select\":\"\\u788d\\u4e8b\\u6cd5\\u5e08|\\u963f\\u65af\\u987f\\u53d1|\\u55ef\\u55ef|\\u5b58\\u50a8\"},\"title\":\"\\u963f\\u65af\\u987f\\u53d1\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584787086);
-INSERT INTO `hui_admin_log` VALUES (68, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"qq\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"12345566\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584787577);
-INSERT INTO `hui_admin_log` VALUES (69, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"mail_port1\",\"value\":{\"textarea\":\"\\u7537\",\"image\":\"\\u7537\",\"attachment\":\"\\u7537\"},\"mail_port1\":\"1\",\"title\":\"QQ\",\"status\":\"0\",\"dosubmit\":\"1\",\"id\":\"32\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584787714);
-INSERT INTO `hui_admin_log` VALUES (70, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"sasf\",\"value\":\"\\u5b58\\u50a8\",\"setting\":\"3\",\"title\":\"\\u963f\\u65af\\u987f\\u53d1\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"34\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584788429);
-INSERT INTO `hui_admin_log` VALUES (71, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"mail_port1\",\"value\":\"1\",\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"32\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584788888);
-INSERT INTO `hui_admin_log` VALUES (72, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"mail_port1\",\"value\":\"1\",\"title\":\"QQ\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"32\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584788903);
-INSERT INTO `hui_admin_log` VALUES (73, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"qq\",\"value\":\"12345566\",\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"35\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789030);
-INSERT INTO `hui_admin_log` VALUES (74, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"qq\",\"value\":\"12345566\",\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"35\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789038);
-INSERT INTO `hui_admin_log` VALUES (75, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"qq\",\"value\":\"12345566\",\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"35\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789072);
-INSERT INTO `hui_admin_log` VALUES (76, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"qq\",\"value\":\"123455662\",\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"35\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789095);
-INSERT INTO `hui_admin_log` VALUES (77, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"qq\",\"value\":\"123455662\",\"title\":\"qq\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"35\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789098);
-INSERT INTO `hui_admin_log` VALUES (78, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"sasf\",\"value\":\"0\",\"title\":\"\\u963f\\u65af\\u987f\\u53d1\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"34\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789122);
-INSERT INTO `hui_admin_log` VALUES (79, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"sasf\",\"value\":\"0\",\"title\":\"\\u963f\\u65af\\u987f\\u53d1\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"34\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789156);
-INSERT INTO `hui_admin_log` VALUES (80, 1, 'admin', '/admin.php/general.config/user_config_edit.html', '常规管理 修改自定义配置', '{\"name\":\"sasf\",\"value\":\"1\",\"title\":\"\\u963f\\u65af\\u987f\\u53d1\",\"status\":\"1\",\"dosubmit\":\"1\",\"id\":\"34\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789161);
-INSERT INTO `hui_admin_log` VALUES (81, 1, 'admin', '/admin.php/general.config/user_config_del.html', '常规管理', '{\"id\":[\"32\",\"33\",\"34\",\"35\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789192);
-INSERT INTO `hui_admin_log` VALUES (82, 1, 'admin', '/admin.php/general.config/user_config_del.html', '常规管理', '{\"id\":[\"32\",\"33\",\"34\",\"35\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789231);
-INSERT INTO `hui_admin_log` VALUES (83, 1, 'admin', '/admin.php/general.config/user_config_del.html', '常规管理', '{\"id\":[\"32\",\"33\",\"34\",\"35\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789285);
-INSERT INTO `hui_admin_log` VALUES (84, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asf\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"asf\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789293);
-INSERT INTO `hui_admin_log` VALUES (85, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asf\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"asfa\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789382);
-INSERT INTO `hui_admin_log` VALUES (86, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asfasf\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"asfa\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789388);
-INSERT INTO `hui_admin_log` VALUES (87, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"asfas\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"asfas\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789411);
-INSERT INTO `hui_admin_log` VALUES (88, 1, 'admin', '/admin.php/general.config/user_config_del.html', '常规管理', '{\"id\":[\"38\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789436);
-INSERT INTO `hui_admin_log` VALUES (89, 1, 'admin', '/admin.php/general.config/user_config_del.html', '常规管理', '{\"id\":[\"38\"]}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789438);
-INSERT INTO `hui_admin_log` VALUES (90, 1, 'admin', '/admin.php/general.config/user_config_add.html', '常规管理 添加自定义配置', '{\"name\":\"afas\",\"fieldtype\":\"textarea\",\"value\":{\"textarea\":\"fasffa\",\"image\":\"\",\"attachment\":\"\",\"radio\":\"\",\"select\":\"\"},\"setting\":{\"radio\":\"\",\"select\":\"\"},\"title\":\"\",\"status\":\"1\",\"dosubmit\":\"1\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36', 1584789485);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hui_auth_group
@@ -216,23 +122,23 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
 -- ----------------------------
 INSERT INTO `hui_auth_rule` VALUES (1, 'file', 0, 'general', '常规管理', 'icon-settings', '0', '0', 1, 1497429920, 1497430169, 11, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (2, 'file', 0, 'auth', '权限管理', 'icon-group', '0', '0', 1, 1497429920, 1577703004, 12, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (3, 'file', 2, 'auth.admin/index', '管理员管理', 'icon-friendfill', '0', 'Admin0tips', 1, 1497429920, 1578300525, 1, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (4, 'file', 1, 'general.database/index', '数据库管理', 'icon-discoverfill', '0', 'Admin0log0tips', 1, 1497429920, 1578302732, 99, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (5, 'file', 2, 'auth.group/index', '角色组', 'icon-group_fill_light', '0', 'Group0tips', 1, 1497429920, 1578381137, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (6, 'file', 2, 'auth.rule/index', '菜单规则', 'icon-round_menu_fill', '0', 'Rule0tips', 1, 1497429920, 1578302765, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (7, 'file', 6, 'auth.rule/rule_switch_field', '更改状态', 'icon-round_text_fill', '0', '0', 0, 0, 1578300629, 0, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (8, 'file', 6, 'auth.rule/rule/rule_order', '排序', 'icon-round_text_fill', '0', '0', 0, 1577603451, 1578300640, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (9, 'file', 6, 'auth.rule/rule_add', '添加菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577610841, 1578300663, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (10, 'file', 6, 'auth.rule/rule_edit', '修改菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577756921, 1578300647, 4, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (11, 'file', 6, 'auth.rule/rule_delete', '删除菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577756963, 1578300652, 5, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (12, 'file', 5, 'auth.group/group_add', '添加角色组', 'icon-round_text_fill', '0', '0', 0, 1577777043, 1578300224, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (2, 'file', 0, 'auth', '权限管理', 'icon-group', '0', '0', 1, 1497429920, 1577703004, 21, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (3, 'file', 2, 'auth.admin/index', '管理员管理', 'icon-friendfill', '0', 'Admin0tips', 1, 1497429920, 1578300525, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (4, 'file', 1, 'general.database/index', '数据库管理', 'icon-discoverfill', '0', 'Admin0log0tips', 1, 1497429920, 1578302732, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (5, 'file', 2, 'auth.group/index', '角色组', 'icon-group_fill_light', '0', 'Group0tips', 1, 1497429920, 1578381137, 5, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (6, 'file', 2, 'auth.rule/index', '菜单规则', 'icon-round_menu_fill', '0', 'Rule0tips', 1, 1497429920, 1578302765, 6, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (7, 'file', 6, 'auth.rule/rule_switch_field', '更改状态', 'icon-round_text_fill', '0', '0', 0, 0, 1578300629, 7, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (8, 'file', 6, 'auth.rule/rule/rule_order', '排序', 'icon-round_text_fill', '0', '0', 0, 1577603451, 1578300640, 8, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (9, 'file', 6, 'auth.rule/rule_add', '添加菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577610841, 1578300663, 9, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (10, 'file', 6, 'auth.rule/rule_edit', '修改菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577756921, 1578300647, 10, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (11, 'file', 6, 'auth.rule/rule_delete', '删除菜单规则', 'icon-round_text_fill', '0', '0', 0, 1577756963, 1578300652, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (12, 'file', 5, 'auth.group/group_add', '添加角色组', 'icon-round_text_fill', '0', '0', 0, 1577777043, 1578300224, 12, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (13, 'file', 5, 'auth.group/group_edit', '修改角色组', 'icon-round_text_fill', '0', '0', 0, 1577777099, 1578378879, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (14, 'file', 5, 'auth.group/group_delete', '删除角色组', 'icon-round_text_fill', '0', '0', 0, 1577777115, 1578300240, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (15, 'file', 3, 'auth.admin/admin_add', '添加管理员', 'icon-round_text_fill', '0', '0', 0, 1577943638, 1579256034, 1, 'normal');
@@ -271,6 +177,14 @@ INSERT INTO `hui_auth_rule` VALUES (49, 'file', 1, 'general.config/user_config',
 INSERT INTO `hui_auth_rule` VALUES (51, 'file', 49, 'general.config/user_config_add', '添加自定义配置', 'icon-round_text_fill', '', '', 0, 1584774803, NULL, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (52, 'file', 49, 'general.config/user_config_edit', '修改自定义配置', 'icon-round_text_fill', '', '', 0, 1584774864, NULL, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (53, 'file', 49, 'general.config/user_config_delete', '删除自定义配置', 'icon-round_text_fill', '', '', 0, 1584774947, NULL, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (54, 'file', 25, 'pay/index', '支付模块', 'icon-rechargefill', '', '', 1, 1584837226, NULL, 97, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (55, 'file', 54, 'pay/edit', '编辑支付模块', 'icon-round_text_fill', '', '', 0, 1584857404, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (56, 'file', 0, 'content/index', '内容管理', 'icon-calendar', '', '', 1, 1585021064, 1585021210, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (57, 'file', 56, 'category/index', '分类管理', 'icon-ticket_fill', '', '', 1, 1585021152, 1585028819, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (58, 'file', 57, 'category/add', '添加分类', 'icon-round_text_fill', '', '', 0, 1585028951, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (59, 'file', 57, 'category/edit', '修改分类', 'icon-round_text_fill', '', '', 0, 1585028964, 1585028971, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (60, 'file', 57, 'category/delete', '删除分类', 'icon-round_text_fill', '', '', 0, 1585028985, NULL, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (61, 'file', 57, 'category/order', '排序分类', 'icon-round_text_fill', '', '', 0, 1585029001, NULL, 4, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner
@@ -301,6 +215,35 @@ CREATE TABLE `hui_banner_type`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
+-- Table structure for hui_category
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_category`;
+CREATE TABLE `hui_category`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父ID',
+  `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '栏目类型',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `flag` set('hot','index','recommend') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `image` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片',
+  `seo_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'seo标题',
+  `seo_keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
+  `seo_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '描述',
+  `diyname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '自定义名称',
+  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `weigh` int(10) NOT NULL DEFAULT 0 COMMENT '权重',
+  `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
+  `category_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道页模板',
+  `list_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '列表页模板',
+  `show_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '内容页模板',
+  `pc_link` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '链接',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `weigh`(`weigh`, `id`) USING BTREE,
+  INDEX `pid`(`pid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分类表' ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for hui_config
 -- ----------------------------
 DROP TABLE IF EXISTS `hui_config`;
@@ -324,7 +267,7 @@ CREATE TABLE `hui_config`  (
 -- ----------------------------
 INSERT INTO `hui_config` VALUES (1, 'site_name', 1, '站点名称', 'HuiCmf - 演示站3', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (2, 'site_url', 1, '站点跟网址', 'http://test.xiaohuihui.club/', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (3, 'admin_log', 3, '启用后台管理操作日志', '1', 'radio', '', 1, '');
+INSERT INTO `hui_config` VALUES (3, 'admin_log', 3, '启用后台管理操作日志', '0', 'radio', '', 1, '');
 INSERT INTO `hui_config` VALUES (4, 'site_keyword', 1, '站点关键字', 'huicmf', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (5, 'site_copyright', 1, '网站版权信息', 'Powered By HuiCMF内容管理系统 © 2018-2020 小灰灰工作室', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (6, 'site_beian', 1, '站点备案号', '京ICP备666666号', 'string', '', 1, '');
@@ -333,13 +276,14 @@ INSERT INTO `hui_config` VALUES (8, 'site_code', 1, '统计代码', '', 'text', 
 INSERT INTO `hui_config` VALUES (9, 'admin_prohibit_ip', 3, '禁止登录后台的IP', '', 'text', '', 1, '');
 INSERT INTO `hui_config` VALUES (10, 'mail_server', 4, 'SMTP服务器', 'smtp.exmail.qq.com', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (11, 'mail_port', 4, 'SMTP服务器端口', '465', 'string', '', 1, '');
+INSERT INTO `hui_config` VALUES (12, 'site_theme', 1, '模板风格', 'default', 'textarea', '', 1, NULL);
 INSERT INTO `hui_config` VALUES (13, 'mail_user', 4, 'SMTP服务器的用户帐号', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (14, 'mail_pass', 4, 'SMTP服务器的用户密码', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (15, 'mail_inbox', 4, '收件邮箱地址', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (16, 'mail_auth', 4, 'AUTH LOGIN验证', '1', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (17, 'login_code', 3, '后台登录验证码', '0', 'radio', '', 1, '');
 INSERT INTO `hui_config` VALUES (18, 'upload_maxsize', 2, '允许上传附件大小', '3048', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (19, 'watermark_enable', 2, '是否开启图片水印', '1', 'radio', '{\"0\":\"否\",\"1\":\"是\"}', 1, '');
+INSERT INTO `hui_config` VALUES (19, 'watermark_enable', 2, '是否开启图片水印', '0', 'radio', '{\"0\":\"否\",\"1\":\"是\"}', 1, '');
 INSERT INTO `hui_config` VALUES (20, 'watermark_name', 2, '水印图片名称', 'mark.png', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (21, 'watermark_position', 2, '水印的位置', '9', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (22, 'watermark_touming', 2, '水印透明度', '73', 'string', '', 1, '');
@@ -351,7 +295,7 @@ INSERT INTO `hui_config` VALUES (27, 'ftp_user', 2, 'FTP账号', 'ftp_com', 'str
 INSERT INTO `hui_config` VALUES (28, 'ftp_pwd', 2, 'FTP密码', 'sJ65wTnhmYPe2k5A', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (29, 'ftp_url', 2, '外链url地址', 'http://222.com', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (30, 'file_path', 2, '文件保存路径', '/uploads/', 'string', ' ', 1, '');
-INSERT INTO `hui_config` VALUES (31, 'pay_mode', 5, '支付方式', '1', 'string', '', 1, '');
+INSERT INTO `hui_config` VALUES (31, 'site_qq', 99, '站长QQ', '123456', 'textarea', '', 1, '');
 
 -- ----------------------------
 -- Table structure for hui_link
@@ -373,5 +317,28 @@ CREATE TABLE `hui_link`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_typeid`(`typeid`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for hui_pay_mode
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_pay_mode`;
+CREATE TABLE `hui_pay_mode`  (
+  `id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `logo` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `desc` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `config` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `version` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `action` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '支付调用方法',
+  `template` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of hui_pay_mode
+-- ----------------------------
+INSERT INTO `hui_pay_mode` VALUES (1, '【官方】支付宝', 'alipay.png', '支付宝新版在线支付插件，要求PHP版本&gt;=5.5 .', '{\\\"app_id\\\":\\\"2018021002172596\\\",\\\"merchant_private_key\\\":\\\"MIIEowIBAAKCAQEApPbtJv5Xsd9+\\\\/U8UJqZnAfVt76x0UQ631hjMKZ9mVn5rA4aAKypEuxupnmLsUX61tVIGXWd+bLh0fGJEOL9VGzDypneilqJ4maS9g\\\\/htZZq8o8w6oXpEWFPBvaT46y0hI+QN9g34JefK00UvyrVrE1EzjRPCt\\\\/gSZLWRgrA8tBAmfXtgzEJg+OMtDjhftAX1XfpvZ0i\\\\/07g2a+ZI0KjOvnr9GEW6LH0agUOwe5QIaH\\\\/vjo+9A2tvI4Lto1q\\\\/AKzDOjyAaGgwiadTG\\\\/wOXwENrVGcgOtSgkiftpi55rlJLy1sxA3GGZl4TPZ6qbYYzD2CuRoN3kcupXFEjRLmFNJnbQIDAQABAoIBAFmTqBVLeU0iIm\\\\/kd\\\\/nA1CBxKCBEUekOB+9fCcX0Q3rmLK\\\\/+YiyOSEId9E4IQ3DBUGRERSaFI1ZgFwjPx2HVK56XRrv0LLqFQN2VYj9+L9FDY\\\\/nB1XiHzwLzgDm9klkJ6Xv2w0oALeZPZoiwghIdzyXvKwIJX+vL7hj3qyr\\\\/Dgdr+mZ+PMr0n23EgKCR1ihwBY\\\\/vpvpPeJoucgKp3JoXJunRtR7yfptt5UY0qeW7e1JiTEt3V9eAehxNUa2\\\\/sBh2LWgU91oJ8NPJ3a8sZfydTJ734Icdi\\\\/hItpPxMl5AhhVvImeU8B4L7NMVztX9u+S0V1oLT+cIZ08YOXb+ltNEkdUCgYEA00M9T8K2DUchiaRI+Fl+3XTTnS8qBteVc4TA7DHs9Cm1U+aK\\\\/fdy\\\\/18NaICEtT2UbhtZB+Q+oL\\\\/x8TGEBusO7KmvUCO3JXPE0RMwsSIDvN1oMJ+AAj\\\\/4jnDVI9Es6ChkExrz1JdBAoDLfvY+m+woqPwbCczifJRvrdI7qimlWUMCgYEAx+XSDVEZrAWxODiMKYlmcQTGD2bAzZcJOtAZM+ApZgXYLYJjJDaeU2p60khhrWB43Os6Ty6Nf6nQ+xlXCHq+JU3qBsoui2LO\\\\/tJ10tFzI3nWGlkQMOrl4EAXAF\\\\/HwLz4lbcPzXKTqFNYoJ3cMxZG0TB\\\\/55mpBK6JLXpoLhJqGY8CgYEAj9x1396jwh7yA5zP4+5tqbhocd0wLUCZEPURusW0qf\\\\/M7rlLZO4gbS35H3SE6jZo4SHWWr1euHB8\\\\/NXPJjbjDt3t+BCaIvLWz9jVi4myKeZLkPDMZrvRMo47VgyXG\\\\/CFVU1BRT9Kkb3K1UYyFFOYzJoAf4f5owQhmKhU4OdDJakCgYBnP2MhEbSKz13bxglPIvLQiUCrj80h41MXF4kM7Ek1susXhnMirztTpnnNxyj8XgnPQYgagdcAC3wvVcVIUe2IYxfvbdpgkCaOI7JLs3ce6b0WWs4sFgeprjCzNsV73Z8f5S+6U+XEWVg7jY3ArU7imYRW4V0VV\\\\/jujnzk3woCLQKBgBrMZ1cf3dj50w\\\\/oDGQfAHpwCPStmn9ECq0Rw9y0kutJSs+0xRLEOPYVue2kA5bY3bFjBFZPCcOojvYF8rJKkUGHHN420DckDiTviWz+71AzvPSDnOL+dyVMi1Ab4EY8tboD+bj2ebTIjWwBS4bwNGhejMVbVUzBLcoUtfLMkaf7\\\",\\\"alipay_public_key\\\":\\\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPbtJv5Xsd9+\\\\/U8UJqZnAfVt76x0UQ631hjMKZ9mVn5rA4aAKypEuxupnmLsUX61tVIGXWd+bLh0fGJEOL9VGzDypneilqJ4maS9g\\\\/htZZq8o8w6oXpEWFPBvaT46y0hI+QN9g34JefK00UvyrVrE1EzjRPCt\\\\/gSZLWRgrA8tBAmfXtgzEJg+OMtDjhftAX1XfpvZ0i\\\\/07g2a+ZI0KjOvnr9GEW6LH0agUOwe5QIaH\\\\/vjo+9A2tvI4Lto1q\\\\/AKzDOjyAaGgwiadTG\\\\/wOXwENrVGcgOtSgkiftpi55rlJLy1sxA3GGZl4TPZ6qbYYzD2CuRoN3kcupXFEjRLmFNJnbQIDAQAB\\\"}', 1, '1.0', 'alipay', 'alipay');
+INSERT INTO `hui_pay_mode` VALUES (2, '【官方】微信', 'wechat.png', '微信支付提供公众号支付、APP支付、扫码支付、刷卡支付等支付方式。', '{\\\"mch_id\\\":\\\"1557478971\\\",\\\"app_id\\\":\\\"wxc72aa7912f3c5715\\\",\\\"app_secret\\\":\\\"6hnAAcdrddecSgh9KB3542PvXLuI852a\\\",\\\"key\\\":\\\"4b128d4ba0af9f248833ab6b1fad0ebb\\\"}', 1, '1.0', 'wechat', 'wechat');
 
 SET FOREIGN_KEY_CHECKS = 1;

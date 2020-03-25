@@ -1,0 +1,147 @@
+{include file='header'/}
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">内容管理</a><span lay-separator="">/</span>
+            <a><cite>分类管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body demoTable">
+    <div class="weadmin-block">
+        <a class="layui-btn layui-btn-fense layui-btn-xstree"  onclick="openAll();">展开或折叠全部</a>
+        <a class="layui-btn layui-btn-danger" data-type="order">排序</a>
+        <button class="layui-btn" onclick="WeAdminShow('添加栏目','{:url('add',[\'type\'=>1])}','800')"><i class="layui-icon"></i>添加栏目</button>
+        <button class="layui-btn layui-btn-normal" onclick="WeAdminShow('添加单页面','{:url('add',[\'type\'=>2])}','800')"><i class="layui-icon"></i>添加单页面</button>
+        <button class="layui-btn layui-btn-lvse" onclick="WeAdminShow('添加外部链接','{:url('add',[\'type\'=>3])}','800')"><i class="layui-icon"></i>添加外部链接</button>
+        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
+    </div>
+    <table class="layui-hidden" id="treeTable" lay-filter="treeTable"></table>
+</div>
+<script type="text/html" id="type">
+    {{#  if(d.type =='1'){ }}
+    <span>内部栏目</span>
+    {{#  } else if(d.type =='2'){ }}
+    <b style="color:#4847ff">单页面</b>
+    {{#  } else { }}
+    <b style="color:#f00">外部链接</b>
+    {{#  } }}
+</script>
+<script type="text/html" id="status">
+    {{#  if(d.status =='1'){ }}
+    <span class="layui-badge layui-bg-green"> 已显示 </span>
+    {{#  } else { }}
+    <span class="layui-badge layui-bg-danger"> 未显示 </span>
+    {{#  } }}
+</script>
+
+{include file='footer'/}
+</body>
+</html>
+<script>
+    var editObj=null,ptable=null,treeGrid=null,tableId='treeTable',layer=null;
+    layui.extend({
+        treeGrid: 'extends/treeGrid'
+    });
+    layui.use(['jquery','treeGrid','layer','table'], function(){
+        var $=layui.jquery;
+        treeGrid = layui.treeGrid;//很重要
+        table = layui.table;
+        layer=layui.layer;
+        ptable=treeGrid.render({
+            id:tableId
+            ,elem: '#'+tableId
+            ,url:"{:url('index')}"
+            ,cellMinWidth: 100
+            ,idField:'id'//必須字段
+            ,treeId:'id'//树形id字段名称
+            ,treeUpId:'pid'//树形父id字段名称
+            ,treeShowName:'name'//以树形式显示的字段
+            ,heightRemove:[".dHead",140]//不计算的高度,表格设定的是固定高度，此项不生效
+            ,iconOpen:true//是否显示图标【默认显示】
+            ,isOpenDefault:true//节点默认是展开还是折叠【默认展开】
+            ,loading:true
+            ,method:'post'
+            ,isPage:false
+            ,where:{do:1}
+            ,done: function(res){$("#total").html(res.count)}
+            ,cols: [[
+                {field:'id',title:'ID',width:70,align:'center'}
+                ,{field:'weigh',title:'点击排序',width:120,align:'center'
+                    ,templet: function(d){
+                    var inputA = '<input type="number" name="weigh" value="'+d.weigh+'" class="layui-input" style="width:85px;height:26px;text-align:center;">';
+                    var inputB = '<input type="hidden" name="id" value="'+d.id+'"/>';
+                    return inputA+inputB;
+                    }
+                }
+                ,{field:'name', title: '栏目名称'}
+                ,{field:'nickname', title: '英文目录'}
+                ,{field:'type', title: '栏目类型',templet:'#type',width:160,align:'center'}
+                ,{field:'image', title: '图片',align:'center',width:100,templet: function(d){return "<img src='"+d.image+"'height='30'>";}}
+                ,{field:'status', title: '导航显示',width:160, align:'center',templet:'#status'}
+                ,{width:220,title: '操作', align:'center'
+                    ,templet: function(d){
+                        var html='';
+                        var addBtn='<a class="layui-btn layui-btn-sm layui-btn-success" lay-event="add">添加子级</a>';
+                        var editBtn='<a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>';
+                        var delBtn='<a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>';
+                        return addBtn+editBtn+delBtn;
+                    }
+                }
+            ]]
+        });
+        var $ = layui.$, active = {
+            order: function(){
+                var arrWeigh = $("input[name='weigh']").map(function(){return $(this).val()}).get();
+                var arrIds = $("input[name='id']").map(function(){return $(this).val()}).get();
+                $.post("{:url('order')}",{
+                    id:arrIds,
+                    weigh:arrWeigh
+                },function (res) {
+                    if(res.status==1){
+                        ptable.reload();
+                        layer.msg(res.msg,{icon:1});
+                    }else{
+                        layer.msg(res.msg,{icon:2});
+                    }
+                });
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        treeGrid.on('tool('+tableId+')',function (obj) {
+            if(obj.event === 'del'){
+                del(obj);
+            }else if(obj.event ==='add'){
+                WeAdminShow("添加栏目","{:url('add')}?pid="+obj.data.id+"&type="+obj.data.type,'800');
+            }else if(obj.event ==='edit'){
+                WeAdminShow("编辑栏目","{:url('edit')}?id="+obj.data.id+"&type="+obj.data.type,'800');
+            }
+        });
+    });
+
+    function del(obj) {
+        layer.confirm('你确定删除数据吗？此操作不可逆转！！<br>如果存在下级节点则无法删除！', {icon: 3, title:'提示'}, function(index){
+            $.post("{:url('delete')}",{
+                id:obj.data.id,
+            },function (res) {
+                $("#total").html(res.count);
+                if(res.status==1){
+                    obj.del();
+                    layer.msg(res.msg,{icon:res.icon});
+                }else{
+                    layer.msg(res.msg,{icon:res.icon});
+                    layer.close(index);
+                }
+            })
+        });
+    }
+    function openAll() {
+        var treedata=treeGrid.getDataTreeList(tableId);
+        treeGrid.treeOpenAll(tableId,!treedata[0][treeGrid.config.cols.isOpen]);
+    }
+</script>

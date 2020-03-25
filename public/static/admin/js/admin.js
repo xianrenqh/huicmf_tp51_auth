@@ -399,7 +399,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
         }
         ;
         if (h == null || h == '') {
-            h = ($(window).height() - 50);
+            h = ($(window).height() * 0.8);
         };
         $.get(url,function (res) {
             if(res.code===0){

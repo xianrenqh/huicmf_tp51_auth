@@ -111,6 +111,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ));
+    
+        //检测mysql版本是否符合要求（最低需要5.5版本）
+        $res = $pdo->query("select VERSION()");
+        $result = $res->fetch();
+        if ($result[0]<5.5) {
+            throw new Exception("本系统需要数据库版本最低为5.5，当前数据库版本为".$result[0]);
+        }
 
         //检测是否支持innodb存储引擎
         $pdoStatement = $pdo->query("SHOW VARIABLES LIKE 'innodb_version'");

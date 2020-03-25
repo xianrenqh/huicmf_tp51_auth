@@ -126,9 +126,7 @@ class Rule extends Common
             if($cha_name){
                 return json(['status'=>0,'msg'=>'此规则名称已存在，请重新输入！！！']);
             }
-            
             $insert = Db::name('auth_rule')->strict(false)->data($param)->insert();
-            
             Cache::clear();
             return json(['status' => 1, 'msg' => '添加成功！']);
         } else {
@@ -146,7 +144,6 @@ class Rule extends Common
             $str = "<option value='\$id' \$selected> \$spacer \$title</option>";
             $tree->init($array);
             $select_menus = $tree->get_tree(0, $str);
-            
             return $this->fetch('rule_add', ['select_menus' => $select_menus]);
         }
     }

@@ -29,6 +29,7 @@ function ip() {
     return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
 }
 
+
 /**
  * 根据IP获取请求地区（太平洋IP库）
  * @param $ip
@@ -46,6 +47,21 @@ function get_address($ip){
     }
 }
 
+/**
+ * 数组去重
+ */
+function getArray($arr){
+    $count = count($arr);
+    $arrs = array();
+    for ($i=0;$i<$count;$i++){
+        $a = $arr[$i];
+        unset($arr[$i]);
+        if(!in_array($a,$arr)){
+            $arrs[] = $a;
+        }
+    }
+    return $arrs;
+}
 
 /**
  * 获取系统配置信息
@@ -236,6 +252,20 @@ function showmsg($msg, $gourl, $limittime='3') {
 }
 
 /**
+ * 获取模板主题列表
+ * @param string $m 模块
+ * @return array
+ */
+function get_theme_list($m = 'index'){
+    $theme_list = array();
+    $list = glob(APP_PATH.$m.DS.'view'.DS.'*', GLOB_ONLYDIR);
+    foreach($list as $v){
+        $theme_list[] = basename($v);
+    }
+    return $theme_list;
+}
+
+/**
  * 模板调用
  *
  * @param $module
@@ -264,3 +294,4 @@ function template($module = '', $template = 'index')
     }
     return $template_c;
 }
+

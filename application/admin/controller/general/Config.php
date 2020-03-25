@@ -26,7 +26,8 @@ class Config extends  Common
             $data= array_column($datalist,'value','name');
             cache('cache_configs',$data);
         }
-        return $this->fetch('',['data'=>$data]);
+        $theme_list = get_theme_list();
+        return $this->fetch('',['data'=>$data,'theme_list'=>$theme_list]);
     }
     
     

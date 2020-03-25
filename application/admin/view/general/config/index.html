@@ -23,7 +23,7 @@
                 <li>邮件设置</li>
                 <li>附件设置</li>
             </ul>
-            <div class="layui-tab-content" style="margin-top: 20px;">
+            <div class="layui-tab-content" style="margin-top: 10px;">
 
                 <div class="layui-tab-item layui-show">
                     <table class="layui-table">
@@ -54,6 +54,19 @@
                                 <input type="text"  name="site_keyword" value="{$data.site_keyword}"  autocomplete="off" class="layui-input">
                             </td>
                             <td>site_keyword</td>
+                        </tr>
+                        <tr>
+                            <td>模板风格</td>
+                            <td>
+                                <div class="layui-input-inline" style="width: 200px">
+                                    <select name="site_theme" id="site_theme">
+                                        {volist name='theme_list' id='vo'}
+                                        <option value="{$vo}" {if($data.site_theme==$vo)}selected{/if}>{$vo}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </td>
+                            <td>site_theme</td>
                         </tr>
                         <tr>
                             <td>网站版权信息</td>
@@ -420,7 +433,6 @@
             data: $(obj).serialize(),
             dataType: "json",
             success: function (res) {
-                console.log(res);
                 if(res.status == 1){
                     layer.msg(res.message, {
                         icon: 1,

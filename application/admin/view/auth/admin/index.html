@@ -109,7 +109,6 @@
         table.on('tool(role_list)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
-                /*WeAdminDel("{:url('admin_delete')}?id="+data.id);*/
                 layer.confirm('你确定要删除吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function(){
