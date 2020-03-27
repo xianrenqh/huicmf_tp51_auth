@@ -7,7 +7,6 @@
  * Info:
  */
 namespace app\index\controller;
-
 class Index{
     
     public function index()
@@ -18,5 +17,6 @@ class Index{
         $description = $site['site_description'];
         include template('index','index');
     }
+    
     
 }

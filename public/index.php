@@ -17,6 +17,9 @@ require __DIR__ . '/../thinkphp/base.php';
 // 定义目录分隔符
 define('DS', DIRECTORY_SEPARATOR);
 
+// 定义根目录
+define('ROOT_PATH', __DIR__ . DS . '..' . DS);
+
 //前端JS,IMG,CSS等URL地址
 define('STATIC_URL', DS.'static'.DS.'index'.DS);
 
