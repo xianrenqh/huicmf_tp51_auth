@@ -1,0 +1,55 @@
+{include file='../application/admin/view/header.html'/}
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">添加TAG</label>
+            <div class="layui-input-block">
+                <span class="we-red">* 支持添加多个，每个tag之间请用逗号分隔</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>TAG名称
+            </label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="tags" id="tags" cols="50" rows="10" lay-verify="required"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <button class="layui-btn"  lay-submit=""type="submit" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='../application/admin/view/footer.html'/}
+
+<script>
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('add')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

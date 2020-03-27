@@ -276,7 +276,7 @@ function template($module = '', $template = 'index')
 {
     if(!$module) $module = 'index';
     $template_c = Env::get('runtime_path').$module.DIRECTORY_SEPARATOR;
-    $template_path = !defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
+    $template_path = !defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.get_config('site_theme').DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
     $filename = $template.'.html';
     $tplfile = $template_path.$filename;
     if(!is_file($tplfile)) {

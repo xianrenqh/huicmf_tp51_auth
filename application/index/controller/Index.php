@@ -7,7 +7,6 @@
  * Info:
  */
 namespace app\index\controller;
-use think\Env;
 
 class Index{
     

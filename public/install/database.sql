@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 25/03/2020 16:29:49
+ Date: 27/03/2020 10:01:23
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585094903, '127.0.0.1', 1492186163, 1583655724, '6bee97b9-e4c7-4e27-b710-3bb69196851e', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585267531, '127.0.0.1', 1492186163, 1583655724, '43530efe-c639-4529-b0bd-a8c725758094', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -122,7 +122,7 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
@@ -154,7 +154,7 @@ INSERT INTO `hui_auth_rule` VALUES (24, 'file', 4, 'general.database/restore', '
 INSERT INTO `hui_auth_rule` VALUES (25, 'file', 0, 'modules', '模块管理', 'icon-cascades', '', '', 1, 1578529506, 1584759866, 10, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (26, 'file', 25, 'link/index', '友情链接管理', 'icon-round_link_fill', '', '', 1, 1578529679, 1578876536, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (27, 'file', 1, 'general.config/index', '系统设置', 'icon-repairfill', '', '', 1, 1578529853, 1578529870, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (28, 'file', 25, 'file/index', '文件管理器', 'icon-form_fill_light', '', '', 1, 1578529983, 1578886060, 99, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (28, 'file', 25, 'file/index', '文件管理器', 'icon-form_fill_light', '', '', 1, 1578529983, 1578886060, 98, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (29, 'file', 27, 'general.config/update', '修改设置', 'icon-round_text_fill', '', '', 0, 1578530130, 0, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (30, 'file', 27, 'general.config/public_check_ftp', '测试FTP连接', 'icon-round_text_fill', '', '', 0, 1578623211, 1578623224, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (31, 'file', 4, 'general.database/optimize', '优化表', 'icon-round_text_fill', '', '', 0, 1578623434, 1578623499, 3, 'normal');
@@ -164,7 +164,7 @@ INSERT INTO `hui_auth_rule` VALUES (34, 'file', 27, 'general.config/public_mail_
 INSERT INTO `hui_auth_rule` VALUES (35, 'file', 28, 'file/edit', '编辑文件', 'icon-round_text_fill', '', '', 0, 1578879148, 0, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (36, 'file', 28, 'file/del', '删除文件', 'icon-round_text_fill', '', '', 0, 1578879186, 0, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (37, 'file', 28, 'file/down', '下载文件', 'icon-round_text_fill', '', '', 0, 1578879207, 0, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (38, 'file', 25, 'upload_test/index', '文件上传测试', 'icon-round_text_fill', '', '', 1, 1579048846, 1579048937, 98, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (38, 'file', 25, 'upload_test/index', '文件上传测试', 'icon-round_text_fill', '', '', 1, 1579048846, 1579048937, 99, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (39, 'file', 26, 'link/add', '添加友情链接', 'icon-round_text_fill', '', '', 0, 1583654505, 1583656187, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (40, 'file', 26, 'link/edit', '修改友情链接', 'icon-round_text_fill', '', '', 0, 1583654520, 1583656192, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (41, 'file', 26, 'link/delete', '删除友情链接', 'icon-round_text_fill', '', '', 0, 1583654534, 1583656196, 3, 'normal');
@@ -180,11 +180,15 @@ INSERT INTO `hui_auth_rule` VALUES (53, 'file', 49, 'general.config/user_config_
 INSERT INTO `hui_auth_rule` VALUES (54, 'file', 25, 'pay/index', '支付模块', 'icon-rechargefill', '', '', 1, 1584837226, NULL, 97, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (55, 'file', 54, 'pay/edit', '编辑支付模块', 'icon-round_text_fill', '', '', 0, 1584857404, NULL, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (56, 'file', 0, 'content/index', '内容管理', 'icon-calendar', '', '', 1, 1585021064, 1585021210, 1, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (57, 'file', 56, 'category/index', '分类管理', 'icon-ticket_fill', '', '', 1, 1585021152, 1585028819, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (57, 'file', 56, 'category/index', '分类管理', 'icon-ticket_fill', '', '', 1, 1585021152, 1585028819, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (58, 'file', 57, 'category/add', '添加分类', 'icon-round_text_fill', '', '', 0, 1585028951, NULL, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (59, 'file', 57, 'category/edit', '修改分类', 'icon-round_text_fill', '', '', 0, 1585028964, 1585028971, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (60, 'file', 57, 'category/delete', '删除分类', 'icon-round_text_fill', '', '', 0, 1585028985, NULL, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (61, 'file', 57, 'category/order', '排序分类', 'icon-round_text_fill', '', '', 0, 1585029001, NULL, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (62, 'file', 56, 'tag/index', 'TAG管理', 'icon-tagfill', '', '', 1, 1585269162, NULL, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (63, 'file', 62, 'tag/add', '添加tag', 'icon-round_text_fill', '', '', 0, 1585270667, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (64, 'file', 62, 'tag/edit', '修改tag', 'icon-round_text_fill', '', '', 0, 1585270680, NULL, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (65, 'file', 62, 'tag/delete', '删除tag', 'icon-round_text_fill', '', '', 0, 1585270695, NULL, 3, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner
@@ -340,5 +344,32 @@ CREATE TABLE `hui_pay_mode`  (
 -- ----------------------------
 INSERT INTO `hui_pay_mode` VALUES (1, '【官方】支付宝', 'alipay.png', '支付宝新版在线支付插件，要求PHP版本&gt;=5.5 .', '{\\\"app_id\\\":\\\"2018021002172596\\\",\\\"merchant_private_key\\\":\\\"MIIEowIBAAKCAQEApPbtJv5Xsd9+\\\\/U8UJqZnAfVt76x0UQ631hjMKZ9mVn5rA4aAKypEuxupnmLsUX61tVIGXWd+bLh0fGJEOL9VGzDypneilqJ4maS9g\\\\/htZZq8o8w6oXpEWFPBvaT46y0hI+QN9g34JefK00UvyrVrE1EzjRPCt\\\\/gSZLWRgrA8tBAmfXtgzEJg+OMtDjhftAX1XfpvZ0i\\\\/07g2a+ZI0KjOvnr9GEW6LH0agUOwe5QIaH\\\\/vjo+9A2tvI4Lto1q\\\\/AKzDOjyAaGgwiadTG\\\\/wOXwENrVGcgOtSgkiftpi55rlJLy1sxA3GGZl4TPZ6qbYYzD2CuRoN3kcupXFEjRLmFNJnbQIDAQABAoIBAFmTqBVLeU0iIm\\\\/kd\\\\/nA1CBxKCBEUekOB+9fCcX0Q3rmLK\\\\/+YiyOSEId9E4IQ3DBUGRERSaFI1ZgFwjPx2HVK56XRrv0LLqFQN2VYj9+L9FDY\\\\/nB1XiHzwLzgDm9klkJ6Xv2w0oALeZPZoiwghIdzyXvKwIJX+vL7hj3qyr\\\\/Dgdr+mZ+PMr0n23EgKCR1ihwBY\\\\/vpvpPeJoucgKp3JoXJunRtR7yfptt5UY0qeW7e1JiTEt3V9eAehxNUa2\\\\/sBh2LWgU91oJ8NPJ3a8sZfydTJ734Icdi\\\\/hItpPxMl5AhhVvImeU8B4L7NMVztX9u+S0V1oLT+cIZ08YOXb+ltNEkdUCgYEA00M9T8K2DUchiaRI+Fl+3XTTnS8qBteVc4TA7DHs9Cm1U+aK\\\\/fdy\\\\/18NaICEtT2UbhtZB+Q+oL\\\\/x8TGEBusO7KmvUCO3JXPE0RMwsSIDvN1oMJ+AAj\\\\/4jnDVI9Es6ChkExrz1JdBAoDLfvY+m+woqPwbCczifJRvrdI7qimlWUMCgYEAx+XSDVEZrAWxODiMKYlmcQTGD2bAzZcJOtAZM+ApZgXYLYJjJDaeU2p60khhrWB43Os6Ty6Nf6nQ+xlXCHq+JU3qBsoui2LO\\\\/tJ10tFzI3nWGlkQMOrl4EAXAF\\\\/HwLz4lbcPzXKTqFNYoJ3cMxZG0TB\\\\/55mpBK6JLXpoLhJqGY8CgYEAj9x1396jwh7yA5zP4+5tqbhocd0wLUCZEPURusW0qf\\\\/M7rlLZO4gbS35H3SE6jZo4SHWWr1euHB8\\\\/NXPJjbjDt3t+BCaIvLWz9jVi4myKeZLkPDMZrvRMo47VgyXG\\\\/CFVU1BRT9Kkb3K1UYyFFOYzJoAf4f5owQhmKhU4OdDJakCgYBnP2MhEbSKz13bxglPIvLQiUCrj80h41MXF4kM7Ek1susXhnMirztTpnnNxyj8XgnPQYgagdcAC3wvVcVIUe2IYxfvbdpgkCaOI7JLs3ce6b0WWs4sFgeprjCzNsV73Z8f5S+6U+XEWVg7jY3ArU7imYRW4V0VV\\\\/jujnzk3woCLQKBgBrMZ1cf3dj50w\\\\/oDGQfAHpwCPStmn9ECq0Rw9y0kutJSs+0xRLEOPYVue2kA5bY3bFjBFZPCcOojvYF8rJKkUGHHN420DckDiTviWz+71AzvPSDnOL+dyVMi1Ab4EY8tboD+bj2ebTIjWwBS4bwNGhejMVbVUzBLcoUtfLMkaf7\\\",\\\"alipay_public_key\\\":\\\"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPbtJv5Xsd9+\\\\/U8UJqZnAfVt76x0UQ631hjMKZ9mVn5rA4aAKypEuxupnmLsUX61tVIGXWd+bLh0fGJEOL9VGzDypneilqJ4maS9g\\\\/htZZq8o8w6oXpEWFPBvaT46y0hI+QN9g34JefK00UvyrVrE1EzjRPCt\\\\/gSZLWRgrA8tBAmfXtgzEJg+OMtDjhftAX1XfpvZ0i\\\\/07g2a+ZI0KjOvnr9GEW6LH0agUOwe5QIaH\\\\/vjo+9A2tvI4Lto1q\\\\/AKzDOjyAaGgwiadTG\\\\/wOXwENrVGcgOtSgkiftpi55rlJLy1sxA3GGZl4TPZ6qbYYzD2CuRoN3kcupXFEjRLmFNJnbQIDAQAB\\\"}', 1, '1.0', 'alipay', 'alipay');
 INSERT INTO `hui_pay_mode` VALUES (2, '【官方】微信', 'wechat.png', '微信支付提供公众号支付、APP支付、扫码支付、刷卡支付等支付方式。', '{\\\"mch_id\\\":\\\"1557478971\\\",\\\"app_id\\\":\\\"wxc72aa7912f3c5715\\\",\\\"app_secret\\\":\\\"6hnAAcdrddecSgh9KB3542PvXLuI852a\\\",\\\"key\\\":\\\"4b128d4ba0af9f248833ab6b1fad0ebb\\\"}', 1, '1.0', 'wechat', 'wechat');
+
+-- ----------------------------
+-- Table structure for hui_tag
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_tag`;
+CREATE TABLE `hui_tag`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `tag` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `total` mediumint(9) UNSIGNED NOT NULL DEFAULT 0,
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `times` int(10) DEFAULT NULL COMMENT '次数',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `tag`(`tag`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for hui_tag_content
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_tag_content`;
+CREATE TABLE `hui_tag_content`  (
+  `modelid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `catid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `aid` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `tagid` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  INDEX `tag_index`(`modelid`, `aid`) USING BTREE,
+  INDEX `tagid_index`(`tagid`) USING BTREE
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 SET FOREIGN_KEY_CHECKS = 1;

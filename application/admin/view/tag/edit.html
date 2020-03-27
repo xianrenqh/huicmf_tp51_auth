@@ -1,0 +1,58 @@
+{include file='../application/admin/view/header.html'/}
+
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>TAG名称
+            </label>
+            <div class="layui-input-inline w500">
+                <input type="text" id="tag" name="tag" value="{$data.tag}" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>文档数
+            </label>
+            <div class="layui-input-inline w500">
+                <input type="text" id="total" name="total" value="{$data.total}" autocomplete="off" class="layui-input readonly-bg" lay-verify="required" readonly>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="id" value="{$data.id}">
+            <button class="layui-btn"  lay-submit=""type="submit" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='../application/admin/view/footer.html'/}
+
+<script>
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

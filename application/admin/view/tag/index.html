@@ -1,0 +1,74 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+    .layui-table th {text-align: center}
+</style>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">内容管理</a><span lay-separator="">/</span>
+            <a><cite>TAG管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row demoTable" style="margin: 5px auto 15px">
+        <div class="weadmin-block">
+            <button class="layui-btn layui-btn-danger" onclick="hui_dels('id')"><i class="layui-icon layui-icon-delete"></i>批量删除</button>
+            <a class="layui-btn" onclick="WeAdminShow('添加TAG','{:url('add')}','800')" href="javascript:;"><i class="layui-icon layui-icon-add-circle-fine"></i> 添加TAG</a>
+            <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total">{$total}</span> 条</span>
+        </div>
+        <form method="post" action="{:url('delete')}" id="myform">
+            <table class="layui-table" style="text-align: center">
+                <thead>
+                <tr class="text-c">
+                    <th width="25"><input type="checkbox" lay-skin="primary"></th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>文档数</th>
+                    <th>点击次数</th>
+                    <th>添加时间</th>
+                    <th>管理操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td><input type="checkbox" value="{$vo.id}" name="id[]" ></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.tag}</td>
+                    <td>{$vo.total}</td>
+                    <td>{$vo.times}</td>
+                    <td>{$vo.inputtime||date='Y-m-d H:i:s'}</td>
+                    <td class="td-manage">
+                        <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="edit('{$vo.id}')">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="del('{$vo.id}')">删除</a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </form>
+        <div class="mws-panel-content">
+            <div class="page">
+                {$list->render()|raw}
+            </div>
+        </div>
+    </div>
+</div>
+{include file='footer'/}
+</body>
+</html>
+<script>
+    function del(id){
+        WeAdminDel("{:url('delete')}?id="+id);
+    }
+    function edit(id) {
+        WeAdminShow("编辑","{:url('edit')}?id="+id,'500','300');
+    }
+    function add() {
+        WeAdminShow("增加","{:url('add')}",'800');
+    }
+</script>
