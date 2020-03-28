@@ -56,6 +56,53 @@ class Upload extends Common
         }
     }
     
+    /**
+     * 图像裁剪
+     */
+    public function img_cropper()
+    {
+        $yzmcms_path = APP_PATH;
+        if(input('post.filepath')){
+            $x = input('post.x');
+            $y = input('post.y');
+            $w = input('post.w');
+            $h = input('post.h');
+            $image = Image::open('.'.input('post.filepath'));
+            //$filename = date("ymdhis").rand(100,999);
+            $filename = getMillisecond().rand(100,999);
+            $filetype = fileext($_POST['filepath']);
+            //判断是否存在文件夹，不存在就创建
+            $filepath = dir_create(".".get_config('file_path').date('Ymd/',time())."/");
+            $newfile = ".".get_config('file_path').date('Ymd/',time()).$filename.".".$filetype;
+            $fileinfo = $image->crop($w, $h,$x,$y)->save($newfile);
+            if($fileinfo){
+                return json(['status'=>1,'filepath'=>substr_replace($newfile,"",0,1)]);
+            }else{
+                return json(['status'=>0]);
+            }
+        }else{
+            $filepath = base64_decode(input('get.f'));
+            if(strpos($filepath, 'ttp:')) showmsg('请选择本地已存在的图像！', 'stop');
+            $spec = isset($_GET['spec']) ? intval($_GET['spec']) : 1;
+            $cid = isset($_GET['cid']) ? $_GET['cid'] : 'thumb';
+            switch ($spec){
+                case 1:
+                    $spec = '3 / 2';
+                    break;
+                case 2:
+                    $spec = '4 / 3';
+                    break;
+                case 3:
+                    $spec = '1 / 1';
+                    break;
+                default:
+                    $spec = '3 / 2';
+            }
+            return $this->fetch('upload_test/img_cropper',['filepath'=>$filepath,'spec'=>$spec,'cid'=>$cid]);
+        }
+        
+    }
+    
     
     /**
      * 上传框

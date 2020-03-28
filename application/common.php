@@ -64,6 +64,37 @@ function getArray($arr){
 }
 
 /**
+ * 创建目录
+ *
+ * @param   string $path  路径
+ * @param   string $mode  属性
+ * @return  string 如果已经存在则返回true，否则为flase
+ */
+function dir_create($path, $mode = 0777) {
+    if(is_dir($path)) return TRUE;
+    $ftp_enable = 0;
+    $path = dir_path($path);
+    $temp = explode('/', $path);
+    $cur_dir = '';
+    $max = count($temp) - 1;
+    for($i=0; $i<$max; $i++) {
+        $cur_dir .= $temp[$i].'/';
+        if (@is_dir($cur_dir)) continue;
+        @mkdir($cur_dir, 0777,true);
+        @chmod($cur_dir, 0777);
+    }
+    return is_dir($path);
+}
+
+/*
+返回13位的时间戳
+*/
+function getMillisecond() {
+    list($t1, $t2) = explode(' ', microtime());
+    return (float)sprintf('%.0f',(floatval($t1)+floatval($t2))*1000);
+}
+
+/**
  * 获取系统配置信息
  * @param $key 键值，可为空，为空获取整个数组
  * @return array|string

@@ -1,0 +1,83 @@
+{include file='header'/}
+<link rel="stylesheet" href="__LIB__cropper/3.1.6/cropper.css">
+<body>
+<div class="weadmin-body">
+    <div class="container">
+        <img id="image" src="{$filepath}">
+    </div>
+    <!-- 图片预览 -->
+    <div class="preview">
+        <div class="preview_img small_lg"></div>
+        <div class="preview_img small_md"></div>
+        <div class="preview_img small_sm"></div>
+    </div>
+    <div class="clearfix"></div>
+    <form  action="" method="post" id="myform">
+        <input type="hidden" name="filepath" value="{$filepath}">
+        <input type="hidden" value="" name="x" />
+        <input type="hidden" value="" name="y" />
+        <input type="hidden" value="" name="w" />
+        <input type="hidden" value="" name="h" />
+        <input type="hidden" name="new_filename" id="new_filename">
+        <div class="bottom_button">
+            <input type="button" class="layui-btn" id="determine" onclick="dosbumit()" value="&nbsp;&nbsp;确定&nbsp;&nbsp;">
+            <input type="button" class="layui-btn layui-btn-normal" id="cancel" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+<script type="text/javascript" src="__LIB__cropper/3.1.6/cropper.js"></script>
+</body>
+</html>
+<script>
+    layui.use(['form','layer'], function() {
+        var form = layui.form, layer = layui.layer;
+        index = parent.layer.getFrameIndex(window.name);
+        $('#cancel').on('click', function(){
+            parent.layer.close(index);
+        });
+    });
+    init_crop();
+    function init_crop(){
+        $(".preview_img").html('<img src="' + $("#image").attr('src')  + '">');
+        $('.container > img').cropper({
+            aspectRatio: "{$spec}",
+            viewMode : 1,
+            preview: '.preview_img',
+            crop: function(data) {
+            $("input[name='x']").val(data.x);
+            $("input[name='y']").val(data.y);
+            $("input[name='w']").val(data.width);
+            $("input[name='h']").val(data.height);
+        }
+    })
+    }
+
+    function dosbumit(){
+        $.ajax({
+            type: 'POST',
+            url: "{:url('img_cropper')}",
+            data: $("#myform").serialize(),
+            dataType: "json",
+            success: function (msg) {
+                if(msg.status == 1){
+                    $("#new_filename").val(msg.filepath);
+                    layer.msg('保存成功!', {icon: 6,time:1000});
+                    setTimeout(cropper_close, 1500);
+                }else{
+                    layer.alert('保存失败');
+                }
+            }
+        })
+        return false;
+    }
+
+
+    function cropper_close(){
+        var new_filename = $("#new_filename").val();
+        parent.$("#{$cid}").val(new_filename);
+        parent.$("#{$cid}_src").attr("src", new_filename);
+        parent.layer.close(index);
+    }
+</script>

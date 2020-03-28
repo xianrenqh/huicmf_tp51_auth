@@ -15,9 +15,9 @@ Route::get('think', function () {
 
 Route::get('hello/:name', 'index/hello');
 
-Route::rule('admin',function(){
+/*Route::rule('admin',function(){
     return '404 Not Found';
-});
+});*/
 
 return [
 
