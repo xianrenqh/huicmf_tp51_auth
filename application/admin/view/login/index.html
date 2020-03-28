@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="__STATIC_ADMIN__css/font.css">
     <link rel="stylesheet" href="__STATIC_ADMIN__css/weadmin.css">
     <link rel="stylesheet" href="__STATIC_ADMIN__css/style.css">
+    <style>
+        #embed-captcha {margin: 0 auto;}
+        .show {display: block;}
+        .hide {display: none;}
+        #notice {color: red;}
+    </style>
 </head>
 <body class="login-bg" style="background: url({:url('getbing_bgpic')})">
 
@@ -24,10 +30,16 @@
         <hr class="hr15">
         <input name="password" id="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" required="required">
 
-        {if get_config('login_code')}
+        {if get_config('login_code')==1}
         <hr class="hr15">
         <img src="{:url('verify')}" id="imgVcode" alt="captcha" title="点击刷新验证码" border="0" class="verifyimg" onclick="this.src=this.src+'?'" style="float:right;height: 50px;"/>
         <input type="text" name="code" id="code" class="login_input verify_input" lay-verify="required"  placeholder="验证码" required="required" style="float:left; width: 40%">
+        {/if}
+        {if get_config('login_code')==2}
+        <hr class="hr15">
+        <div id="embed-captcha"></div>
+        <p id="wait" class="show">正在加载验证码......</p>
+        <p id="notice" class="hide">请先完成验证</p>
         {/if}
 
         <hr class="hr20">
@@ -42,13 +54,55 @@
 <div id="focus_ovr" data-bm="21"></div>
 <!-- 底部结束 -->
 {include file='footer'/}
+<script src="__STATIC_ADMIN__js/gt.js"></script>
 <script>
+    {php}if(get_config('login_code')==2){ {/php}
+    var handlerEmbed = function (captchaObj) {
+        $("#embed-submit").click(function (e) {
+            var validate = captchaObj.getValidate();
+            if (!validate) {
+                $("#notice")[0].className = "show";
+                setTimeout(function () {
+                    $("#notice")[0].className = "hide";
+                }, 2000);
+                e.preventDefault();
+            }
+        });
+        // 将验证码加到id为captcha的元素里，同时会有三个input的值：geetest_challenge, geetest_validate, geetest_seccode
+        captchaObj.appendTo("#embed-captcha");
+        captchaObj.onReady(function () {
+            $("#wait")[0].className = "hide";
+        });
+    };
+    $.ajax({
+        // 获取id，challenge，success（是否启用failback）
+        url: "{:url('StartCaptchaServlet')}?t=" + (new Date()).getTime(), // 加随机数防止缓存
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+            // 使用initGeetest接口
+            // 参数1：配置参数
+            // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+            initGeetest({
+                gt: data.gt,
+                width: '100%',
+                challenge: data.challenge,
+                new_captcha: data.new_captcha,
+                product: "popup", // 产品形式，包括：float，embed，popup，bind。注意只对PC版验证码有效
+                offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+            }, handlerEmbed);
+        }
+    });
+    {php}}{/php}
     function dosub() {
         $.post("{:url('index')}",{
             username:$('#username').val(),
             password:$('#password').val(),
             code:$('#code').val(),
             dosubmit:$('#dosubmit').val(),
+            geetest_challenge:$("input[name='geetest_challenge']").val(),
+            geetest_validate:$("input[name='geetest_validate']").val(),
+            geetest_seccode:$("input[name='geetest_seccode']").val(),
         },function (res) {
             if(res.status=='1001'){
                 $('#imgVcode').attr("src","{:url('verify')}"+"?" + Math.random());
@@ -58,6 +112,9 @@
                 layer.msg(res.msg,{'icon':2},function () {
                     location.reload();
                 });
+            }
+            if(res.status=='1004'){
+                layer.msg(res.msg,{'icon':2});
             }
             if(res.status==1){
                 layer.msg(res.msg,{'icon':1},function () {

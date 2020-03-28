@@ -15,7 +15,7 @@ use think\Db;
 use think\Request;
 use think\facade\{Cookie,Session,Cache};
 use app\admin\model\AdminLog;
-
+use lib\GeetestLib;
 
 class Login extends Controller
 {
@@ -31,14 +31,38 @@ class Login extends Controller
         if ($this->isLogin()) {
             $this->success("你已经登录，无需重复登录",$url);
         }
-    
         $captcha = new Captcha();
         if(input('post.dosubmit')){
-            if(get_config('login_code')){
+            
+            //字母验证码
+            if(get_config('login_code')==1){
                 if( !captcha_check(input('code') )){
                     return json(['status'=>1001,'msg'=>'验证码输出错误，请重新输入！！！']);
                 }
             }
+    
+            //极验验证码验证
+            if(get_config('login_code')==2){
+                $GtSdk = new GeetestLib(get_config('JY_captcha_id'), get_config('JY_captcha_key'));
+                $data_jiyan = array(
+                    "user_id" => session('user_id'), # 网站用户id
+                    "client_type" => "web", #web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+                    "ip_address" => ip() # 请在此处传输用户请求验证时所携带的IP
+                );
+                if (session('gtserver') == 1) {
+                    $result = $GtSdk->success_validate(input('post.geetest_challenge'),input('post.geetest_validate'),input('post.geetest_seccode'), $data_jiyan);
+                    if(!$result){
+                        return json(['status'=>1004,'msg'=>'极验验证失败，请重新验证']);
+                    }
+                }else{
+                    //服务器宕机,走failback模式
+                    $result = $GtSdk->fail_validate(input('post.geetest_challenge'),input('post.geetest_validate'),input('post.geetest_seccode'));
+                    if(!$result){
+                        return json(['status'=>1004,'msg'=>'极验验证失败，请重新验证']);
+                    }
+                }
+            }
+            
             $user_info = Db::name('admin')->where('username',input('post.username'))->find();
             if(empty($user_info['username'])){
                 return json(['status'=>1002,'msg'=>'用户名或密码错误！']);
@@ -114,6 +138,23 @@ class Login extends Controller
         $this->success('退出成功！', 'login/index');
     }
     
+    
+    /**
+     * 加载极验验证码
+     */
+    public function StartCaptchaServlet()
+    {
+        $GtSdk = new GeetestLib(get_config('JY_captcha_id'), get_config('JY_captcha_key'));
+        $data = array(
+            "user_id" => "test", # 网站用户id
+            "client_type" => "web", #web:电脑上的浏览器；h5:手机上的浏览器，包括移动应用内完全内置的web_view；native：通过原生SDK植入APP应用的方式
+            "ip_address" => ip() # 请在此处传输用户请求验证时所携带的IP
+        );
+        $status = $GtSdk->pre_process($data, 1);
+        session('gtserver',$status);
+        session('user_id',$data['user_id']);
+        echo $GtSdk->get_response_str();
+    }
 
     
     /**

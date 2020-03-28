@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 27/03/2020 10:01:23
+ Date: 28/03/2020 14:57:47
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585267531, '127.0.0.1', 1492186163, 1583655724, '43530efe-c639-4529-b0bd-a8c725758094', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585378498, '123.149.20.25', 1492186163, 1583655724, '9f3fcc16-5825-4f8e-abf0-9db4e480abd2', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -264,7 +264,7 @@ CREATE TABLE `hui_config`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `type`(`type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hui_config
@@ -285,7 +285,7 @@ INSERT INTO `hui_config` VALUES (13, 'mail_user', 4, 'SMTP服务器的用户帐�
 INSERT INTO `hui_config` VALUES (14, 'mail_pass', 4, 'SMTP服务器的用户密码', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (15, 'mail_inbox', 4, '收件邮箱地址', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (16, 'mail_auth', 4, 'AUTH LOGIN验证', '1', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (17, 'login_code', 3, '后台登录验证码', '0', 'radio', '', 1, '');
+INSERT INTO `hui_config` VALUES (17, 'login_code', 3, '后台登录验证码', '2', 'radio', '', 1, '');
 INSERT INTO `hui_config` VALUES (18, 'upload_maxsize', 2, '允许上传附件大小', '3048', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (19, 'watermark_enable', 2, '是否开启图片水印', '0', 'radio', '{\"0\":\"否\",\"1\":\"是\"}', 1, '');
 INSERT INTO `hui_config` VALUES (20, 'watermark_name', 2, '水印图片名称', 'mark.png', 'string', '', 1, '');
@@ -300,6 +300,8 @@ INSERT INTO `hui_config` VALUES (28, 'ftp_pwd', 2, 'FTP密码', 'sJ65wTnhmYPe2k5
 INSERT INTO `hui_config` VALUES (29, 'ftp_url', 2, '外链url地址', 'http://222.com', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (30, 'file_path', 2, '文件保存路径', '/uploads/', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (31, 'site_qq', 99, '站长QQ', '123456', 'textarea', '', 1, '');
+INSERT INTO `hui_config` VALUES (32, 'JY_captcha_id', 3, '极验验证码ID', '48a6ebac4ebc6642d68c217fca33eb4d', 'textarea', ' ', 1, NULL);
+INSERT INTO `hui_config` VALUES (33, 'JY_captcha_key', 3, '极验验证码KEY', '4f1c085290bec5afdc54df73535fc361', 'textarea', ' ', 1, NULL);
 
 -- ----------------------------
 -- Table structure for hui_link

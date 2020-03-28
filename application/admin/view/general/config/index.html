@@ -131,10 +131,25 @@
                         <tr>
                             <td>后台登录验证码</td>
                             <td>
-                                <input type="radio" name="login_code" value="1" title="字母验证码" {if ($data.login_code==1)}checked{/if}>
-                                <input type="radio" name="login_code" value="0" title="关闭" {if ($data.login_code==0)}checked{/if}>
+                                <input lay-filter="captcha_mode" type="radio" name="login_code" value="1" title="字母验证码" {if ($data.login_code==1)}checked{/if}>
+                                <input lay-filter="captcha_mode" type="radio" name="login_code" value="2" title="极验验证码" {if ($data.login_code==2)}checked{/if}>
+                                <input lay-filter="captcha_mode" type="radio" name="login_code" value="0" title="关闭" {if ($data.login_code==0)}checked{/if}>
                             </td>
                             <td>login_code</td>
+                        </tr>
+                        <tr class="captcha_mode captcha_2" {if ($data.login_code!='2')} style="display:none"{/if}>
+                            <td>极验ID</td>
+                            <td>
+                                <input type="text"  name="JY_captcha_id" value="{$data.JY_captcha_id}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td>JY_captcha_id</td>
+                        </tr>
+                        <tr class="captcha_mode captcha_2" {if ($data.login_code!='2')} style="display:none"{/if}>
+                            <td>极验KEY</td>
+                            <td>
+                                <input type="text"  name="JY_captcha_key" value="{$data.JY_captcha_key}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td>JY_captcha_key</td>
                         </tr>
                         </tbody>
                     </table>
@@ -367,8 +382,11 @@
                 ,'站点根网址格式为：http://xiaohuihui.net.cn/，请以“/”结尾！'
             ]
         });
+        form.on('radio(captcha_mode)', function(data){
+            $('.captcha_mode').hide();
+            $('.captcha_'+ data.value).show();
+        });
         form.on('select(upload_mode)', function(data){
-            console.log(data.value);
             $('.upload_mode').hide();
             $('.mode_'+ data.value).show();
         });
