@@ -1,20 +1,34 @@
 {include file='header'/}
-
 <body>
 <div class="weadmin-body">
     <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
         <div class="layui-form-item">
-            <label class="layui-form-label">添加TAG</label>
+            <label class="layui-form-label">
+                <span class="we-red">*</span>模型名称
+            </label>
             <div class="layui-input-block">
-                <span class="we-red">* 支持添加多个，每个tag之间请用逗号分隔</span>
+                <input type="text" id="name" name="name" value="" lay-verify="required" autocomplete="off" class="layui-input" >
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="we-red">*</span>TAG名称
+                <span class="we-red">*</span>模型表名
             </label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea" name="tags" id="tags" cols="50" rows="10" lay-verify="required"></textarea>
+                <input type="text" id="tablename" name="tablename" value="" lay-verify="required" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">模型简介</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="description" id="description" lay-verify="required"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="enabled" class="layui-form-label">禁用</label>
+            <div class="layui-input-block" id="enabled">
+                <input type="radio" name="disabled" value="1" title="是">
+                <input type="radio" name="disabled" value="0" title="否" checked>
             </div>
         </div>
 

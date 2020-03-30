@@ -1,0 +1,59 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>导入模型
+            </label>
+            <div class="layui-input-inline" style="width: 45%">
+                <input type="text" name="demo1"  value=""  id="demo1" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn layui-btn-normal" id="test8"><i class="layui-icon">&#xe67c;</i>选择文件</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <span class="we-red">注意： 如现有的数据与导入的数据冲突，导入数据会覆盖现有数据！</span>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="dosubmit" value="1">
+                <button type="button" class="layui-btn"  id="test9">开始上传</button>
+                <button class="layui-btn layui-btn-primary" type="button" onclick="hui_close()">取消</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+{include file='footer'/}
+<script>
+    layui.use(['form','upload'], function() {
+        var form = layui.form,
+            upload = layui.upload;
+        form.render();
+        upload.render({
+            elem: '#test8'
+            ,url: "{:url('import')}"
+            ,auto: false
+            ,exts:'model'
+            ,field:"Filedata"
+            ,bindAction: '#test9'
+            ,choose:function (obj) {
+                obj.preview(function(index, file, result){
+                    $("#demo1").val(file.name);
+                });
+            }
+            ,done: function(res){
+                layer.msg(res.msg,{anim :1,time :1500},function () {
+                    hui_close();
+                    parent.location.reload();
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

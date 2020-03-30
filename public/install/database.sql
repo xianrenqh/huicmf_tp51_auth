@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 28/03/2020 14:57:47
+ Date: 30/03/2020 16:38:58
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,35 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585378498, '123.149.20.25', 1492186163, 1583655724, '9f3fcc16-5825-4f8e-abf0-9db4e480abd2', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585379017, '127.0.0.1', 1492186163, 1583655724, 'bf0aae47-2d96-4a86-a27b-30d1d38e8090', 'normal');
+
+-- ----------------------------
+-- Table structure for hui_admin_copy1
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_admin_copy1`;
+CREATE TABLE `hui_admin_copy1`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户名',
+  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
+  `salt` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码盐',
+  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '电子邮箱',
+  `loginfailure` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '失败次数',
+  `logintime` int(10) DEFAULT NULL COMMENT '登录时间',
+  `loginip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录IP',
+  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
+  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `token` varchar(59) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Session标识',
+  `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'normal' COMMENT '状态',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of hui_admin_copy1
+-- ----------------------------
+INSERT INTO `hui_admin_copy1` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585536528, '123.149.20.25', 1492186163, 1583655724, 'b31919c3-7880-47bc-8c3f-c00b6c50a6a8', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -62,6 +90,47 @@ CREATE TABLE `hui_admin_log`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for hui_article
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_article`;
+CREATE TABLE `hui_article`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `catid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `title` varchar(180) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `seo_title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `updatetime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `keywords` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `click` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `copyfrom` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `thumb` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `flag` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '1置顶,2头条,3特荐,4推荐,5热点,6幻灯,7跳转',
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `system` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `listorder` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `groupids_view` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读权限',
+  `readpoint` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读收费',
+  `is_push` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否百度推送',
+  `test` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `status`(`status`, `listorder`) USING BTREE,
+  INDEX `catid`(`catid`, `status`) USING BTREE,
+  INDEX `userid`(`userid`, `status`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of hui_article
+-- ----------------------------
+INSERT INTO `hui_article` VALUES (1, 2, 1, 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架2.0', 'YZMPHP轻量级开源框架2.0_YzmCMS - 演示站', 1526387722, 1577414952, 'PHP', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', 103, '<p><img src=\"/uploads/ueditor/image/20191122/1574408124438686.jpg\" title=\"YZMPHP轻量级开源框架2.0\" alt=\"YZMPHP轻量级开源框架2.0\"/></p><p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2至7.2之间的所有版本</p><p><br/></p><p><strong>YZMPHP 2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '/uploads/201911/22/191122105427318.jpg', 'http://yzmcms2.cn/index/index/show/catid/2/id/1.html', '', 1, 1, 10, 0, 0, 0, '');
+INSERT INTO `hui_article` VALUES (2, 2, 1, 'yzmcms', '袁志蒙', 'YzmCMS v5.4正式版发布', 'YzmCMS v5.4正式版发布_YzmCMS - 演示站', 1571500800, 1577350500, '文章,PHP', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', 107, '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '/uploads/201911/22/191122082530443.jpg', 'http://yzmcms2.cn/index/index/show/catid/2/id/2.html', '', 1, 1, 10, 0, 0, 0, '');
 
 -- ----------------------------
 -- Table structure for hui_auth_group
@@ -122,7 +191,7 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
@@ -174,21 +243,32 @@ INSERT INTO `hui_auth_rule` VALUES (44, 'file', 43, 'banner/add', '添加幻灯�
 INSERT INTO `hui_auth_rule` VALUES (45, 'file', 43, 'banner/edit', '修改幻灯片', 'icon-round_text_fill', '', '', 0, 1584002307, 0, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (46, 'file', 43, 'banner/delete', '删除幻灯片', 'icon-round_text_fill', '', '', 0, 1584002403, 0, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (49, 'file', 1, 'general.config/user_config', '自定义配置', 'icon-settings_light', '', '', 1, 1584774186, 1584774296, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (51, 'file', 49, 'general.config/user_config_add', '添加自定义配置', 'icon-round_text_fill', '', '', 0, 1584774803, NULL, 1, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (52, 'file', 49, 'general.config/user_config_edit', '修改自定义配置', 'icon-round_text_fill', '', '', 0, 1584774864, NULL, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (53, 'file', 49, 'general.config/user_config_delete', '删除自定义配置', 'icon-round_text_fill', '', '', 0, 1584774947, NULL, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (54, 'file', 25, 'pay/index', '支付模块', 'icon-rechargefill', '', '', 1, 1584837226, NULL, 97, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (55, 'file', 54, 'pay/edit', '编辑支付模块', 'icon-round_text_fill', '', '', 0, 1584857404, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (51, 'file', 49, 'general.config/user_config_add', '添加自定义配置', 'icon-round_text_fill', '', '', 0, 1584774803, 0, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (52, 'file', 49, 'general.config/user_config_edit', '修改自定义配置', 'icon-round_text_fill', '', '', 0, 1584774864, 0, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (53, 'file', 49, 'general.config/user_config_delete', '删除自定义配置', 'icon-round_text_fill', '', '', 0, 1584774947, 0, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (54, 'file', 25, 'pay/index', '支付模块', 'icon-rechargefill', '', '', 1, 1584837226, 0, 97, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (55, 'file', 54, 'pay/edit', '编辑支付模块', 'icon-round_text_fill', '', '', 0, 1584857404, 0, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (56, 'file', 0, 'content/index', '内容管理', 'icon-calendar', '', '', 1, 1585021064, 1585021210, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (57, 'file', 56, 'category/index', '分类管理', 'icon-ticket_fill', '', '', 1, 1585021152, 1585028819, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (58, 'file', 57, 'category/add', '添加分类', 'icon-round_text_fill', '', '', 0, 1585028951, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (58, 'file', 57, 'category/add', '添加分类', 'icon-round_text_fill', '', '', 0, 1585028951, 1585447788, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (59, 'file', 57, 'category/edit', '修改分类', 'icon-round_text_fill', '', '', 0, 1585028964, 1585028971, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (60, 'file', 57, 'category/delete', '删除分类', 'icon-round_text_fill', '', '', 0, 1585028985, NULL, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (61, 'file', 57, 'category/order', '排序分类', 'icon-round_text_fill', '', '', 0, 1585029001, NULL, 4, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (62, 'file', 56, 'tag/index', 'TAG管理', 'icon-tagfill', '', '', 1, 1585269162, NULL, 11, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (63, 'file', 62, 'tag/add', '添加tag', 'icon-round_text_fill', '', '', 0, 1585270667, NULL, 1, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (64, 'file', 62, 'tag/edit', '修改tag', 'icon-round_text_fill', '', '', 0, 1585270680, NULL, 2, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (65, 'file', 62, 'tag/delete', '删除tag', 'icon-round_text_fill', '', '', 0, 1585270695, NULL, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (60, 'file', 57, 'category/delete', '删除分类', 'icon-round_text_fill', '', '', 0, 1585028985, 0, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (61, 'file', 57, 'category/order', '排序分类', 'icon-round_text_fill', '', '', 0, 1585029001, 0, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (62, 'file', 56, 'tag/index', 'TAG管理', 'icon-tagfill', '', '', 1, 1585269162, 0, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (63, 'file', 62, 'tag/add', '添加tag', 'icon-round_text_fill', '', '', 0, 1585270667, 0, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (64, 'file', 62, 'tag/edit', '修改tag', 'icon-round_text_fill', '', '', 0, 1585270680, 0, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (65, 'file', 62, 'tag/delete', '删除tag', 'icon-round_text_fill', '', '', 0, 1585270695, 0, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (66, 'file', 56, 'sitemodel/index', '模型管理', 'icon-taoxiaopu', '', '', 1, 1585379423, 0, 12, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (67, 'file', 66, 'sitemodel/add', '添加模型', 'icon-round_text_fill', '', '', 0, 1585379779, 0, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (68, 'file', 66, 'sitemodel/edit', '修改模型', 'icon-round_text_fill', '', '', 0, 1585379795, 0, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (69, 'file', 66, 'sitemodel/delete', '删除模型', 'icon-round_text_fill', '', '', 0, 1585379814, 0, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (70, 'file', 66, 'model_field/index', '模型字段管理', 'icon-round_text_fill', '', '', 0, 1585379836, 1585450303, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (71, 'file', 66, 'sitemodel/export', '导出模型', 'icon-round_text_fill', '', '', 0, 1585379857, 0, 5, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (72, 'file', 66, 'sitemodel/import', '导入模型', 'icon-round_text_fill', '', '', 0, 1585379875, 0, 6, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (73, 'file', 70, 'model_field/add', '添加模型字段', 'icon-round_text_fill', '', '', 0, 1585450323, 0, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (74, 'file', 70, 'model_field/edit', '修改模型字段', 'icon-round_text_fill', '', '', 0, 1585450344, 0, 2, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (75, 'file', 70, 'model_field/delete', '删除模型字段', 'icon-round_text_fill', '', '', 0, 1585450360, 0, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (76, 'file', 70, 'model_field/order', '排序模型字段', 'icon-round_text_fill', '', '', 0, 1585450420, 0, 4, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner
@@ -225,6 +305,7 @@ DROP TABLE IF EXISTS `hui_category`;
 CREATE TABLE `hui_category`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父ID',
+  `modelid` int(3) DEFAULT NULL COMMENT '模型类型',
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '栏目类型',
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
@@ -245,7 +326,12 @@ CREATE TABLE `hui_category`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `weigh`(`weigh`, `id`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分类表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分类表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of hui_category
+-- ----------------------------
+INSERT INTO `hui_category` VALUES (1, 0, 1, '1', '新闻中心', 'xinwenzhongxin', '', '', '', '', '', '', 1585379114, 0, 0, '1', 'category_article', 'list_article', 'show_article', '');
 
 -- ----------------------------
 -- Table structure for hui_config
@@ -280,7 +366,7 @@ INSERT INTO `hui_config` VALUES (8, 'site_code', 1, '统计代码', '', 'text', 
 INSERT INTO `hui_config` VALUES (9, 'admin_prohibit_ip', 3, '禁止登录后台的IP', '', 'text', '', 1, '');
 INSERT INTO `hui_config` VALUES (10, 'mail_server', 4, 'SMTP服务器', 'smtp.exmail.qq.com', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (11, 'mail_port', 4, 'SMTP服务器端口', '465', 'string', '', 1, '');
-INSERT INTO `hui_config` VALUES (12, 'site_theme', 1, '模板风格', 'default', 'textarea', '', 1, NULL);
+INSERT INTO `hui_config` VALUES (12, 'site_theme', 1, '模板风格', 'default', 'textarea', '', 1, '');
 INSERT INTO `hui_config` VALUES (13, 'mail_user', 4, 'SMTP服务器的用户帐号', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (14, 'mail_pass', 4, 'SMTP服务器的用户密码', '', 'string', '', 1, '');
 INSERT INTO `hui_config` VALUES (15, 'mail_inbox', 4, '收件邮箱地址', '', 'string', '', 1, '');
@@ -300,8 +386,50 @@ INSERT INTO `hui_config` VALUES (28, 'ftp_pwd', 2, 'FTP密码', 'sJ65wTnhmYPe2k5
 INSERT INTO `hui_config` VALUES (29, 'ftp_url', 2, '外链url地址', 'http://222.com', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (30, 'file_path', 2, '文件保存路径', '/uploads/', 'string', ' ', 1, '');
 INSERT INTO `hui_config` VALUES (31, 'site_qq', 99, '站长QQ', '123456', 'textarea', '', 1, '');
-INSERT INTO `hui_config` VALUES (32, 'JY_captcha_id', 3, '极验验证码ID', '48a6ebac4ebc6642d68c217fca33eb4d', 'textarea', ' ', 1, NULL);
-INSERT INTO `hui_config` VALUES (33, 'JY_captcha_key', 3, '极验验证码KEY', '4f1c085290bec5afdc54df73535fc361', 'textarea', ' ', 1, NULL);
+INSERT INTO `hui_config` VALUES (32, 'JY_captcha_id', 3, '极验验证码ID', '48a6ebac4ebc6642d68c217fca33eb4d', 'textarea', ' ', 1, '');
+INSERT INTO `hui_config` VALUES (33, 'JY_captcha_key', 3, '极验验证码KEY', '4f1c085290bec5afdc54df73535fc361', 'textarea', ' ', 1, '');
+
+-- ----------------------------
+-- Table structure for hui_download
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_download`;
+CREATE TABLE `hui_download`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `catid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `title` varchar(180) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `seo_title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `updatetime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `keywords` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `click` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `copyfrom` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `thumb` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `flag` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '1置顶,2头条,3特荐,4推荐,5热点,6幻灯,7跳转',
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `system` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `listorder` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `groupids_view` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读权限',
+  `readpoint` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读收费',
+  `is_push` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否百度推送',
+  `down_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '下载地址',
+  `copytype` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '授权形式',
+  `systems` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '平台',
+  `language` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '语言',
+  `version` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '版本',
+  `filesize` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '文件大小',
+  `classtype` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '软件类型',
+  `stars` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '评分等级',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `status`(`status`, `listorder`) USING BTREE,
+  INDEX `catid`(`catid`, `status`) USING BTREE,
+  INDEX `userid`(`userid`, `status`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for hui_link
@@ -323,6 +451,106 @@ CREATE TABLE `hui_link`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `index_typeid`(`typeid`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for hui_model
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_model`;
+CREATE TABLE `hui_model`  (
+  `modelid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `tablename` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `setting` text CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `items` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `disabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `sort` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `issystem` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`modelid`) USING BTREE,
+  INDEX `type`(`type`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of hui_model
+-- ----------------------------
+INSERT INTO `hui_model` VALUES (1, '文章模型', 'article', '文章模型', '', 1466393786, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model` VALUES (2, '产品模型', 'product', '产品模型', '', 1585386661, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model` VALUES (3, '下载模型', 'download', '下载模型', '', 1585386669, 0, 1, 0, 0, 1);
+
+-- ----------------------------
+-- Table structure for hui_model_field
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_model_field`;
+CREATE TABLE `hui_model_field`  (
+  `fieldid` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `modelid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `field` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `tips` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `css` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `minlength` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `maxlength` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `errortips` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `fieldtype` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `defaultvalue` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `setting` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `isrequired` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `issystem` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `isunique` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `isadd` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `listorder` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `disabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  PRIMARY KEY (`fieldid`) USING BTREE,
+  INDEX `modelid`(`modelid`, `disabled`) USING BTREE,
+  INDEX `field`(`field`, `modelid`) USING BTREE,
+  INDEX `status`(`status`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of hui_model_field
+-- ----------------------------
+INSERT INTO `hui_model_field` VALUES (1, 0, 'title', '标题', '', '', 1, 100, '请输入标题', 'input', '', '', 1, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (2, 0, 'seo_title', 'SEO标题', '', '', 0, 100, '', 'input', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (3, 0, 'catid', '栏目', '', '', 1, 10, '请选择栏目', 'select', '', '', 1, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (4, 0, 'thumb', '缩略图', '', '', 0, 100, '', 'image', '', '', 0, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (5, 0, 'keywords', '关键词', '', '', 0, 50, '', 'input', '', '', 0, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (6, 0, 'description', '摘要', '', '', 0, 255, '', 'textarea', '', '', 0, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (7, 0, 'inputtime', '发布时间', '', '', 1, 10, '', 'datetime', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (8, 0, 'updatetime', '更新时间', '', '', 1, 10, '', 'datetime', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (9, 0, 'copyfrom', '来源', '', '', 0, 30, '', 'input', '', '', 0, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (10, 0, 'url', 'URL', '', '', 1, 100, '', 'input', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (11, 0, 'userid', '用户ID', '', '', 1, 10, '', 'input', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (12, 0, 'username', '用户名', '', '', 1, 30, '', 'input', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (13, 0, 'nickname', '昵称', '', '', 0, 30, '', 'input', '', '', 0, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (14, 0, 'template', '模板', '', '', 1, 50, '', 'select', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (15, 0, 'content', '内容', '', '', 1, 999999, '', 'editor', '', '', 1, 1, 0, 1, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (16, 0, 'click', '点击数', '', '', 1, 10, '', 'input', '0', '', 0, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (17, 0, 'tag', 'TAG', '', '', 0, 50, '', 'checkbox', '', '', 0, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (18, 0, 'readpoint', '阅读收费', '', '', 1, 5, '', 'input', '0', '', 0, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (19, 0, 'groupids_view', '阅读权限', '', '', 1, 10, '', 'checkbox', '1', '', 0, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (20, 0, 'status', '状态', '', '', 1, 2, '', 'checkbox', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (21, 0, 'flag', '属性', '', '', 1, 16, '', 'checkbox', '', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (22, 0, 'listorder', '排序', '', '', 1, 5, '', 'input', '1', '', 1, 1, 0, 0, 0, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (23, 2, 'brand', '品牌', '', '', 0, 30, '', 'input', '', '', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (24, 2, 'standard', '型号', '', '', 0, 30, '', 'input', '', '', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (25, 2, 'yieldly', '产地', '', '', 0, 50, '', 'input', '', '', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (26, 2, 'pictures', '产品图集', '', '', 0, 1000, '', 'images', '', '', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (27, 2, 'price', '单价', '请输入单价', '', 1, 10, '单价不能为空', 'input', '', '', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (28, 2, 'unit', '价格单位', '', '', 1, 10, '', 'select', '', '{\\\"0\\\":\\\"\\\\u4ef6\\\",\\\"1\\\":\\\"\\\\u65a4\\\",\\\"2\\\":\\\"KG\\\",\\\"3\\\":\\\"\\\\u5428\\\",\\\"4\\\":\\\"\\\\u5957\\\"}', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (29, 2, 'stock', '库存', '库存量必须为数字', '', 1, 5, '库存不能为空', 'input', '99999', '', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (30, 3, 'down_url', '下载地址', '', '', 1, 100, '下载地址不能为空', 'attachment', '', '', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (31, 3, 'copytype', '授权形式', '', '', 0, 20, '', 'select', '', '{\\\"0\\\":\\\"\\\\u514d\\\\u8d39\\\\u7248\\\",\\\"1\\\":\\\"\\\\u6b63\\\\u5f0f\\\\u7248\\\",\\\"2\\\":\\\"\\\\u5171\\\\u4eab\\\\u7248\\\",\\\"3\\\":\\\"\\\\u8bd5\\\\u7528\\\\u7248\\\",\\\"4\\\":\\\"\\\\u6f14\\\\u793a\\\\u7248\\\",\\\"5\\\":\\\"\\\\u6ce8\\\\u518c\\\\u7248\\\",\\\"6\\\":\\\"\\\\u7834\\\\u89e3\\\\u7248\\\"}', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (32, 3, 'systems', '平台', '', '', 1, 30, '', 'select', '', '{\\\"0\\\":\\\"Windows\\\",\\\"1\\\":\\\"Linux\\\",\\\"2\\\":\\\"MacOS\\\"}', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (33, 3, 'language', '语言', '', '', 0, 20, '', 'select', '', '{\\\"0\\\":\\\"\\\\u7b80\\\\u4f53\\\\u4e2d\\\\u6587\\\",\\\"1\\\":\\\"\\\\u7e41\\\\u4f53\\\\u4e2d\\\\u6587\\\",\\\"2\\\":\\\"\\\\u82f1\\\\u6587\\\",\\\"3\\\":\\\"\\\\u591a\\\\u56fd\\\\u8bed\\\\u8a00\\\",\\\"4\\\":\\\"\\\\u5176\\\\u4ed6\\\\u8bed\\\\u8a00\\\"}', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (34, 3, 'version', '版本', '', '', 1, 15, '版本号不能为空', 'input', '', '', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (35, 3, 'filesize', '文件大小', '', '', 0, 10, '', 'input', '', '', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (36, 3, 'classtype', '软件类型', '', '', 1, 30, '', 'radio', '', '{\\\"0\\\":\\\"\\\\u56fd\\\\u4ea7\\\\u8f6f\\\\u4ef6\\\",\\\"1\\\":\\\"\\\\u56fd\\\\u5916\\\\u8f6f\\\\u4ef6\\\",\\\"2\\\":\\\"\\\\u6c49\\\\u5316\\\\u8865\\\\u4e01\\\",\\\"3\\\":\\\"\\\\u7a0b\\\\u5e8f\\\\u6e90\\\\u7801\\\",\\\"4\\\":\\\"\\\\u5176\\\\u4ed6\\\"}', 1, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (37, 3, 'stars', '评分等级', '', '', 0, 20, '', 'radio', '', '{\\\"0\\\":\\\"\\\\u4e00\\\\u661f\\\",\\\"1\\\":\\\"\\\\u4e8c\\\\u661f\\\",\\\"2\\\":\\\"\\\\u4e09\\\\u661f\\\",\\\"3\\\":\\\"\\\\u56db\\\\u661f\\\",\\\"4\\\":\\\"\\\\u4e94\\\\u661f\\\"}', 0, 0, 0, 1, 1, 0, 0, 1);
+INSERT INTO `hui_model_field` VALUES (38, 1, 'test', '测试字段', '测试字段1', '', 0, 100, '', 'textarea', '0', '', 0, 0, 0, 0, 1, 0, 0, 1);
 
 -- ----------------------------
 -- Table structure for hui_pay_mode
@@ -373,5 +601,39 @@ CREATE TABLE `hui_tag_content`  (
   INDEX `tag_index`(`modelid`, `aid`) USING BTREE,
   INDEX `tagid_index`(`tagid`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
+-- Table structure for hui_test
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_test`;
+CREATE TABLE `hui_test`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `catid` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `userid` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `nickname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `title` varchar(180) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `seo_title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `updatetime` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `keywords` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `click` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
+  `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `copyfrom` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `thumb` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `url` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `flag` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '1置顶,2头条,3特荐,4推荐,5热点,6幻灯,7跳转',
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `system` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `listorder` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `groupids_view` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读权限',
+  `readpoint` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阅读收费',
+  `is_push` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否百度推送',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `status`(`status`, `listorder`) USING BTREE,
+  INDEX `catid`(`catid`, `status`) USING BTREE,
+  INDEX `userid`(`userid`, `status`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

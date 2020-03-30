@@ -23,6 +23,7 @@ return[
     'not_check_priv'=>[
         'admin/Index/index',
         'admin/Index/show_menu',
+        'admin/ModelField/public_check_field'
     ]
     
     

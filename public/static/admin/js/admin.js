@@ -87,7 +87,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             }
             $.get(href, function (res) {
                 layer.msg(res.msg);
-                if (res.status == 1) {
+                if (res.status == 1 || res.code==1) {
                     window.location.reload();
                     //that.parents('tr').remove();
                     //that.parents('.tr').remove();
@@ -242,8 +242,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
                     event.stopPropagation();
                     return;
                 }
-            }
-            ;
+            };
 
             tab.tabAdd(title, url, index + 1);
             tab.tabChange(index + 1);
@@ -295,6 +294,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
             sessionStorage.removeItem('menu');
         }
     };
+
 
     /*
      * @todo 监听右键事件,绑定右键菜单
@@ -486,7 +486,8 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
     window.WeAdminDel = function (url) {
         $.get(url,function (res) {
             if(res.code===0){
-                layer.msg('您没有操作权限~~');
+                var msgmsg = res.msg?res.msg:"您没有操作权限~~";
+                layer.msg(msgmsg,{icon:2});
                 return false;
             }else{
                 layer.confirm('真的删除行么？', function (index) {
@@ -706,4 +707,10 @@ function posttips(url, data) {
             layer.msg(res.msg);
         }
     });
+}
+
+//关闭弹出层
+function hui_close(){
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
 }

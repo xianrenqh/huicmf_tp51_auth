@@ -656,7 +656,7 @@ function cmf_curl_get($url,$heads=array(),$cookie='')
  * @param     int     $limittime  限制时间
  * @return    void
  */
-function showmsg($msg, $gourl, $limittime='3') {
+function showmsg($msg, $gourl='', $limittime='3') {
     $gourl = empty($gourl) ? HTTP_REFERER : $gourl;
     $stop = $gourl!='stop' ? false : true;
     include(Env::get('root_path').'extend'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'message.tpl');

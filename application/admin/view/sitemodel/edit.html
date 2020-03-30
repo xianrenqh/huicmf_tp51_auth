@@ -4,23 +4,39 @@
 <div class="weadmin-body">
     <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
         <div class="layui-form-item">
-            <label class="layui-form-label">添加TAG</label>
+            <label class="layui-form-label">
+                <span class="we-red">*</span>模型名称
+            </label>
             <div class="layui-input-block">
-                <span class="we-red">* 支持添加多个，每个tag之间请用逗号分隔</span>
+                <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" class="layui-input" >
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">
-                <span class="we-red">*</span>TAG名称
+                <span class="we-red">*</span>模型表名
             </label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea" name="tags" id="tags" cols="50" rows="10" lay-verify="required"></textarea>
+                <input type="text" id="tablename" name="tablename" value="{$data.tablename}" lay-verify="required" autocomplete="off" class="layui-input readonly-bg" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">模型简介</label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="description" id="description" lay-verify="required">{$data.description}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="disabled" class="layui-form-label">禁用</label>
+            <div class="layui-input-block" id="disabled">
+                <input type="radio" name="disabled" value="1" title="是" {if($data.disabled==1)}checked{/if}>
+                <input type="radio" name="disabled" value="0" title="否" {if($data.disabled==0)}checked{/if}>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label"></label>
             <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="modelid" value="{$data.modelid}">
             <button class="layui-btn"  lay-submit=""type="submit" name="dosubmit">确定</button>
         </div>
     </form>
@@ -32,7 +48,7 @@
     function dosub(obj) {
         $.ajax({
             type: 'POST',
-            url: '{:url('add')}',
+            url: '{:url('edit')}',
             data: $(obj).serialize(),
             dataType: "json",
             success: function (res) {

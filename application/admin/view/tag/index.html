@@ -44,7 +44,7 @@
                     <td>{$vo.inputtime||date='Y-m-d H:i:s'}</td>
                     <td class="td-manage">
                         <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="edit('{$vo.id}')">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-sm" onclick="del('{$vo.id}')">删除</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm j-tr-del" data-href="{:url('delete',['id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
                 {/volist}
@@ -62,9 +62,6 @@
 </body>
 </html>
 <script>
-    function del(id){
-        WeAdminDel("{:url('delete')}?id="+id);
-    }
     function edit(id) {
         WeAdminShow("编辑","{:url('edit')}?id="+id,'500','300');
     }

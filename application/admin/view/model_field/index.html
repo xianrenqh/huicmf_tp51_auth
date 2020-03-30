@@ -1,0 +1,74 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+    .layui-table th {text-align: center}
+</style>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">内容管理</a><span lay-separator="">/</span>
+            <a><cite>模型字段管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row demoTable" style="margin: 5px auto 15px">
+        <div class="weadmin-block">
+            <a class="layui-btn" onclick="WeAdminShow('添加字段','{:url('add',['modelid'=>input('modelid')])}','800')" href="javascript:;"><i class="layui-icon layui-icon-add-circle-fine"></i> 添加字段</a>
+            <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total">{$total}</span> 条</span>
+        </div>
+        <form method="post" action="{:url('order')}" id="myform">
+            <table class="layui-table" style="text-align: center">
+                <thead>
+                <tr class="text-c">
+                    <th width="80">排序</th>
+                    <th>字段名</th>
+                    <th>别名</th>
+                    <th>类型</th>
+                    <th>必填</th>
+                    <th>是否禁用</th>
+                    <th width="200">管理操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="data" id="vo"}
+                <tr class="text-c">
+                    {if ($vo.modelid)}
+                    <td><input name='listorders[{$vo.fieldid}]' type='text' value='{$vo.listorder}' class='input-text listorder' style="width:70px;text-align:center;line-height:25px;"></td>
+                    {else}
+                    <td><input name='listorders[{$vo.fieldid}]' type='text' value='{$vo.listorder}' class='input-text listorder readonly-bg' style="width:70px;text-align:center;line-height:25px;border:1px solid #ccc" readonly></td>
+                    {/if}
+                    <td>{$vo.field}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.fieldtype}</td>
+                    <td>{if($vo.isrequired==1)}<span style="color:#f00">是</span>{else}否{/if}</td>
+                    <td>{if($vo.disabled)}<span class="layui-badge layui-bg-danger"> 已禁用 </span>{else}<span class="layui-badge layui-bg-green"> 已启用 </span> {/if}</td>
+                    <td class="td-manage">
+                        {if ($vo.modelid)}
+                        <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="edit('{$vo.modelid}','{$vo.fieldid}')">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm j-tr-del" data-href="{:url('delete',['modelid'=>$vo.modelid,'fieldid'=>$vo.fieldid])}">删除</a>
+                        {else}
+                        <a class="layui-btn layui-btn-sm layui-btn-normal layui-btn-disabled">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm layui-btn-disabled">删除</a>
+                        {/if}
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+            <div class="layui-form-item readonly-bg">
+                <input class="layui-btn" name="dosubmit" value="排序" type="submit" style="margin-left: 16px;margin-top: 10px; margin-bottom: 10px;">
+            </div>
+        </form>
+    </div>
+</div>
+{include file='footer'/}
+</body>
+</html>
+<script>
+    function edit(modelid,fieldid) {
+        WeAdminShow("编辑","{:url('edit')}?modelid="+modelid+"&fieldid="+fieldid,'800');
+    }
+</script>

@@ -1,0 +1,150 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" method="post" onsubmit="return dosub(this)">
+        <fieldset class="layui-elem-field layui-field-title site-title">
+            <legend><a name="hr">{$modelname}</a></legend>
+        </fieldset>
+        <table class="layui-table">
+            <tbody>
+            <tr>
+                <td><span class="we-red">*</span>字段类型</td>
+                <td>
+                    <select name="fieldtype" id="fieldtype" class="select" onchange="javascript:field_setting(this.value);" disabled>
+                        <option value="" >请选择字段类型</option>
+                        <option value="input" {if $data.fieldtype=='input'}selected{/if}>单行文本</option>
+                        <option value="textarea" {if $data.fieldtype=='textarea'}selected{/if}>多行文本</option>
+                        <option value="number" {if $data.fieldtype=='number'}selected{/if}>整数类型</option>
+                        <option value="datetime" {if $data.fieldtype=='textadatetimerea'}selected{/if}>时间类型</option>
+                        <option value="image" {if $data.fieldtype=='image'}selected{/if}>图片上传</option>
+                        <option value="images" {if $data.fieldtype=='images'}selected{/if}>多图片上传</option>
+                        <option value="attachment" {if $data.fieldtype=='attachment'}selected{/if}>附件上传</option>
+                        <option value="select" {if $data.fieldtype=='select'}selected{/if}>option下拉框</option>
+                        <option value="radio" {if $data.fieldtype=='radio'}selected{/if}>radio选项卡</option>
+                        <option value="checkbox" {if $data.fieldtype=='checkbox'}selected{/if}>checkbox多选框</option>
+                        <option value="editor" {if $data.fieldtype=='editor'}selected{/if}>编辑器</option>
+                        <option value="editor_mini" {if $data.fieldtype=='editor_mini'}selected{/if}>编辑器(Mini版)</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="we-red">*</span>字段名</td>
+                <td><input type="text" class="layui-input readonly-bg" name="field" value="{$data.field}" id="field" placeholder="只能由英文字母、数字和下划线组成，且数字不能开头，例如：name" readonly>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="we-red">*</span>字段别名</td>
+                <td>
+                    <input type="text" class="layui-input" name="name" value="{$data.name}" lay-verify="required" id="name" placeholder="例如：姓名">
+                </td>
+            </tr>
+            <tr>
+                <td>字段提示</td>
+                <td>
+                    <input type="text" class="layui-input" name="tips" id="tips" value="{$data.tips}" placeholder="显示在文本框里作为表单输入提示文字">
+                </td>
+            </tr>
+            <tr {php}if($data['fieldtype'] != 'datetime') echo 'style="display:none"';{/php}>
+                <td>时间格式</td>
+                <td>
+                    <input type="radio" name="dateset" value="0" title="日期（{php}echo date('Y-m-d',time()){/php}" {php} if($data['fieldtype']== 'datetime' && $data['setting']=='0') echo 'checked';{/php}>
+                    <input type="radio" name="dateset" value="1" title="日期+时间（{php}echo date('Y-m-d H:i:s',time()){/php}" {php} if($data['fieldtype']== 'datetime' && $data['setting']=='1') echo 'checked';{/php}>
+                </td>
+            </tr>
+            <tr {php} if(!in_array($data['fieldtype'], array('select','radio','checkbox'))) echo 'style="display:none"';{/php}>
+                <td>选项列表</td>
+                <td>
+                    <textarea name="setting" id="textarea" class="layui-textarea" placeholder="用“|”分开，如“男|女|人妖”">{$data.setting}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>默认值</td>
+                <td>
+                    <input type="text" class="layui-input" name="defaultvalue" value="{$data.defaultvalue}">
+                </td>
+            </tr>
+            <tr>
+                <td>字符长度取值范围</td>
+                <td>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:auto">最小值</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="minlength" autocomplete="off" class="layui-input" value="{$data.minlength}">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label" style="width:auto">最大值</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="maxlength" autocomplete="off" class="layui-input" value="{$data.maxlength}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>数据校验未通过的提示信息</td>
+                <td>
+                    <input type="text" class="layui-input" name="errortips" value="{$data.errortips}">
+                </td>
+            </tr>
+            <tr>
+                <td>是否启用</td>
+                <td>
+                    <input type="radio" name="disabled" value="0" title="启用" {if($data.disabled==0)}checked{/if}>
+                    <input type="radio" name="disabled" value="1" title="禁用" {if($data.disabled==1)}checked{/if}>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="fieldtype" value="{$data.fieldtype}">
+            <input type="hidden" name="fieldid" value="{$data.fieldid}">
+            <input type="hidden" name="modelid" value="{:input('modelid')}">
+            <button class="layui-btn" lay-submit="" type="submit" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+
+<script>
+    layui.use(['form'], function(){
+        var $ = layui.jquery,form = layui.form;
+    });
+    function check_name(){
+        if($("input[name='name']").val()==''){
+            layer.msg('字段别名不能为空！');
+            return false;
+        }else{
+            return true;
+        }
+    }
+    function dosub(obj) {
+        if(!check_name()){
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '{:url('edit')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if (res.status == 1) {
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    }, function () {
+                        parent.location.reload();
+                    });
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+{include file='header'/}
+<style>
+    .layui-breadcrumb {visibility: visible;}
+    .layui-table th {text-align: center}
+</style>
+<body>
+<div class="weadmin-nav">
+			<span class="layui-breadcrumb">
+       		 <a href="">首页</a><span lay-separator="">/</span>
+        	<a href="">内容管理</a><span lay-separator="">/</span>
+            <a><cite>模型管理</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="layui-row demoTable" style="margin: 5px auto 15px">
+        <div class="weadmin-block">
+            <a class="layui-btn" onclick="WeAdminShow('添加模型','{:url('add')}','800')" href="javascript:;"><i class="layui-icon layui-icon-add-circle-fine"></i> 添加模型</a>
+            <button class="layui-btn layui-btn-fense" onclick="WeAdminShow('导入模型','{:url('import')}','500','300')"><i class="iconfont icon-arrow_up_fill"></i>导入</button>
+            <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total">{$total}</span> 条</span>
+        </div>
+        <form method="post" action="{:url('delete')}" id="myform">
+            <table class="layui-table" style="text-align: center">
+                <thead>
+                <tr class="text-c">
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>数据表</th>
+                    <th>描述</th>
+                    <th>系统</th>
+                    <th>是否禁用</th>
+                    <th width="300">管理操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {volist name="data" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.modelid}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.tablename}</td>
+                    <td>{$vo.description}</td>
+                    <td>{if($vo.issystem==1)}<span style="color:#f00">是</span>{else}否{/if}</td>
+                    <td>{if($vo.disabled)}<span class="layui-badge layui-bg-danger"> 已禁用 </span>{else}<span class="layui-badge layui-bg-green"> 已启用 </span> {/if}</td>
+                    <td class="td-manage">
+                        <a class="layui-btn layui-btn-sm" onclick="field('{$vo.modelid}')">字段管理</a>
+                        <a class="layui-btn layui-btn-sm layui-btn-normal" onclick="edit('{$vo.modelid}')">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-sm j-tr-del" data-href="{:url('delete',['modelid'=>$vo.modelid])}">删除</a>
+                        <a class="layui-btn layui-btn-fense layui-btn-sm" href="{:url('export',['modelid'=>$vo.modelid])}">导出</a>
+                    </td>
+                </tr>
+                {/volist}
+                </tbody>
+            </table>
+        </form>
+        <div class="mws-panel-content">
+            <div class="page">
+                {$data->render()|raw}
+            </div>
+        </div>
+    </div>
+</div>
+{include file='footer'/}
+</body>
+</html>
+<script>
+    function edit(id) {
+        WeAdminShow("编辑","{:url('edit')}?modelid="+id,'800');
+    }
+    function field(id) {
+        WeAdminOpenFull("字段管理","{:url('model_field/index')}?modelid="+id);
+    }
+    function add() {
+        WeAdminShow("增加","{:url('add')}",'800');
+    }
+</script>

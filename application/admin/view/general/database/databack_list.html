@@ -34,7 +34,8 @@
             <td class="td-manage" align="center" style="width: 160px">
                 <a title="还原" href="javascript:;" onclick="databack_import('{:url('restore')}','{$vo.file}')" class="layui-btn layui-btn-sm layui-btn-normal" style="text-decoration:none">还原</a>
                 <a title="下载" href="{:url('download',['file'=>$vo.file])}" class="layui-btn layui-btn-sm" style="text-decoration:none">下载</a>
-                <a title="删除" href="javascript:;" data-href="{:url('delete',['file'=>$vo.file])}" class="layui-btn layui-btn-sm layui-btn-danger j-tr-del" style="text-decoration:none">删除</a></td>
+                <a title="删除" href="javascript:;" data-href="{:url('delete',['file'=>$vo.file])}" class="layui-btn layui-btn-sm layui-btn-danger j-tr-del" style="text-decoration:none">删除</a>
+            </td>
         </tr>
         {/volist}
         </tbody>

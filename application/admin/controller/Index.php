@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\facade\Cache;
+use lib\Tree2;
 
 class Index extends Common
 {
@@ -47,15 +48,22 @@ class Index extends Common
                 }
                 foreach ($menu_list as $key => $value) {
                     $child = Db::name('auth_rule')
-                        ->where(
-                            ['pid' => $value['id'], 'ismenu' => 1, 'status' => 'normal']
-                        )
-                        ->order('weigh ASC')
-                        ->select();
+                        ->where(['pid' => $value['id'], 'ismenu' => 1, 'status' => 'normal'])->order('weigh ASC')->select();
                     for ($i = 0; $i < count($child); $i++) {
                         $child[$i]['url'] = url($child[$i]['name']);
                     }
-                    
+                    /*foreach ($child as $kc => $c) {
+                        $childchild =Db::name('auth_rule')
+                            ->where(['pid' => $c['id'], 'ismenu' => 1, 'status' => 'normal'])->order('weigh ASC')->select();
+                        for ($i = 0; $i < count($childchild); $i++) {
+                            $childchild[$i]['url'] = url($childchild[$i]['name']);
+                        }
+                        if ($childchild) {
+                            $child[$kc]['children'] = $childchild;
+                        } else {
+                            //unset($menu_list[$key]);
+                        }
+                    }*/
                     if ($child) {
                         $menu_list[$key]['children'] = $child;
                     } else {
