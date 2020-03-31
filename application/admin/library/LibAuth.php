@@ -14,7 +14,8 @@ use app\admin\model\Admin;
 class LibAuth extends \lib\Auth
 {
     private $auth;
-    private $uid;
+    public $group_id;
+    public $uid;
     public $breadcrumb = [];
     
     public function __construct()
@@ -22,6 +23,7 @@ class LibAuth extends \lib\Auth
         //parent::__construct();
         $this->auth = \lib\Auth::instance();
         $this->uid =session('user_info.uid');
+        $this->group_id =\lib\Auth::instance()->getGroups(session('user_info.uid'));
     }
     
     public function getRuleList($uid = null)

@@ -37,7 +37,7 @@ class Common extends Controller
             $this->auth = Auth::instance();
             self::not_check_priv();
             $getGroups = $this->auth->getGroups($this->uid);
-            $this->role_id = $getGroups[0]['id'];
+            $this->role_id = !empty($getGroups[0]['id'])?$getGroups[0]['id']:'';
             $groups = $this->auth->getGroups($this->uid);
             $this->group_id = $groups[0]['group_id'];
         }

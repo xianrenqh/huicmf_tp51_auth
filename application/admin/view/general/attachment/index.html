@@ -8,32 +8,23 @@
 			<span class="layui-breadcrumb">
        		 <a href="">首页</a><span lay-separator="">/</span>
         	<a href="">常规管理</a><span lay-separator="">/</span>
-            <a><cite>管理员日志</cite></a>
+            <a><cite>附件管理</cite></a>
       </span>
     <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon">&#xe9aa;</i></a>
 </div>
 <div class="weadmin-body">
     <blockquote class="layui-elem-quote">
-        <b>管理员日志</b><br>
-        管理员可以查看自己所拥有的权限的管理员日志 <span style="color:#f00">【不能越权删除以及删除自己的日志】</span>
+        主要用于管理上传到服务器或第三方存储的数据
     </blockquote>
     <div class="layui-row demoTable" style="margin: 5px auto 15px">
         <form class="layui-form layui-col-md12" action="javascript:;" id="form_admin_search">
-            {if(check_auth('general.adminlog/delete'))}
-            <div class="layui-inline" style="margin-right:15px;">
-                <a class="layui-btn layui-btn-danger" data-type="dels">批量删除</a>
-            </div>
-            {/if}
             搜索：
             <div class="layui-inline">
-                <input type="text" name="username" id="username" placeholder="请输入用户名" autocomplete="off" class="layui-input" style="width:150px">
+                <input type="text" name="picName" id="picName" placeholder="请输入图片名" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-inline">
-                <input type="text" name="title" id="title" placeholder="请输入标题" autocomplete="off" class="layui-input">
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">日期范围</label>
+                <label class="layui-form-label">时间范围</label>
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input" name="createtime" id="createtime" placeholder=" - ">
                 </div>
@@ -42,15 +33,29 @@
             <button class="layui-btn layui-btn-danger" type="reset"><i class="layui-icon">&#xe63f;</i>清空</button>
         </form>
     </div>
-
+    <div class="weadmin-block">
+        <button class="layui-btn" onclick="WeAdminShow('添加管理员','{:url('admin_add')}','800')"><i class="layui-icon"></i>添加</button>
+        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
+    </div>
     <table id="role_list" lay-filter="role_list"></table>
 </div>
-
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="detail">详情</a>
-    {if(check_auth('general.adminlog/delete'))}
-    <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
-    {/if}
+    {{#  if(d.storage =='local'){ }}
+        {if(check_auth('general.attachment/delete'))}
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+        {/if}
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-danger layui-btn-sm layui-btn-disabled">删除</a>
+    {{#  } }}
+
+</script>
+<script type="text/html" id="view_img">
+    {{#  if(d.url !=''){ }}
+    <img src="{{d.url}}" onmouseover="hui_img_preview('logo2','{{d.url}}')" onmouseout="layer.closeAll();" id="logo2" width="30" >
+    {{#  } }}
+</script>
+<script type="text/html" id="urlurl">
+    <a href="{{d.url}}" target="_blank">{{d.url}}</a>
 </script>
 
 {include file='footer'/}
@@ -73,14 +78,17 @@
                 $("#total").html(res.count);
             }
             ,cols: [[ //表头
-                {type:'checkbox',LAY_CHECKED:false}
-                ,{field: 'id', title: 'ID', width:100,align:'center'}
-                ,{field: 'username', title: '用户名',width:140}
-                ,{field: 'title', title: '标题',width:260}
-                ,{field: 'url', title: 'URL'}
-                ,{field: 'ip', title: 'IP',width:170}
+                {field: 'id', title: 'ID', width:90,align:'center'}
+                ,{field: 'view_img', title: '预览',width:100,templet:'#view_img',align:'center'}
+                ,{field: 'url', title: '物理路径',templet:'#urlurl'}
+                ,{field: 'imagewidth', title: '宽度',width:70,align:'center'}
+                ,{field: 'imageheight', title: '高度',width:70,align:'center'}
+                ,{field: 'imagetype', title: '图片类型',width:100,align:'center'}
+                ,{field: 'storage', title: '存储引擎',width:100,align:'center'}
+                ,{field: 'filesize', title: '文件大小',width:150,align:'center'}
+                ,{field: 'mimetype', title: 'Mime类型',width:130,align:'center'}
                 ,{field: 'createtime', title: '创建时间',width:220,align:'center'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:180}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:150}
             ]]
             ,id: 'testReload'
             ,page:true
@@ -93,28 +101,12 @@
                     page: {curr: 1},
                     where: {
                         key: {
-                            username: $('#username').val(),
-                            title: $('#title').val(),
+                            picName: $('#picName').val(),
                             createtime: $('#createtime').val(),
                         }
                     }
                 });
             },
-            dels: function(){ //批量删除
-                var ids = table_get_ids(table);
-                if(ids===false){
-                    return false;
-                }
-                $.post("{:url('delete')}",{
-                    ids:ids
-                },function (res) {
-                    layer.msg(res.msg);
-                    if(res.status==1){
-                        window.location.reload();
-                    }
-
-                })
-            }
         };
         $('.demoTable .layui-btn').on('click', function() {
             var type = $(this).data('type');
@@ -136,26 +128,6 @@
             }
         });
     });
-
-    function table_get_ids(table) {
-        var checkStatus = table.checkStatus('testReload')
-            ,data = checkStatus.data;
-        if(data.length<1){
-            layer.msg('你没有选择任何数据');
-            return false;
-        }else{
-            var ids=[];
-            for(var i=0;i<data.length;i++){
-                ids +=data[i].id+',';
-            }
-            ids =ids.slice(0, -1);
-            var arr =ids.split(',');
-            for(var i in arr){
-                (arr[i])
-            }
-            return arr;
-        }
-    }
 </script>
 </body>
 </html>

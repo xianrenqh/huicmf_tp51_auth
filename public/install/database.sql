@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 30/03/2020 16:38:58
+ Date: 31/03/2020 12:13:31
 */
 
 SET NAMES utf8mb4;
@@ -43,35 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585379017, '127.0.0.1', 1492186163, 1583655724, 'bf0aae47-2d96-4a86-a27b-30d1d38e8090', 'normal');
-
--- ----------------------------
--- Table structure for hui_admin_copy1
--- ----------------------------
-DROP TABLE IF EXISTS `hui_admin_copy1`;
-CREATE TABLE `hui_admin_copy1`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `username` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '用户名',
-  `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
-  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
-  `salt` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码盐',
-  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
-  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '电子邮箱',
-  `loginfailure` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '失败次数',
-  `logintime` int(10) DEFAULT NULL COMMENT '登录时间',
-  `loginip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录IP',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `token` varchar(59) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Session标识',
-  `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'normal' COMMENT '状态',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员表' ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hui_admin_copy1
--- ----------------------------
-INSERT INTO `hui_admin_copy1` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585536528, '123.149.20.25', 1492186163, 1583655724, 'b31919c3-7880-47bc-8c3f-c00b6c50a6a8', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585613515, '127.0.0.1', 1492186163, 1583655724, '70a21a25-01bc-49d6-84a1-dc8fe8c96f0f', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -131,6 +103,30 @@ CREATE TABLE `hui_article`  (
 -- ----------------------------
 INSERT INTO `hui_article` VALUES (1, 2, 1, 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架2.0', 'YZMPHP轻量级开源框架2.0_YzmCMS - 演示站', 1526387722, 1577414952, 'PHP', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', 103, '<p><img src=\"/uploads/ueditor/image/20191122/1574408124438686.jpg\" title=\"YZMPHP轻量级开源框架2.0\" alt=\"YZMPHP轻量级开源框架2.0\"/></p><p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2至7.2之间的所有版本</p><p><br/></p><p><strong>YZMPHP 2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '/uploads/201911/22/191122105427318.jpg', 'http://yzmcms2.cn/index/index/show/catid/2/id/1.html', '', 1, 1, 10, 0, 0, 0, '');
 INSERT INTO `hui_article` VALUES (2, 2, 1, 'yzmcms', '袁志蒙', 'YzmCMS v5.4正式版发布', 'YzmCMS v5.4正式版发布_YzmCMS - 演示站', 1571500800, 1577350500, '文章,PHP', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', 107, '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '/uploads/201911/22/191122082530443.jpg', 'http://yzmcms2.cn/index/index/show/catid/2/id/2.html', '', 1, 1, 10, 0, 0, 0, '');
+
+-- ----------------------------
+-- Table structure for hui_attachment
+-- ----------------------------
+DROP TABLE IF EXISTS `hui_attachment`;
+CREATE TABLE `hui_attachment`  (
+  `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID',
+  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '会员ID',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '物理路径',
+  `imagewidth` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '宽度',
+  `imageheight` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '高度',
+  `imagetype` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片类型',
+  `imageframes` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '图片帧数',
+  `filesize` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件大小',
+  `mimetype` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'mime类型',
+  `extparam` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '透传数据',
+  `createtime` int(10) DEFAULT NULL COMMENT '创建日期',
+  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `uploadtime` int(10) DEFAULT NULL COMMENT '上传时间',
+  `storage` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'local' COMMENT '存储位置',
+  `sha1` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '附件表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hui_auth_group

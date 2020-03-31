@@ -97,6 +97,9 @@ class Group extends Common
             $param['rules']=$rules;
             $res = Db::name('auth_group')->data($param)->strict(false)->insert();
             if ($res) {
+                Cache::clear();
+                $IndexCon= new \app\admin\controller\Index;
+                $IndexCon->public_clear();
                 return json(['status' => 1, 'msg' => '提交成功！']);
             } else {
                 return json(['status' => 0, 'msg' => '提交失败！！！']);
@@ -188,6 +191,8 @@ class Group extends Common
                     model("AuthGroup")->saveAll($childparams);
                     Db::commit();
                     Cache::clear();
+                    $IndexCon= new \app\admin\controller\Index;
+                    $IndexCon->public_clear();
                     return json(['status' => 1, 'msg' => '修改成功！']);
                 }catch (Exception $e){
                     Db::rollback();

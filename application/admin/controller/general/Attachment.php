@@ -1,0 +1,71 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: 小灰灰
+ * Date: 2020-03-31
+ * Time: 8:47:16
+ * Info: 附件管理
+ */
+
+namespace app\admin\controller\general;
+use app\admin\controller\Common;
+use app\admin\library\LibAuth;
+use think\Db;
+
+class Attachment extends Common
+{
+    public $childrenAdminIds;
+    public $childrenGroupIds;
+    
+    public function __construct()
+    {
+        parent::__construct();
+        $LibAuth = new LibAuth();
+        $this->childrenAdminIds= $LibAuth->getChildrenAdminIds(true);
+        $this->childrenGroupIds = $LibAuth->getChildrenGroupIds(true);
+    }
+    
+    //查看
+    public function index()
+    {
+        if(input('get.do')){
+            $where = "1=1";
+            if($this->group_id!=1){
+                $where .= " and admin_id in (".implode(",",$this->childrenAdminIds).")";
+            }
+            $param = input('get.');
+            $page = $param['page'];
+            $limit = $param['limit'];
+            $first = ($page - 1) * $limit;
+            if ( ! empty($param['key'])) {
+            
+            }
+            $res = Db::name('attachment')->where($where)->limit($first, $limit)->order('id desc')->select();
+            for($i=0;$i<count($res);$i++){
+                $res[$i]['filesize'] = sizecount($res[$i]['filesize']);
+                $res[$i]['createtime'] = date('Y-m-d H:i:s',$res[$i]['createtime'] );
+            }
+            $return = ["code"    => 0, 'msg' => '获取成功', 'count' => count($res), 'data' => $res];
+            return json($return);
+        }else{
+            return $this->fetch();
+        }
+    }
+    
+    //删除附件
+    public function delete()
+    {
+        if (input('post.ids')) {
+            $res = Db::name('attachment')->order('id',input('post.ids'))->find();
+            $attachmentFile = ROOT_PATH . '/public' . $res['url'];
+            if (is_file($attachmentFile)) {
+                @unlink($attachmentFile);
+            }
+            $del = Db::name('attachment')->delete(input('post.ids'));
+            return json(['status'=>1,'msg'=>'附件已删除']);
+        }else{
+            return json(['status'=>0,'msg'=>'参数错误！']);
+        }
+    }
+
+}

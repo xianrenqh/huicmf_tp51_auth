@@ -8,6 +8,7 @@
  */
 
 namespace app\admin\controller;
+use app\admin\controller\Common;
 use app\admin\library\LibAuth;
 use think\Db;
 use lib\Tree2;
