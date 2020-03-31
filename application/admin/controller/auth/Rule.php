@@ -160,6 +160,11 @@ class Rule extends Common
         if (input('post.dosubmit')) {
             $param = input('post.');
             $param['updatetime'] = time();
+            //查询是否已有
+            $cha = Db::name('auth_rule')->where('name',$param['name'])->where('id','<>',$param['id'])->find();
+            if($cha){
+                return json(['status'=>0,'msg'=>'此规则名称已存在，请重新输入！！！']);
+            }
             $update = Db::name('auth_rule')
                 ->where('id', input('post.id'))
                 ->data($param)

@@ -34,7 +34,7 @@
         </form>
     </div>
     <div class="weadmin-block">
-        <button class="layui-btn" onclick="WeAdminShow('添加管理员','{:url('admin_add')}','800')"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" id="test1" ><i class="layui-icon"></i>上传</button>
         <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
     </div>
     <table id="role_list" lay-filter="role_list"></table>
@@ -60,15 +60,28 @@
 
 {include file='footer'/}
 <script>
-    layui.use(['laydate','table'], function(){
-        var table = layui.table,laydate = layui.laydate;
+    layui.use(['laydate','table','form','upload'], function(){
+        var table = layui.table,laydate = layui.laydate,form = layui.form, upload = layui.upload;
+        form.render();
         laydate.render({
             elem: '#createtime'
             ,range: true
             ,max:"{php}echo date('Y-m-d',time()){/php}"
         });
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: "{:url('upload/index')}"
+            ,field:"Filedata"
+            ,done: function(res){
+                console.log(res.src)
+                if(res.status==1){
+                    ptable.reload();
+                }
+            }
+        })
         //第一个实例
-        table.render({
+        ptable = table.render({
             elem: '#role_list'
             ,page: false
             ,where:{do:1}

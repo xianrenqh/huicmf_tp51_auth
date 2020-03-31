@@ -37,8 +37,22 @@ class Attachment extends Common
             $page = $param['page'];
             $limit = $param['limit'];
             $first = ($page - 1) * $limit;
-            if ( ! empty($param['key'])) {
-            
+            if ( !empty($param['key'])) {
+                $getkey = $param['key'];
+                $picName = $getkey['picName'] ? $getkey['picName'] : "";
+                $createtime = $getkey['createtime'] ? $getkey['createtime'] : "";
+                
+                if ( !empty($createtime)) {
+                    $time_first = strtotime(explode(" - ", $createtime)[0]);
+                    $time_last = strtotime(explode(" - ", $createtime)[1]) + (60 * 60 * 24 - 1);
+                    if ($createtime != '') {
+                        $where .= " and createtime>" . $time_first . " and createtime<" . $time_last;
+                    }
+                }
+                if ($picName != '') {
+                    $where .= " and url like '%$picName%' ";
+                }
+                
             }
             $res = Db::name('attachment')->where($where)->limit($first, $limit)->order('id desc')->select();
             for($i=0;$i<count($res);$i++){
@@ -50,6 +64,12 @@ class Attachment extends Common
         }else{
             return $this->fetch();
         }
+    }
+    
+    //上传
+    public function upload()
+    {
+    
     }
     
     //删除附件

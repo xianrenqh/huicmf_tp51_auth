@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 31/03/2020 12:13:31
+ Date: 31/03/2020 14:19:39
 */
 
 SET NAMES utf8mb4;
@@ -43,7 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585613515, '127.0.0.1', 1492186163, 1583655724, '70a21a25-01bc-49d6-84a1-dc8fe8c96f0f', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1585633261, '127.0.0.1', 1492186163, 1583655724, '3de16292-debd-4980-95a0-4c7d7f49ec4f', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -126,7 +126,7 @@ CREATE TABLE `hui_attachment`  (
   `storage` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'local' COMMENT '存储位置',
   `sha1` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '附件表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '附件表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hui_auth_group
@@ -141,12 +141,14 @@ CREATE TABLE `hui_auth_group`  (
   `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分组表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分组表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_group
 -- ----------------------------
 INSERT INTO `hui_auth_group` VALUES (1, 0, '超级管理员', '*', 1490883540, 149088354, 'normal');
+INSERT INTO `hui_auth_group` VALUES (2, 1, '总编', '56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,73,74,75,76,71,72,25,26,39,40,41,42,43,44,45,46,54,55,28,35,36,37,38,1,21,22,27,33,29,30,34,49,51,52,53', 1585633358, NULL, 'normal');
+INSERT INTO `hui_auth_group` VALUES (3, 2, '发布人员', '56,57,58,59,61,62,63,64,25,26,39,40,42,43,44,45,38,1,21,22,49,51,52', 1585633454, NULL, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_auth_group_access
@@ -187,7 +189,7 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 82 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
@@ -195,7 +197,7 @@ CREATE TABLE `hui_auth_rule`  (
 INSERT INTO `hui_auth_rule` VALUES (1, 'file', 0, 'general', '常规管理', 'icon-settings', '0', '0', 1, 1497429920, 1497430169, 11, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (2, 'file', 0, 'auth', '权限管理', 'icon-group', '0', '0', 1, 1497429920, 1577703004, 21, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (3, 'file', 2, 'auth.admin/index', '管理员管理', 'icon-friendfill', '0', 'Admin0tips', 1, 1497429920, 1578300525, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (4, 'file', 1, 'general.database/index', '数据库管理', 'icon-discoverfill', '0', 'Admin0log0tips', 1, 1497429920, 1578302732, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (4, 'file', 1, 'general.database/index', '数据库管理', 'icon-discoverfill', '0', 'Admin0log0tips', 1, 1497429920, 1578302732, 98, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (5, 'file', 2, 'auth.group/index', '角色组', 'icon-group_fill_light', '0', 'Group0tips', 1, 1497429920, 1578381137, 5, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (6, 'file', 2, 'auth.rule/index', '菜单规则', 'icon-round_menu_fill', '0', 'Rule0tips', 1, 1497429920, 1578302765, 6, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (7, 'file', 6, 'auth.rule/rule_switch_field', '更改状态', 'icon-round_text_fill', '0', '0', 0, 0, 1578300629, 7, 'normal');
@@ -244,7 +246,7 @@ INSERT INTO `hui_auth_rule` VALUES (52, 'file', 49, 'general.config/user_config_
 INSERT INTO `hui_auth_rule` VALUES (53, 'file', 49, 'general.config/user_config_delete', '删除自定义配置', 'icon-round_text_fill', '', '', 0, 1584774947, 0, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (54, 'file', 25, 'pay/index', '支付模块', 'icon-rechargefill', '', '', 1, 1584837226, 0, 97, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (55, 'file', 54, 'pay/edit', '编辑支付模块', 'icon-round_text_fill', '', '', 0, 1584857404, 0, 1, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (56, 'file', 0, 'content/index', '内容管理', 'icon-calendar', '', '', 1, 1585021064, 1585021210, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (56, 'file', 0, 'content/init', '内容管理', 'icon-calendar', '', '', 1, 1585021064, 1585021210, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (57, 'file', 56, 'category/index', '分类管理', 'icon-ticket_fill', '', '', 1, 1585021152, 1585028819, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (58, 'file', 57, 'category/add', '添加分类', 'icon-round_text_fill', '', '', 0, 1585028951, 1585447788, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (59, 'file', 57, 'category/edit', '修改分类', 'icon-round_text_fill', '', '', 0, 1585028964, 1585028971, 2, 'normal');
@@ -265,6 +267,11 @@ INSERT INTO `hui_auth_rule` VALUES (73, 'file', 70, 'model_field/add', '添加�
 INSERT INTO `hui_auth_rule` VALUES (74, 'file', 70, 'model_field/edit', '修改模型字段', 'icon-round_text_fill', '', '', 0, 1585450344, 0, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (75, 'file', 70, 'model_field/delete', '删除模型字段', 'icon-round_text_fill', '', '', 0, 1585450360, 0, 3, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (76, 'file', 70, 'model_field/order', '排序模型字段', 'icon-round_text_fill', '', '', 0, 1585450420, 0, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (77, 'file', 25, 'banner/cat_manage', '幻灯分类管理（包含删除）', 'icon-round_text_fill', '', '', 0, 1585633690, 1585633861, 3, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (78, 'file', 77, 'banner/cat_add', '添加幻灯分类', 'icon-round_text_fill', '', '', 0, 1585633735, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (79, 'file', 1, 'general.attachment/index', '附件管理', 'icon-picfill', '', '', 1, 1585634129, NULL, 11, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (80, 'file', 79, 'general.attachment/delete', '删除附件', 'icon-round_text_fill', '', '', 0, 1585634150, NULL, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (81, 'file', 56, 'content/index', '内容管理', 'icon-edit', '', '', 1, 1585634694, 1585635304, 1, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner
@@ -292,7 +299,12 @@ CREATE TABLE `hui_banner_type`  (
   `tid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` char(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`tid`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
+-- Records of hui_banner_type
+-- ----------------------------
+INSERT INTO `hui_banner_type` VALUES (1, '首页');
 
 -- ----------------------------
 -- Table structure for hui_category

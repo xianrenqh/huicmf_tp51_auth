@@ -118,9 +118,7 @@ class AdminLog extends Model
             $createtime = $getkey['createtime'] ? $getkey['createtime'] : "";
             if ( ! empty($createtime)) {
                 $time_first = strtotime(explode(" - ", $createtime)[0]);
-                $time_last = strtotime(
-                                 explode(" - ", $createtime)[1]
-                             ) + (60 * 60 * 24 - 1);
+                $time_last = strtotime(explode(" - ", $createtime)[1]) + (60 * 60 * 24 - 1);
                 if ($createtime != '') {
                     $where .= " and createtime>" . $time_first . " and createtime<" . $time_last;
                 }
