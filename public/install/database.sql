@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 31/03/2020 14:19:39
+ Date: 31/03/2020 15:54:02
 */
 
 SET NAMES utf8mb4;
@@ -189,7 +189,7 @@ CREATE TABLE `hui_auth_rule`  (
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE,
   INDEX `weigh`(`weigh`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 82 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hui_auth_rule
@@ -272,6 +272,8 @@ INSERT INTO `hui_auth_rule` VALUES (78, 'file', 77, 'banner/cat_add', '添加幻
 INSERT INTO `hui_auth_rule` VALUES (79, 'file', 1, 'general.attachment/index', '附件管理', 'icon-picfill', '', '', 1, 1585634129, NULL, 11, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (80, 'file', 79, 'general.attachment/delete', '删除附件', 'icon-round_text_fill', '', '', 0, 1585634150, NULL, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (81, 'file', 56, 'content/index', '内容管理', 'icon-edit', '', '', 1, 1585634694, 1585635304, 1, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (82, 'file', 25, 'datareplace/index', '数据库内容替换', 'icon-choicenessfill', '', '', 1, 1585637663, NULL, 96, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (83, 'file', 82, 'datareplace/dosql', '执行sql替换', 'icon-round_text_fill', '', '', 0, 1585637790, NULL, 1, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner

@@ -1,0 +1,157 @@
+{include file='header'/}
+<style>
+    .layui-form-label{width: 12%;}
+    #return_title{color:#f00;}
+    #return_fields a{margin-right: 13px;font-size:16px;line-height:30px;}
+    #return_fields a:hover{color:#f00}
+</style>
+<body>
+<div class="weadmin-nav">
+    <span class="layui-breadcrumb">
+         <a href="">首页</a><span lay-separator="">/</span>
+        <a href="">模块管理</a><span lay-separator="">/</span>
+        <a><cite>数据库内容替换</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <blockquote class="layui-elem-quote ">
+        重要提示：<b style="color:#FF5722">程序用于批量替换数据库中某字段的内容，此操作极为危险，请小心使用。</b>
+    </blockquote>
+    <form class="layui-form" action="javascript:;" method="post" onsubmit="return dosub(this)">
+        <div class="layui-form-item">
+            <label  class="layui-form-label">
+                <span class="we-red">*</span>选择数据表与字段
+            </label>
+            <div class="layui-input-inline" style="width: 360px">
+                <select class="select" name="exptable" id="exptable" size="10" style="width:60%;height:120px" lay-filter="ShowFields">
+                    <option value="" selected>请选择</option>
+                    {foreach name='exptable_list' id='v'}
+                    <option value="{$v.Name}">{$v.Name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="" style="width: 88%; height: auto;word-break: break-all;">
+                <div id="fields" style="">......</div>
+                <div class="layui-input-block" id="fields2" style="display:none">
+                    <fieldset class="layui-elem-field">
+                        <legend id="return_title"></legend>
+                        <div class="layui-field-box" id="return_fields">
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>要替换的字段
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" placeholder="" name="rpfield" id="rpfield" lay-verify="required"  value="" class="layui-input" style="width:360px;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">替换方式</label>
+            <div class="layui-input-inline" id="status">
+                <input type="radio" name="ishtml5" type="radio" checked="checked" value="1" title="普通替换">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>替换的内容
+            </label>
+            <div class="layui-input-inline" style="width: 75%;">
+                <span class="span_input">
+                     <textarea  name="rpstring" id="rpstring" class="layui-textarea" lay-verify="required"  placeholder=""></textarea>
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>替换为
+            </label>
+            <div class="layui-input-inline" style="width: 75%;">
+                <span class="span_input">
+                     <textarea  name="tostring" id="tostring" class="layui-textarea" lay-verify="required"  placeholder=""></textarea>
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>安全确认码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" name="code" id="code" value="" class="layui-input" lay-verify="required" required="required" placeholder="验证码"> &nbsp;
+            </div>
+            <div class="layui-input-inline">
+                <div id="imgVcode" >
+                    <img src="{:url('login/verify')}" alt="captcha" title="点击刷新验证码" border="0" class="verifyimg" onclick="this.src=this.src+'?'" style="float:right;height: 40px;"/>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="dosubmit" value="1">
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn"  lay-submit="">&nbsp;开始替换数据&nbsp;</button>
+        </div>
+
+    </form>
+
+</div>
+{include file='footer'/}
+</body>
+</html>
+<script>
+    layui.use(['layer', 'jquery', 'form'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+        form.on('select(ShowFields)', function(data){
+            var exptable = $("#exptable").val();
+            $.ajax({
+                url:"",
+                type:"GET",
+                data:"exptable="+exptable+"&action=getfields",
+                success:function(result){
+                    var names=result.names;
+                    var html='';
+                    $("#return_title").html("表("+exptable+")含有的字段：");
+                    $("#return_fields").html(names);
+                    $("#fields").hide();
+                    $("#fields2").css("display","block");
+                }}
+            );
+        });
+    });
+
+    function pf(v){
+        $('#rpfield').val(v);
+    }
+
+    function dosub(obj) {
+        $.ajax({
+            type: 'POST',
+            url: '{:url('dosql')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.status==1001){
+                    layer.msg(res.msg,{icon:res.icon});
+                    $("#imgVcode").load(location.href+"#imgVcode img");
+                    $("#code").val("");
+                }else if(res.status==201){
+                    layer.msg(res.message);
+                }else{
+                    layer.alert(res.message,{icon:res.icon},function () {
+                        window.location.reload();
+                    });
+                }
+            }
+        });
+    }
+</script>
