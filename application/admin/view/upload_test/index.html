@@ -10,14 +10,17 @@
         </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label">上传图片1</label>
-            <div class="layui-input-inline" style="width: 45%">
+            <div class="layui-input-inline" style="width: 40%">
                 <input type="text" name="demo1"  value=""  onmouseover="hui_img_preview('demo1',this.value)" onmouseout="layer.closeAll();" id="demo1" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline" style="width: 120px">
                 <button type="button" class="layui-btn" id="test1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
             </div>
             <div class="layui-input-inline" style="width: 120px">
-                <button type="button" class="layui-btn" id="pic_cropper" onclick="hui_img_cropper('demo1','{:url(\'upload/img_cropper\')}')"><i class="layui-icon layui-icon-picture"></i>裁剪图片</button>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="WeAdminShow('选择图片','{:url('general.attachment/select')}','800')"><i class="layui-icon">&#xe605;</i>选择图片</button>
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn layui-btn-fense" id="pic_cropper" onclick="hui_img_cropper('demo1','{:url(\'upload/img_cropper\')}')"><i class="layui-icon layui-icon-picture"></i>裁剪图片</button>
             </div>
         </div>
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">

@@ -50,12 +50,6 @@ class Ueditor extends Controller
         date_default_timezone_set("Asia/chongqing");
         error_reporting(E_ERROR);
         header("Content-Type: text/html; charset=utf-8");
-        
-        /* 旧，调用ueditor文件夹下的config.json配置文件
-        $app_path = str_replace("\application\\", "", APP_PATH);
-        $conf_path = file_get_contents($app_path . '\public\static\lib\ueditor\1.4.3.3\php\config.json');
-        $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", $conf_path), true);
-        */
         //新，调用config/ueditor.php
         $CONFIG = config('ueditor.');
         $action = input('action');
@@ -159,9 +153,25 @@ class Ueditor extends Controller
                     if ($isImg) {//如果是图片，开始处理
                         //获取水印配置
                         $this->add_water(".".$fname);
-                        //写入数据库
                     }
-                    $data = array('state' => 'SUCCESS', 'url' => str_replace(".".get_config('file_path'), get_config('file_path'), $fname), 'title' => $info->getFilename(), 'original' => $info->getFilename(), 'type' => '.' . $info->getExtension(), 'size' => $info->getSize(),);
+                    $file_url = str_replace(".".get_config('file_path'), get_config('file_path'), $fname);
+                    
+                    $imgInfo = getimagesize($fileInfo['tmp_name']);
+                    $imagewidth = isset($imgInfo[0]) ? $imgInfo[0] : '';
+                    $imageheight = isset($imgInfo[1]) ? $imgInfo[1] : '';
+                    //写入数据库
+                    $FileInfo['imagewidth']=$imagewidth;
+                    $FileInfo['imageheight']=$imageheight;
+                    $FileInfo['url']=$file_url;
+                    $FileInfo['filesize']=$fileInfo['size'];
+                    $FileInfo['fileext']=$imgExt;
+                    $FileInfo['mimetype']=$fileInfo['type'];
+                    $FileInfo['originname']=$fileInfo['name'];
+                    $FileInfo['storage']= "local";
+                    $FileInfo['sha1'] = sha1($file_url);
+                    $Upload = new \app\admin\controller\Upload;
+                    $insert_data = $Upload->_att_write($FileInfo);
+                    $data = array('state' => 'SUCCESS', 'url' => $file_url, 'title' => $info->getFilename(), 'original' => $info->getFilename(), 'type' => '.' . $info->getExtension(), 'size' => $info->getSize(),);
                 } else {
                     $data = array('state' => $file->getError(),);
                 }

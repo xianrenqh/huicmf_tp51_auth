@@ -87,5 +87,11 @@ class Attachment extends Common
             return json(['status'=>0,'msg'=>'参数错误！']);
         }
     }
+    
+    //选择图片
+    public function select()
+    {
+        return $this->fetch();
+    }
 
 }

@@ -27,7 +27,7 @@
     </form>
     <div style="position: fixed;bottom: 20px;right: 10px;z-index: 99;">
         <button onclick="dosub()" name="dosubmit" class="layui-btn" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
-        <button onclick="yzmcms_close()" class="layui-btn layui-btn-normal" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+        <button onclick="hui_close()" class="layui-btn layui-btn-normal" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
     </div>
 </div>
 {include file='footer'/}
@@ -93,12 +93,6 @@
         var index = parent.layer.getFrameIndex(window.name);
         parent.$("#groups").val(v);
         parent.$("#groups_name").val(v_name);
-        parent.layer.close(index);
-    }
-
-    //关闭弹出层
-    function yzmcms_close(){
-        var index = parent.layer.getFrameIndex(window.name);
         parent.layer.close(index);
     }
 

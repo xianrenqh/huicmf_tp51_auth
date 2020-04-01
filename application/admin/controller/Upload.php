@@ -189,7 +189,7 @@ class Upload extends Common
     /**
      * 上传附件写入数据库
      */
-    private function _att_write($fileinfo)
+    public function _att_write($fileinfo)
     {
         $arr = [];
         $arr['admin_id'] = $this->uid;

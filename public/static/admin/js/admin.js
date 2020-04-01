@@ -665,7 +665,7 @@ function hui_upload_att(url) {
 function hui_img_cropper(cid, url) {
     var str = $('#' + cid).val();
     if (str == '') {
-        layer.msg('请先上传图片！');
+        layer.msg('请先上传或选择图片！');
         return false;
     }
     if (url.indexOf('?') != -1) {
@@ -707,6 +707,13 @@ function posttips(url, data) {
             layer.msg(res.msg);
         }
     });
+}
+
+//选择图片并返回url到父级输入框
+function selectImg(parentInputId,url) {
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.$(parentInputId).val(url);
+    parent.layer.close(index);
 }
 
 //关闭弹出层
