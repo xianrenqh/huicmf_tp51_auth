@@ -13,7 +13,9 @@ use think\Controller;
 use think\captcha\Captcha;
 use think\Db;
 use think\Request;
-use think\facade\{Cookie,Session,Cache};
+use think\facade\Cookie;
+use think\facade\Session;
+use think\facade\Cache;
 use app\admin\model\AdminLog;
 use lib\GeetestLib;
 
