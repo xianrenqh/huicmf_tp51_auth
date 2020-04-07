@@ -56,6 +56,12 @@ class Attachment extends Common
             }
             $res = Db::name('attachment')->where($where)->limit($first, $limit)->order('id desc')->select();
             for($i=0;$i<count($res);$i++){
+                /*if (is_file($res[$i]['url'])) {
+                    $res[$i]['is_file'] ='1';
+                }else{
+                    $res[$i]['is_file'] ='0';
+                }*/
+                $res[$i]['is_file'] =is_file(".".$res[$i]['url'])?1:0;
                 $res[$i]['filesize'] = sizecount($res[$i]['filesize']);
                 $res[$i]['createtime'] = date('Y-m-d H:i:s',$res[$i]['createtime'] );
             }

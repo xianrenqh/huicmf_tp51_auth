@@ -8,14 +8,14 @@
  */
 
 namespace app\admin\controller;
+use think\facade\View;
 
-
-class UploadTest extends Common
+class UploadTest
 {
     
     public function index()
     {
-        return $this->fetch();
+        return View::fetch();
     }
     
 }

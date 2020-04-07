@@ -1,0 +1,149 @@
+{include file='header'/}
+<body>
+<div class="weadmin-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a><span lay-separator="">/</span>
+        <a href="">内容管理</a><span lay-separator="">/</span>
+        <a><cite>内容列表</cite></a>
+    </span>
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon">&#xe9aa;</i></a>
+</div>
+<div class="weadmin-body">
+    <div class="weadmin-block demoTable">
+        <button class="layui-btn" onclick="WeAdminShow('添加友情链接','{:url('add')}','800')"><i class="layui-icon"></i>添加内容</button>
+        <div class="layui-inline" style="margin-right:15px;">
+            <a class="layui-btn layui-btn-danger" data-type="dels"><i class="iconfont icon-delete"></i> 批量删除</a>
+        </div>
+        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
+    </div>
+    <script type="text/html" id="status">
+        {{#  if(d.status =='1'){ }}
+        <span class="layui-badge layui-bg-green"> 正常 </span>
+        {{#  } else { }}
+        <span class="layui-badge layui-bg-black"> 草稿 </span>
+        {{#  } }}
+    </script>
+    <script type="text/html" id="title">
+
+    </script>
+    <script type="text/html" id="logo">
+        {{#  if(d.logo !=''){ }}
+        <img src="{{d.logo}}" onmouseover="hui_img_preview('logo2','{{d.logo}}')" onmouseout="layer.closeAll();" id="logo2" width="40" >
+        {{#  } }}
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
+    </script>
+    <table id="role_list" lay-filter="role_list"></table>
+</div>
+
+{include file='footer'/}
+<script>
+    layui.use(['table'], function(){
+        var table = layui.table;
+        var tableIns = table.render({
+            elem: '#role_list'
+            ,page: false
+            ,where:{do:1}
+            ,method: 'post'
+            ,url: '{:url('index')}' //数据接口
+            ,done: function(res){ //res 即为原始返回的数据
+                $("#total").html(res.count);
+            }
+            ,cols: [[ //表头
+                {type:'checkbox',LAY_CHECKED:false}
+                ,{field:'id', title:'ID', width:65, align:'center'}
+                ,{field: 'title', title: '标题'}
+                ,{field: 'catname', title: '所属分类',align:'center',width:160}
+                ,{field: 'click', title: '点击量',width:100,align:'center'}
+                ,{field: 'username', title: '发布人',width:120,align:'center'}
+                ,{field: 'updatetime', title: '更新时间',width:180,align:'center'}
+                ,{field: 'status', title: '状态',templet: '#status',align:'center',width:90}
+                ,{field: 'is_push', title: '是否推送',align:'center',width:90, templet: function(d){
+                        if(d.is_push==1){return "已推送"}else{return "<span class='we-red'>未推送</span>"}
+                    }}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:160}
+            ]]
+            ,id: 'testReload'
+            ,page:true
+            ,limit:10
+        });
+        var $ = layui.$, active = {
+            reload: function() {
+                //执行重载
+                table.reload();
+            },
+            dels: function(){ //批量删除
+                var ids = table_get_ids(table);
+                if(ids===false){
+                    return false;
+                }
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :ids};
+                    posttips("{:url('delete')}",postdata);
+                });
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听行工具事件
+        table.on('tool(role_list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('你确定要删除吗？', {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    var postdata ={ids :data.id};
+                    posttips("{:url('delete')}",postdata);
+                });
+            } else if(obj.event === 'edit'){
+                WeAdminShow("编辑","{:url('edit')}?id="+data.id,'850');
+            }
+        });
+
+        //监听单元格编辑
+        table.on('edit(role_list)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            $.post("{:url('listorder_edit')}",{
+                id:data.id,
+                value:value
+            },function (res) {
+                layer.msg(res.msg);
+                tableIns.reload();
+            })
+        });
+
+    });
+
+    function table_get_ids(table) {
+        var checkStatus = table.checkStatus('testReload')
+            ,data = checkStatus.data;
+        if(data.length<1){
+            layer.msg('你没有选择任何数据');
+            return false;
+        }else{
+            var ids=[];
+            for(var i=0;i<data.length;i++){
+                ids +=data[i].id+',';
+            }
+            ids =ids.slice(0, -1);
+            var arr =ids.split(',');
+            for(var i in arr){
+                (arr[i])
+            }
+            return arr;
+        }
+    }
+
+</script>
+</body>
+</html>

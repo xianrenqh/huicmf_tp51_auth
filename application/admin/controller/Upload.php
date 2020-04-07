@@ -10,8 +10,9 @@
 namespace app\admin\controller;
 use think\Image;
 use think\Db;
+use think\facade\View;
 
-class Upload extends Common
+class Upload
 {
     public $uid;
     public $user_id;
@@ -133,7 +134,7 @@ class Upload extends Common
                 default:
                     $spec = '3 / 2';
             }
-            return $this->fetch('upload_test/img_cropper',['filepath'=>$filepath,'spec'=>$spec,'cid'=>$cid]);
+            return View::fetch('upload_test/img_cropper',['filepath'=>$filepath,'spec'=>$spec,'cid'=>$cid]);
         }
         
     }

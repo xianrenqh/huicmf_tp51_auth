@@ -50,8 +50,10 @@
 
 </script>
 <script type="text/html" id="view_img">
-    {{#  if(d.url !=''){ }}
+    {{#  if(d.url !='' && d.is_file==1){ }}
     <img src="{{d.url}}" onmouseover="hui_img_preview('logo2','{{d.url}}')" onmouseout="layer.closeAll();" id="logo2" width="30" >
+    {{#  } else { }}
+    <span class="we-red">不存在</span>
     {{#  } }}
 </script>
 <script type="text/html" id="urlurl">

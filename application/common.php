@@ -709,3 +709,18 @@ function template($module = '', $template = 'index')
     return $template_c;
 }
 
+/**
+ * 将数组转换为对象
+ * @param  array  $data  数组
+ * @return 返回对象（object）
+ */
+function array2object($array) {
+    if (is_array($array)) {
+        $obj = new StdClass();
+        foreach ($array as $key => $val){
+            $obj->$key = $val;
+        }
+    }
+    else { $obj = $array; }
+    return $obj;
+}
