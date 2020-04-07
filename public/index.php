@@ -14,6 +14,13 @@ namespace think;
 require __DIR__ . '/../thinkphp/base.php';
 // 支持事先使用静态方法设置Request对象和Config对象
 
+//验证是否已安装，没有安装跳转到安装
+if(!file_exists(dirname(__FILE__).'/install.lock'))
+{
+    header('Location:/install');
+    exit();
+}
+
 // 定义目录分隔符
 define('DS', DIRECTORY_SEPARATOR);
 

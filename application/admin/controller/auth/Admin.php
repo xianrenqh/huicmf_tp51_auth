@@ -148,7 +148,7 @@ class Admin extends Common
             $param['createtime'] = time();
             $ins_id = Db::name('admin')->strict(false)->insertGetId($param);
             $group_ids = explode(",",$param['group']);
-            $data2 = '';
+            $data2 = [];
             foreach ($group_ids as $k=>$v){
                 $data2[] = ['uid'=>$ins_id,'group_id'=>$v];
             }
@@ -185,7 +185,7 @@ class Admin extends Common
             $group_ids = $param['group'];
             $del = Db::name('auth_group_access')->where('uid',$param['id'])->delete();
             $group_ids = explode(",",$group_ids);
-            $data2 = '';
+            $data2 = [];
             foreach ($group_ids as $k=>$v){
                 $data2[] = ['uid'=>$param['id'],'group_id'=>$v];
             }
