@@ -17,6 +17,11 @@
         .hide {display: none;}
         #notice {color: red;}
     </style>
+    <script>
+        if (window != top) {
+            top.location.href="{:url('login/index')}";
+        }
+    </script>
 </head>
 <body class="login-bg" style="background: url({:url('getbing_bgpic')})">
 
@@ -56,6 +61,11 @@
 {include file='footer'/}
 <script src="__STATIC_ADMIN__js/gt.js"></script>
 <script>
+    /*$(document).ready(function () {
+        if (window != top) {
+            top.location.href = location.href;
+        }
+    });*/
     {php}if(get_config('login_code')==2){ {/php}
     var handlerEmbed = function (captchaObj) {
         $("#embed-submit").click(function (e) {
