@@ -18,5 +18,10 @@ class Index{
         include template('index','index');
     }
     
+    //内容展示页
+    public function show()
+    {
+        echo "这是内容展示页";
+    }
     
 }

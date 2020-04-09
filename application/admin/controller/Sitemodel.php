@@ -58,6 +58,13 @@ class Sitemodel extends Common
         if(input('post.dosubmit')){
             $param = input('post.');
             $param['inputtime'] = time();
+            //判断至少启用一个模型，否则修改失败
+            if($param['disabled']==1){
+                $disabledCount = Db::name('model')->where('disabled',0)->count();
+                if($disabledCount<=1){
+                    return json(['status'=>0,'msg'=>'操作失败，需要至少启用一个模型']);
+                }
+            }
             $res = Db::name('model')->data($param)->strict(false)->where('modelid',$param['modelid'])->update();
             if($res){
                 Cache::rm('modelinfo');

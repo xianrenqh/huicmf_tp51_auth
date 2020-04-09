@@ -26,23 +26,30 @@ class Content extends Common
     
     public function index()
     {
-        if(input('post.do')==1){
-            $param = input('post.');
+        $getModel = $this->getModel()[0]['modelid'];
+        if(input('get.do')==1){
+            $param = input('');
             $page = $param['page'];
             $limit = $param['limit'];
             $first = ($page - 1) * $limit;
             $where = "1=1";
+            $order = "updatetime DESC,id DESC";
             if ( !empty($param['key'])) {
             
             }
-            $modelid = !empty($param['modelid'])?$param['modelid']:1;
+            if(!empty($param['field'])&&!empty($param['order'])){
+                $order = $param['field']." ".$param['order'];
+            }
+            $modelid = !empty($param['modelid'])?$param['modelid']:$getModel;
             $tableName = $this->get_model($modelid)->{'tablename'};
             $field = "id,catid,click,flag,inputtime,userid,username,updatetime,url,title,thumb,status,is_push";
-            $list = Db::name($tableName)->where($where)->field($field)->limit($first, $limit)->order('updatetime DESC,id DESC')->select();
+            $list = Db::name($tableName)->where($where)->field($field)->limit($first, $limit)->order($order)->select();
             for($i=0;$i<count($list);$i++){
                 $flag = '';
                 foreach(explode(",",$list[$i]['flag']) as $v){
-                    $flag .= "<span class='we-red'>[".$this->getFlagName($v)."]</span> ";
+                    if($v!=''){
+                        $flag .= "<span class='we-red'>[".$this->getFlagName($v)."]</span> ";
+                    }
                 }
                 $list[$i]['title'] =  "<a href='".$list[$i]['url']."' target='_blank'>".$list[$i]['title']."</a> <i class=\"layui-icon layui-icon-picture\" style='color:#1E9FFF'></i> ".$flag;
                 $list[$i]['updatetime'] = date("Y-m-d H:i:s",$list[$i]['updatetime']);
@@ -54,10 +61,49 @@ class Content extends Common
             $data['msg'] = '';
             $data['count'] = $total;
             $data['data'] = $list;
+            $data['modelid'] = $modelid;
             return json($data);
         }else{
-            return $this->fetch('content_list');
+            $getModel = $this->getModel();
+            return $this->fetch('content_list',['getModel'=>$getModel,'getModel'=>$getModel]);
         }
+    }
+    
+    //添加
+    public function add()
+    {
+    
+    }
+    
+    //编辑
+    public function edit()
+    {
+    
+    }
+    
+    //删除
+    public function delete()
+    {
+        $ids = input('post.ids');
+        //如果是数组，批量删除
+        if(is_array($ids)){
+        
+        }else{
+            //删除单条
+        }
+    }
+    
+    //属性操作
+    public function attribute_operation()
+    {
+    
+    }
+    
+    //获取模型select
+    private function getModel()
+    {
+        $res = Db::name('model')->field('modelid,name,tablename')->where('disabled',0)->select();
+        return $res;
     }
     
     //根据modelid获取tableName以及中文Nabe

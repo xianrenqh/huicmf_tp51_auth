@@ -10,11 +10,49 @@
         <i class="layui-icon">&#xe9aa;</i></a>
 </div>
 <div class="weadmin-body">
+    <div class="layui-row demoTable" style="margin: 5px auto 15px">
+        <form class="layui-form layui-col-md12" action="javascript:;" id="form_article_search" method="get" >
+            搜索：
+            <div class="layui-inline"  style="width:150px">
+                <select name="modelid" class="select" lay-filter="change_model" id="modelid">
+                    {foreach name='getModel' id='vo'}
+                        <option value="{$vo.modelid}">{$vo.name}</option>
+                    {/foreach}
+                </select>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">时间范围</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="updatetime" id="updatetime" placeholder=" - ">
+                </div>
+            </div>
+            <div class="layui-inline" style="width:70px">
+                <select name="status" class="status" id="s_status">
+                    <option value="99">状态</option>
+                    <option  value="0">草稿</option>
+                    <option  value="1">正常</option>
+                </select>
+            </div>
+            <div class="layui-inline" style="width: 100px;">
+                <select name="type" id="type">
+                    <option value="1">内容标题</option>
+                    <option value="2">发布人</option>
+                </select>
+            </div>
+            <div class="layui-inline">
+                <input type="text" name="searinfo" id="searinfo" placeholder="" autocomplete="off" class="layui-input search">
+            </div>
+            <button class="layui-btn" data-type="reload" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>搜索</button>
+            <button class="layui-btn layui-btn-danger" type="reset"><i class="layui-icon">&#xe63f;</i>清空</button>
+        </form>
+    </div>
+    <input type="hidden" id="retModelid">
     <div class="weadmin-block demoTable">
-        <button class="layui-btn" onclick="WeAdminShow('添加友情链接','{:url('add')}','800')"><i class="layui-icon"></i>添加内容</button>
-        <div class="layui-inline" style="margin-right:15px;">
-            <a class="layui-btn layui-btn-danger" data-type="dels"><i class="iconfont icon-delete"></i> 批量删除</a>
-        </div>
+        <button class="layui-btn" data-type="add"><i class="layui-icon"></i>添加内容</button>
+        <button class="layui-btn layui-btn-danger" data-type="dels"><i class="iconfont icon-delete"></i> 批量删除</button>
+        <button class="layui-btn layui-btn-fense">移动分类</button>
+        <button class="layui-btn layui-btn-normal">增加属性</button>
+        <button class="layui-btn layui-btn-lvse">删除属性</button>
         <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
     </div>
     <script type="text/html" id="status">
@@ -36,44 +74,46 @@
         <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
     </script>
-    <table id="role_list" lay-filter="role_list"></table>
+    <table id="article_list" lay-filter="article_list"></table>
 </div>
 
 {include file='footer'/}
 <script>
-    layui.use(['table'], function(){
-        var table = layui.table;
-        var tableIns = table.render({
-            elem: '#role_list'
-            ,page: false
-            ,where:{do:1}
-            ,method: 'post'
-            ,url: '{:url('index')}' //数据接口
-            ,done: function(res){ //res 即为原始返回的数据
-                $("#total").html(res.count);
-            }
-            ,cols: [[ //表头
-                {type:'checkbox',LAY_CHECKED:false}
-                ,{field:'id', title:'ID', width:65, align:'center'}
-                ,{field: 'title', title: '标题'}
-                ,{field: 'catname', title: '所属分类',align:'center',width:160}
-                ,{field: 'click', title: '点击量',width:100,align:'center'}
-                ,{field: 'username', title: '发布人',width:120,align:'center'}
-                ,{field: 'updatetime', title: '更新时间',width:180,align:'center'}
-                ,{field: 'status', title: '状态',templet: '#status',align:'center',width:90}
-                ,{field: 'is_push', title: '是否推送',align:'center',width:90, templet: function(d){
-                        if(d.is_push==1){return "已推送"}else{return "<span class='we-red'>未推送</span>"}
-                    }}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:160}
-            ]]
-            ,id: 'testReload'
-            ,page:true
-            ,limit:10
+    layui.use(['table','form','laydate'], function(){
+        var $ = layui.jquery,table = layui.table,form = layui.form,laydate = layui.laydate;
+        form.render();
+        //监听select，更改模型（change_model）
+        form.on('select(change_model)', function(data){
+            table.reload('testReload', {
+
+            });
+            $('#searinfo').val('');
+            tableRolead(table,data.value);
         });
+        laydate.render({
+            elem: '#updatetime'
+            ,range: true
+            ,max:"{php}echo date('Y-m-d',time()){/php}"
+        });
+        tableRolead(table);
         var $ = layui.$, active = {
             reload: function() {
                 //执行重载
-                table.reload();
+                table.reload('testReload', {
+                    page: {curr: 1},
+                    where: {
+                        key: {
+                            modelid: $('#modelid').val(),
+                            updatetime: $('#updatetime').val(),
+                            status: $('#s_status').val(),
+                            type: $('#type').val(),
+                            searinfo: $('#searinfo').val(),
+                        }
+                    }
+                });
+            },
+            add:function(){
+                WeAdminOpenFull("添加内容","{:url('add')}?modelid="+$("#retModelid").val());
             },
             dels: function(){ //批量删除
                 var ids = table_get_ids(table);
@@ -94,7 +134,7 @@
         });
 
         //监听行工具事件
-        table.on('tool(role_list)', function(obj){
+        table.on('tool(article_list)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
                 layer.confirm('你确定要删除吗？', {
@@ -109,7 +149,7 @@
         });
 
         //监听单元格编辑
-        table.on('edit(role_list)', function(obj){
+        table.on('edit(article_list)', function(obj){
             var value = obj.value //得到修改后的值
                 ,data = obj.data //得到所在行所有键值
                 ,field = obj.field; //得到字段
@@ -122,7 +162,50 @@
             })
         });
 
+        //监听排序
+        table.on('sort(article_list)', function(obj){
+            table.reload('testReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段   在接口作为参数字段  field order
+                    ,order: obj.type //排序方式   在接口作为参数字段  field order
+                }
+            });
+        });
+
     });
+
+    //table加载
+    function tableRolead(table,data_value) {
+        var tableIns = table.render({
+            elem: '#article_list'
+            ,page: false
+            ,where:{do:1,modelid:data_value}
+            ,method: 'get'
+            ,url: '{:url('index')}' //数据接口
+            ,done: function(res){ //res 即为原始返回的数据
+                $("#total").html(res.count);
+                $("#retModelid").val(res.modelid);
+            }
+            ,cols: [[ //表头
+                {type:'checkbox',LAY_CHECKED:false}
+                ,{field:'id', title:'ID', width:65, align:'center',sort:true}
+                ,{field: 'title', title: '标题'}
+                ,{field: 'catname', title: '所属分类',align:'center',width:160}
+                ,{field: 'click', title: '点击量',width:100,align:'center',sort:true}
+                ,{field: 'username', title: '发布人',width:120,align:'center'}
+                ,{field: 'updatetime', title: '更新时间',width:180,align:'center',sort:true}
+                ,{field: 'status', title: '状态',templet: '#status',align:'center',width:90,sort:true}
+                ,{field: 'is_push', title: '是否推送',align:'center',width:90, templet: function(d){
+                        if(d.is_push==1){return "已推送"}else{return "<span class='we-red'>未推送</span>"}
+                    }}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:160}
+            ]]
+            ,id: 'testReload'
+            ,page:true
+            ,limit:10
+        });
+    }
 
     function table_get_ids(table) {
         var checkStatus = table.checkStatus('testReload')
