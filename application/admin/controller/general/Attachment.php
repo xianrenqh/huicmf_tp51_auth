@@ -97,7 +97,14 @@ class Attachment extends Common
     //选择图片
     public function select()
     {
-        return $this->fetch();
+        $id =input('id');
+        return $this->fetch('',['id'=>$id]);
+    }
+    
+    //多图上传
+    public function update_imgs()
+    {
+        $this->fetch();
     }
 
 }

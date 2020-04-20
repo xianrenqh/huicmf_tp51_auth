@@ -12,7 +12,6 @@
 <div class="weadmin-body">
     <div class="layui-row demoTable" style="margin: 5px auto 15px">
         <form class="layui-form layui-col-md12" action="javascript:;" id="form_article_search" method="get" >
-            搜索：
             <div class="layui-inline"  style="width:150px">
                 <select name="modelid" class="select" lay-filter="change_model" id="modelid">
                     {foreach name='getModel' id='vo'}
@@ -26,6 +25,18 @@
                     <input type="text" class="layui-input" name="updatetime" id="updatetime" placeholder=" - ">
                 </div>
             </div>
+            <div class="layui-inline" style="width:100px">
+                <select name="flag" id="flag">
+                    <option value="0">内容属性</option>
+                    <option  value="1">置顶[1]</option>
+                    <option  value="2">头条[2]</option>
+                    <option  value="3">特荐[3]</option>
+                    <option  value="4">推荐[4]</option>
+                    <option  value="5">热点[5]</option>
+                    <option  value="6">幻灯[6]</option>
+                    <option  value="7">跳转[7]</option>
+                </select>
+            </div>
             <div class="layui-inline" style="width:70px">
                 <select name="status" class="status" id="s_status">
                     <option value="99">状态</option>
@@ -37,6 +48,7 @@
                 <select name="type" id="type">
                     <option value="1">内容标题</option>
                     <option value="2">发布人</option>
+                    <option value="3">文章ID</option>
                 </select>
             </div>
             <div class="layui-inline">
@@ -103,6 +115,7 @@
                     page: {curr: 1},
                     where: {
                         key: {
+                            flag: $('#flag').val(),
                             modelid: $('#modelid').val(),
                             updatetime: $('#updatetime').val(),
                             status: $('#s_status').val(),
@@ -140,11 +153,11 @@
                 layer.confirm('你确定要删除吗？', {
                     btn: ['确定','取消'] //按钮
                 }, function(){
-                    var postdata ={ids :data.id};
+                    var postdata ={ids :data.id,modelid:$("#retModelid").val()};
                     posttips("{:url('delete')}",postdata);
                 });
             } else if(obj.event === 'edit'){
-                WeAdminShow("编辑","{:url('edit')}?id="+data.id,'850');
+                WeAdminOpenFull("编辑内容","{:url('edit')}?id="+data.id+"&modelid="+$("#retModelid").val());
             }
         });
 

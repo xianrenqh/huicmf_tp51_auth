@@ -1,32 +1,15 @@
 /*login页面，背景*/
-#click_pic{width: 150px;height: 40px;  position: absolute; bottom: 5%;right:5%;z-index: 100}
-#click_pic a{width: 40px; height: 40px;float:left;display: block;}
-.click_pic{background: transparent url(../images/anniu.png) no-repeat;overflow: hidden;width: 40px;height: 40px;margin: 0 10px;}
-.click_pic_a{background-position: 0 -84px;}
-.click_pic_b{background-position: 0 -126px;}
-.thumb{height:120px;width:180px;float:right;position:relative;right:0px;}
-
-.readonly-bg {background: #f2f2f2;}
-
+#click_pic{width:150px;height:40px;position:absolute;bottom:5%;right:5%;z-index:100}
+#click_pic a{width:40px;height:40px;float:left;display:block}
+.click_pic{background:transparent url(../images/anniu.png) no-repeat;overflow:hidden;width:40px;height:40px;margin:0 10px}
+.click_pic_a{background-position:0 -84px}
+.click_pic_b{background-position:0 -126px}
+.thumb{height:120px;width:180px;float:right;position:relative;right:0}
+.readonly-bg{background:#f2f2f2}
 .layui-btn-fense{background-color:#d773e6}
 .layui-btn-lvse{background-color:#87bc3f}
-.layui-breadcrumb {visibility: visible;}
-pre {
-    display: block;
-    font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-    padding: 9.5px;
-    margin-bottom: 10px;
-    font-size: 12px;
-    line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre;
-    white-space: pre-wrap;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: #333;
-}
+.layui-breadcrumb{visibility:visible}
+pre{display:block;font-family:Monaco,Menlo,Consolas,"Courier New",monospace;padding:9.5px;margin-bottom:10px;font-size:12px;line-height:20px;word-break:break-all;word-wrap:break-word;white-space:pre;white-space:pre-wrap;background-color:#f5f5f5;border:1px solid #ccc;border-radius:4px;color:#333}
 
 .ace_header{position:relative;height:35px;background:#565656}
 .ace_header span{float:left;height:35px;line-height:35px;padding:0 15px;font-size:13px;text-align:center;color:#fff;border-right:1px solid #4c4c4c;cursor:pointer}
@@ -38,4 +21,30 @@ pre {
 .helps_conter{padding:25px;overflow:hidden}
 .helps_conter .helps_item{margin-bottom:10px;display:inline-block;border-left:3px solid #20a53a;padding-left:5px;font-size:15px}
 .helps_conter .helps_box{margin-bottom:20px;font-size:14px;padding-left:10px;line-height:25px}
-#change_ace_themes option{height:30px; line-height:30px;font-size-adjust: inherit;font-size:20px;margin-bottom:5px;}
+#change_ace_themes option{height:30px;line-height:30px;font-size-adjust:inherit;font-size:20px;margin-bottom:5px}
+.textarea-numberbar{position:absolute;right:20px;bottom:5px;z-index:1;margin-bottom:0}
+.textarea-length{font-style:normal}
+.thumb {height: 120px;width: 180px;float: right;position: absolute;right: 0px;top: -23px;border: 1px solid #f7a59a91;}
+
+#wordTags{display:flex;flex-wrap:nowrap}
+.tag-checked-name{display:inline-block;position:relative;height:24px;border-radius:1px;color:#4abee0;font-size:12px;line-height:24px;padding:0 20px 0 8px;background-color:#f7fdff;border:solid 1px #4abee0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-right:5px}
+.tag-checked-name:first-of-type{margin-left:0}
+.tag-checked-name em{display:block;position:absolute;top:5px;right:5px;width:13px;height:13px;cursor:pointer;transform:rotate(45deg)}
+.tag-checked-name em:after{display:block;position:absolute;content:'';top:6px;width:13px;height:1px;background:#4abee0}
+.tag-checked-name em:before{display:block;position:absolute;content:'';top:0;left:5px;width:1px;height:13px;background:#4abee0}
+
+/*tag标签*/
+.Huitags-editor{ margin-top:8px;}
+.Huitags-editor i{float:left;
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+.Hui-tags-token, .Huitags-token {color:#df038b;float: left;font-size: 14px;height: 20px;line-height: 20px;margin-left: 10px;padding: 0 1px;white-space: nowrap;cursor: pointer;}
+.Hui-tags-token:before, .Huitags-token:before {content: "#";}
+
+.cl:after, .clearfix:after {content: "\20";display: block;height: 0;clear: both;visibility: hidden;}
+.Huitags-token:hover{text-decoration:line-through;color:#7a034d;}
+

@@ -15,6 +15,18 @@
                 <div class="layui-tab-item layui-show">
                     <div class="layui-form-item">
                         <label class="layui-form-label">
+                            <span class="we-red">*</span>选择模型
+                        </label>
+                        <div class="layui-input-block" style="width:343px">
+                            <select name="modelid">
+                                {foreach name='get_model' id='vo'}
+                                <option value="{$vo.modelid}">{$vo.name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
                             <span class="we-red">*</span>父级分类
                         </label>
                         <div class="layui-input-block" style="width:343px">

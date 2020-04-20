@@ -86,4 +86,26 @@ class Tag extends Common
         $this->success('删除成功~~~');
     }
     
+    //选择tag
+    public function select()
+    {
+        return $this->fetch('select');
+    }
+    
+    public function select_json()
+    {
+        $limit = 50;
+        if(input('post.dosearch')){
+            $res = Db::name('tag')->where('tag','like','%'.input('post.key').'%')->limit($limit)->select();
+        }else{
+            $res = Db::name('tag')->limit($limit)->select();
+        }
+        $tags='';
+        foreach($res as $v)
+        {
+            $tags .="<a onclick='set_val(\"".$v['tag']."\")'>#".$v['tag']."</a>";
+        }
+        return json($tags);
+    }
+    
 }

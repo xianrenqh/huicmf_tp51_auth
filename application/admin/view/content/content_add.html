@@ -1,0 +1,226 @@
+{include file='header'/}
+<script type="text/javascript" src="__LIB__ueditor/1.4.3.3/ueditor.config.js"></script>
+<script type="text/javascript" src="__LIB__ueditor/1.4.3.3/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__LIB__ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>标题</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" value="" lay-verify="required" autocomplete="off" class="layui-input" onblur="get_seotitle()">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>SEO标题</label>
+            <div class="layui-input-block">
+                <input type="text" id="seo_title" name="seo_title" value="" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">属性</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="flag[]" value="1" title="置顶[1]">
+                <input type="checkbox" name="flag[]" value="2" title="头条[2]">
+                <input type="checkbox" name="flag[]" value="3" title="特荐[3]">
+                <input type="checkbox" name="flag[]" value="4" title="推荐[4]">
+                <input type="checkbox" name="flag[]" value="5" title="热点[5]">
+                <input type="checkbox" name="flag[]" value="6" title="幻灯[6]">
+                <input type="checkbox" name="flag[]" value="7" title="跳转[7]">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">栏目</label>
+            <div class="layui-input-inline">
+                <select name="catid" id="catid" lay-verify="required">
+                    <option value="">≡ 请选择栏目 ≡</option>
+                    {$select_cate|raw}
+                </select>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">发布时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="inputtime" class="layui-input" id="inputtime" placeholder="yyyy-MM-dd HH:mm:ss" value="{:date('Y-m-d H:i:s',time())}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">TAG：</label>
+            <div class="layui-input-inline block" style="width:808px">
+                <div id="Huitags-demo1"></div>
+            </div>
+            <a href="javascript:;" onclick="WeAdminShow('TAG标签选择','{:url('tag/select')}','800','550')" class="layui-btn layui-btn-success">选择</a>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">关键词</label>
+            <div class="layui-input-block">
+                <input type="text" id="keywords" name="keywords" value="" autocomplete="off" class="layui-input" placeholder="每个关键字之间用“,”分割">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容摘要</label>
+            <div class="layui-input-block">
+                <textarea name="description" class="layui-textarea"  placeholder="如不填写，则自动提取文章前200字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,200)"></textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">缩略图</label>
+            <div class="layui-input-inline" style="width: 35%">
+                <input type="text" name="thumb"  value=""  onmouseover="hui_img_preview('thumb',this.value)" onmouseout="layer.closeAll();" id="thumb" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn" id="test1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn layui-btn-normal" onclick="WeAdminShow('选择图片','{:url('general.attachment/select',[\'id\'=>\'thumb\'])}','800')"><i class="layui-icon">&#xe605;</i>选择图片</button>
+            </div>
+            <div class="layui-input-inline" style="width: 120px">
+                <button type="button" class="layui-btn layui-btn-fense" id="pic_cropper" onclick="hui_img_cropper('thumb','{:url(\'upload/img_cropper\')}')"><i class="layui-icon layui-icon-picture"></i>裁剪图片</button>
+            </div>
+            <div class="layui-input-inline">
+                <img src="__STATIC_ADMIN__images/nopic.jpg" class="thumb" id="thumb_src"><!--id值为上面的thumb加_src组成-->
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">来源</label>
+            <div class="layui-input-inline">
+                <input type="text" id="copyfrom" name="copyfrom" value="原创" autocomplete="off" class="layui-input" >
+            </div>
+            <label class="layui-form-label">点击量</label>
+            <div class="layui-input-inline">
+                <input type="text" id="click" name="click" value="{$randNum}" autocomplete="off" class="layui-input" >
+            </div>
+            <label class="layui-form-label">作者昵称</label>
+            <div class="layui-input-inline">
+                <input type="text" id="nickname" name="nickname" value="{php}echo session('user_info.nickname')?session('user_info.nickname'):'管理员'{/php}" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div style="margin:35px 0;">
+            {$string|raw}
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="we-red">*</span>内容</label>
+            <div class="layui-input-block">
+                {php}echo lib\Form::editor('content', '', 'width:100%;height:400px', false);{/php}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="auto_thum" value="1" title="提取内容第一张图片为缩略图" lay-skin="primary" checked>&emsp;&emsp;
+                <input type="checkbox" name="grab_img" value="1" title="远程图片本地化" lay-skin="primary">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="status" value="1">
+            <button class="layui-btn"  lay-submit=""type="submit"  onclick="set_status(1)" name="dosubmit"><i class="iconfont icon-check"></i> 立即发布</button>
+            <button class="layui-btn layui-btn-normal"  lay-submit=""type="submit" onclick="set_status(0)" name="dosubmit"><i class="iconfont icon-write"></i> 保存草稿</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+<script type="text/javascript" src="__LIB__jquery/jQuery.Huitags.js"></script>
+<script>
+    $(function(){
+        $("#menu-hui dt").addClass("selected");$("#menu-hui dd").show();
+        $("#Huitags-demo1").Huitags(
+            {
+                maxlength : 20,
+                number : 5,
+                tagsDefault : [],
+            }
+        );
+    });
+
+    layui.use(['form','upload','laydate'], function() {
+        var form = layui.form,laydate = layui.laydate, upload = layui.upload;
+        form.render();
+        laydate.render({
+            elem: '#inputtime'
+            ,type: 'datetime'
+            ,calendar: true
+            ,theme: 'molv'
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test1'
+            , url: "{:url('upload/index')}"
+            ,field:"Filedata"
+            ,done: function(res){
+                if(res.status==1){
+                    $("#thumb").val(res.src);
+                    $("#thumb_src").attr("src",res.src);
+                }
+            }
+
+        })
+    });
+
+    function get_seotitle(){
+        var title = $("input[name='title']").val();
+        if(title != ''){
+            $("input[name='seo_title']").val(title+'_{:get_config(\'site_name\')}');
+        }else{
+            layer.msg('标题不能为空！', {icon:2,time: 2000});
+        }
+    }
+    function set_status(s){
+        $("input[name='status']").val(s);
+    }
+    function dosub(obj) {
+        if($("input[name='title']").val()==''){
+            layer.msg('标题名称不能为空！',{icon:2});
+            $(this).focus();
+            return false;
+        }
+
+        var check = true;
+        $(".required").each(function(){
+            if($(this).val() == ''){
+                layer.msg($(this).attr('errortips'), {icon:2,time: 2000});
+                $(this).focus();
+                check = false;
+                return false;
+            }
+        });
+        if(!check) return false;
+
+        if(ue.getContent()==''){
+            layer.msg('内容不能为空！',{icon:2});
+            $(this).focus();
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '{:url('add')}',
+            data: $(obj).serialize(),
+            dataType: "json",
+            success: function (res) {
+                if(res.status == 1){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 200
+                    }, function(){
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+        return false;
+    }
+</script>
+</body>
+</html>

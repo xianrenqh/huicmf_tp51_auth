@@ -446,6 +446,16 @@ function getArray($arr){
     return $arrs;
 }
 
+//字符串去重
+function unique($str){
+    //字符串中，需要去重的数据是以数字和“，”号连接的字符串，如$str,explode()是用逗号为分割，变成一个新的数组，见打印
+    $arr = explode(',', $str);
+    $arr = array_unique($arr);//内置数组去重算法
+    $data = implode(',', $arr);
+    $data = trim($data,',');//trim — 去除字符串首尾处的空白字符（或者其他字符）,假如不使用，后面会多个逗号
+    return $data;//返回值，返回到函数外部
+}
+
 /**
  * 创建目录
  *

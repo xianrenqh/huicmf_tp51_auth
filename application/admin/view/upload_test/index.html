@@ -17,7 +17,7 @@
                 <button type="button" class="layui-btn" id="test1" ><i class="layui-icon">&#xe67c;</i>上传图片</button>
             </div>
             <div class="layui-input-inline" style="width: 120px">
-                <button type="button" class="layui-btn layui-btn-normal" onclick="WeAdminShow('选择图片','{:url('general.attachment/select')}','800')"><i class="layui-icon">&#xe605;</i>选择图片</button>
+                <button type="button" class="layui-btn layui-btn-normal" onclick="WeAdminShow('选择图片','{:url('general.attachment/select',[\'id\'=>\'demo1\'])}','800')"><i class="layui-icon">&#xe605;</i>选择图片</button>
             </div>
             <div class="layui-input-inline" style="width: 120px">
                 <button type="button" class="layui-btn layui-btn-fense" id="pic_cropper" onclick="hui_img_cropper('demo1','{:url(\'upload/img_cropper\')}')"><i class="layui-icon layui-icon-picture"></i>裁剪图片</button>
@@ -31,7 +31,7 @@
                 <span class="we-red">*</span>内容
             </label>
             <div class="layui-input-block">
-                <script id="container" name="content" type="text/plain"></script>
+                {php}echo lib\Form::editor('content', '', 'width:100%;height:400px', true);{/php}
             </div>
         </div>
         <div class="layui-form-item">
@@ -43,14 +43,8 @@
     </form>
 </div>
 {include file='footer'/}
-<script type="text/javascript" src="__LIB__ueditor/1.4.3.3/ueditor.config.js"></script>
-<script type="text/javascript" src="__LIB__ueditor/1.4.3.3/ueditor.all.min.js"></script>
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
-    var url='{:url('ueditor/index')}';
-    var ue = UE.getEditor('container',{
-        serverUrl :url,
-    });
 
     layui.use(['form','upload'], function() {
         var form = layui.form,

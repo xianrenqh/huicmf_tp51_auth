@@ -28,7 +28,7 @@ class Category extends Common
     public function index()
     {
         if(!empty(input('post.do'))){
-            $list = Db::name('category')->order('weigh asc,pid asc,id asc')->select();
+            $list = Db::name('category')->order('id asc,weigh asc,pid asc')->select();
             for($i=0;$i<count($list);$i++){
                 $list[$i]['nickname'] = ($list[$i]['nickname']==''&& $list[$i]['pc_link']!='')?$list[$i]['pc_link']:$list[$i]['nickname'];
             }
@@ -63,11 +63,12 @@ class Category extends Common
             $pid = input('pid') ? input('pid') : 0;
             $type = input('type') ? input('type') : 1;
             $select_cate = $this->select_cate($pid);
+            $get_model = $this->getModel();
             if($type==1){
                 $category_temp = $this->select_template('category_temp', 'category_');
                 $list_temp = $this->select_template('list_temp', 'list_');
                 $show_temp = $this->select_template('show_temp', 'show_');
-                return $this->fetch('add',['type'=>$type,'select_cate'=>$select_cate,'category_temp'=>$category_temp,'list_temp'=>$list_temp,'show_temp'=>$show_temp]);
+                return $this->fetch('add',['type'=>$type,'select_cate'=>$select_cate,'category_temp'=>$category_temp,'list_temp'=>$list_temp,'show_temp'=>$show_temp,'get_model'=>$get_model]);
             }elseif ($type==2){
                 $page_temp = $this->select_template('page_temp', 'page_');
                 return $this->fetch('page_add',['type'=>$type,'page_temp'=>$page_temp,'select_cate'=>$select_cate]);
@@ -99,11 +100,12 @@ class Category extends Common
             $data = Db::name('category')->where('id',input('id'))->find();
             $select_cate = $this->select_cate($data['pid']);
             $type = input('type');
+            $get_model = Db::name('model')->field('name')->where('modelid',$data['modelid'])->find();
             if($type==1){
                 $category_temp = $this->select_template('category_temp', 'category_');
                 $list_temp = $this->select_template('list_temp', 'list_');
                 $show_temp = $this->select_template('show_temp', 'show_');
-                return $this->fetch('edit',['data'=>$data,'select_cate'=>$select_cate,'category_temp'=>$category_temp,'list_temp'=>$list_temp,'show_temp'=>$show_temp]);
+                return $this->fetch('edit',['data'=>$data,'select_cate'=>$select_cate,'category_temp'=>$category_temp,'list_temp'=>$list_temp,'show_temp'=>$show_temp,'get_model'=>$get_model]);
             }elseif ($type==2){
                 $page_temp = $this->select_template('page_temp', 'page_');
                 return $this->fetch('page_edit',['data'=>$data,'select_cate'=>$select_cate,'page_temp'=>$page_temp]);
@@ -146,9 +148,16 @@ class Category extends Common
     
     private function select_cate($pid)
     {
-        $cateList = Db::name('category')->order('weigh ASC,id DESC')->select();
+        $cateList = Db::name('category')->order('id ASC,weigh ASC')->select();
         $select_cate = Tree2::instance()->init($cateList)->getTree(0,'<option value=@id @selected @disabled>@spacer@name</option>',$pid,'','','');
         return $select_cate;
+    }
+    
+    //获取模型select
+    private function getModel()
+    {
+        $res = Db::name('model')->field('modelid,name,tablename')->where('disabled',0)->select();
+        return $res;
     }
     
     /**

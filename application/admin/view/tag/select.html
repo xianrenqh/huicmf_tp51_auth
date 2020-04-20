@@ -1,0 +1,103 @@
+{include file='../application/admin/view/header.html'/}
+<style>
+    .yzm_tags {margin-top: 12px;margin-bottom:23px;}
+    .yzm_tags a {color: #666;margin-right: 10px;cursor: pointer;}
+    .yzm_tags a:hover{color:#f00}
+</style>
+<body>
+<div class="weadmin-body">
+    <form action="javascript:;" method="get" id="search" class="layui-form">
+    </form>
+
+    <form class="layui-form" action="javascript:;" method="post">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <input type="text" name="searinfo" class="layui-input"value="" id="key">
+            </div>
+            <button name="dosubmit" class="layui-btn layui-btn-lvse" type="submit" value="1" onclick="search()"><i class="layui-icon">&#xe615;</i> 搜索</button>
+        </div>
+
+        <hr>
+        <div class="layui-input-inline">
+            <div class="yzm_tags"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                已选的TAG
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="tags" name="tags" value="" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+    </form>
+
+    <div style="position: fixed;bottom: 20px;right: 10px;z-index: 99;">
+        <button onclick="dosub()" name="dosubmit" class="layui-btn" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="hui_close()" class="layui-btn layui-btn-normal" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+    </div>
+</div>
+
+{include file='../application/admin/view/footer.html'/}
+</body>
+</html>
+<script>
+    post_data();
+    function set_val(val) {
+        var v = $("#tags").val();
+        v = v ? v+','+val : val;
+        $("#tags").val(v);
+    }
+
+
+    function dosub(){
+        var v = $("#tags").val();
+        if (v == ''){
+            layer.alert('请选择TAG！');
+            return false;
+        }
+
+        var str = '';
+        var strs= new Array();
+        strs = v.split(",");
+        for (i=0;i<strs.length ;i++ ){
+            str +='<span class="Huitags-token">'+strs[i]+'</span>';
+        }
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.$(".Huitags-editor").append(str);
+
+        var taglist = parent.$(".Huitags-val").val();
+        console.log(taglist);
+        if(taglist != "" && taglist != undefined){
+            var valObj = taglist.split(",");
+            parent.$(".Huitags-val").val(parent.$(".Huitags-val").val()+","+v);
+        }else{
+            parent.$(".Huitags-val").val(v);
+        }
+        parent.layer.close(index);
+    }
+
+    //搜索
+    function search() {
+        var key = $("#key").val();
+        if(key!=''){
+            $.post("{:url('select_json')}",{
+                dosearch:1,
+                key:key
+            },function (res) {
+                $(".yzm_tags").html(res);
+            })
+        }else{
+            alert('搜索内容不能为空');
+        }
+    }
+
+    function post_data() {
+        $.post("{:url('select_json')}",{
+
+        },function (res) {
+            $(".yzm_tags").html(res);
+        })
+    }
+
+</script>

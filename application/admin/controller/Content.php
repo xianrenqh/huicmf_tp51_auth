@@ -10,6 +10,8 @@
 namespace app\admin\controller;
 use app\admin\library\LibAuth;
 use think\Db;
+use lib\Tree2;
+use lib\Random;
 
 class Content extends Common
 {
@@ -28,14 +30,51 @@ class Content extends Common
     {
         $getModel = $this->getModel()[0]['modelid'];
         if(input('get.do')==1){
-            $param = input('');
+            $param = input();
             $page = $param['page'];
             $limit = $param['limit'];
             $first = ($page - 1) * $limit;
             $where = "1=1";
             $order = "updatetime DESC,id DESC";
             if ( !empty($param['key'])) {
-            
+                $getkey = $param['key'];
+                $updatetime = $getkey['updatetime'] ? $getkey['updatetime'] : "";
+                if ( !empty($updatetime)) {
+                    $time_first = strtotime(explode(" - ", $updatetime)[0]);
+                    $time_last = strtotime(explode(" - ", $updatetime)[1]) + (60 * 60 * 24 - 1);
+                    if ($updatetime != '') {
+                        $where .= " and updatetime>" . $time_first . " and updatetime<" . $time_last;
+                    }
+                }
+                if(isset($getkey["flag"]) && $getkey["flag"] != '0'){
+                    $where .= ' AND FIND_IN_SET('.intval($getkey["flag"]).',flag)';
+                }
+                if(isset($getkey["status"]) && $getkey["status"] != '99'){
+                    $where .= ' AND status = '.intval($getkey["status"]);
+                }
+                $type = $getkey['type'];
+                $searinfo = $getkey['searinfo'] ? $getkey['searinfo'] : "";
+                if($searinfo!=''){
+                    switch ($type){
+                        case 1:
+                            $where.=" and title like '%".$searinfo."%'";
+                            break;
+                        case 2:
+                            $uid = $this->getUserId($searinfo)->{'id'};
+                            if($uid!=''){
+                                $where.=" and userid=".$uid;
+                            }else{
+                                $where.=" and userid=''";
+                            }
+                            break;
+                        case 3:
+                            $where .= " and id=".$searinfo;
+                            break;
+                        default:
+                            $where.=" and title like '%".$searinfo."%'";
+                            break;
+                    }
+                }
             }
             if(!empty($param['field'])&&!empty($param['order'])){
                 $order = $param['field']." ".$param['order'];
@@ -56,7 +95,7 @@ class Content extends Common
                 $list[$i]['username'] = $this->getUserName($list[$i]['userid'])->{'username'};
                 $list[$i]['catname'] = $this->getTypeName($list[$i]['catid'])->{'name'};
             }
-            $total = Db::name($tableName)->count();
+            $total = Db::name($tableName)->where($where)->count();
             $data['code'] = 0;
             $data['msg'] = '';
             $data['count'] = $total;
@@ -72,7 +111,19 @@ class Content extends Common
     //添加
     public function add()
     {
-    
+        if(input('post.dosubmit')){
+            $param = input('post.');
+            
+            return json(['status'=>0]);
+        }
+        $param = input('get.');
+        $modelid = !empty($param['modelid'])?$param['modelid']:1;
+        $tableName = $this->get_model($modelid)->{'tablename'};
+        $select_cate = $this->select_cate(0,$modelid);
+        $randNum = Random::nozero(2);
+        $ContentForm = new ContentForm($modelid);
+        $string = $ContentForm->content_add();
+        return $this->fetch('content_add',['select_cate'=>$select_cate,'randNum'=>$randNum,'string'=>$string]);
     }
     
     //编辑
@@ -85,6 +136,7 @@ class Content extends Common
     public function delete()
     {
         $ids = input('post.ids');
+        $modelid = input('post.modelid');
         //如果是数组，批量删除
         if(is_array($ids)){
         
@@ -98,6 +150,22 @@ class Content extends Common
     {
     
     }
+    
+    //栏目option树结构
+    private function select_cate($pid,$modelid)
+    {
+        $cateList = Db::name('category')->field("id,pid,modelid,type,name")->where(['type'=>1,'modelid'=>$modelid])->order('id ASC,weigh ASC')->select();
+        $pppidstr = '';
+        foreach ($cateList as $v){
+            $pppid= Tree2::instance()->init($cateList)->getParentsIds($v['id']);
+            $pppidstr .= (implode(",",$pppid)).",";
+        }
+       $cateIddd = unique($pppidstr);
+        $select_cate = Tree2::instance()->init($cateList)->getTree(0,'<option value=@id @selected @disabled>@spacer@name</option>',$pid,$cateIddd,'','');
+        return $select_cate;
+    }
+    
+
     
     //获取模型select
     private function getModel()
@@ -123,6 +191,16 @@ class Content extends Common
             return array2object($res);
         }else{
             return array2object(['username'=>'空','nickname'=>'空']);
+        }
+    }
+    //根据username查询uid
+    private function getUserId($username){
+        $res = Db::name('admin')->field('id,username')->where('username',$username)->find();
+        if($res){
+            $res['code']=1;
+            return array2object($res);
+        }else{
+            return array2object(['code'=>0,'id'=>'']);
         }
     }
     

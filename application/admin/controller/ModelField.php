@@ -76,6 +76,7 @@ class ModelField extends Common
                 Sql::sql_add_field($this->modeltable, $param['field'], $param['defaultvalue'], $param['maxlength']);
             }
             $a = Db::name('model_field')->data($param)->strict(false)->insert();
+            cache($this->modelid.'_model',null);
             return json(['status'=>1,'msg'=>'添加成功~~~']);
         }else{
             $modelname = $this->modelname;
@@ -91,20 +92,21 @@ class ModelField extends Common
             if(in_array($param['fieldtype'], ['select','radio','checkbox'])){
                 $param['setting'] = array2string(explode('|', rtrim($param['setting'], '|')));
             }elseif($param['fieldtype']=='datetime'){
-                $param['setting'] = $param['dateset'];
+                $param['setting'] = array2string([$param['dateset']]);
             }else{
                 unset($param['setting']);
             }
             unset($param['issystem'], $param['modelid'], $param['fieldtype']);
             $param['isrequired'] = $param['minlength'] ? 1 :0;
             if(Db::name('model_field')->data($param)->where('fieldid',$param['fieldid'])->strict(false)->update()){
+                cache($this->modelid.'_model',null);
                 return json(['status'=>1,'msg'=>'修改成功~~~']);
             }else{
                 return json(['status'=>0,'msg'=>'修改失败或者你没做任何修改！！！']);
             }
         } else{
             $data = Db::name('model_field')->where('fieldid',input('fieldid'))->find();
-            $data['setting'] = implode("|",string2array($data['setting'] ));
+            $data['setting'] =!empty($data['setting'])?implode("|",string2array($data['setting'] )):'';
             $modelname = $this->modelname;
             return $this->fetch('',['modelname'=>$modelname,'data'=>$data]);
         }
@@ -117,6 +119,7 @@ class ModelField extends Common
         $data = Db::name('model_field')->field('field,issystem')->where(['fieldid'=>$fieldid])->find();
         if(!$data['issystem']){
             Db::name('model_field')->where('fieldid',$fieldid)->delete();
+            cache($this->modelid.'_model',null);
             Sql::sql_del_field($this->modeltable, $data['field']);
             return json(['status'=>1,'msg'=>'删除成功~']);
         }else{
@@ -129,6 +132,7 @@ class ModelField extends Common
     {
         foreach (input('listorders') as $id => $listorder) {
             Db::name('model_field')->where(['fieldid' => $id])->data(['listorder' => $listorder])->update();
+            cache($this->modelid.'_model',null);
         }
         $this->success('排序成功！');
     }
