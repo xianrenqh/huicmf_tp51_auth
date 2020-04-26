@@ -62,7 +62,7 @@ class ModelField extends Common
             }elseif($param['fieldtype']=='datetime'){
                 $param['setting'] = $param['dateset'];
             }else{
-                unset($param['setting']);
+                $param['setting'] = array2string([0=>'']);
             }
             if($param['minlength']) $param['isrequired'] = 1;
             if($param['fieldtype'] == 'textarea' || $param['fieldtype'] == 'images'){
@@ -94,7 +94,7 @@ class ModelField extends Common
             }elseif($param['fieldtype']=='datetime'){
                 $param['setting'] = array2string([$param['dateset']]);
             }else{
-                unset($param['setting']);
+                $param['setting'] = array2string([0=>'']);
             }
             unset($param['issystem'], $param['modelid'], $param['fieldtype']);
             $param['isrequired'] = $param['minlength'] ? 1 :0;
