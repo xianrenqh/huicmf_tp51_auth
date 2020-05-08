@@ -12,19 +12,21 @@ use think\Model;
 
 class Link extends Model
 {
+
     //protected $connection = 'cms_link';
-    
-    public function infoData($where,$field='*')
+
+    public function infoData($where, $field = '*')
     {
-        if(empty($where) || !is_array($where)){
-            return ['code'=>1001,'msg'=>'参数错误'];
+        if (empty($where) || ! is_array($where)) {
+            return ['code' => 1001, 'msg' => '参数错误'];
         }
         $info = $this->field($field)->where($where)->find();
-        if(empty($info)){
-            return ['code'=>1002,'msg'=>'获取数据失败'];
+        if (empty($info)) {
+            return ['code' => 1002, 'msg' => '获取数据失败'];
         }
         $info = $info->toArray();
-        return ['code'=>1,'msg'=>'获取成功','info'=>$info];
+
+        return ['code' => 1, 'msg' => '获取成功', 'info' => $info];
     }
-    
+
 }

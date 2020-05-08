@@ -12,6 +12,7 @@ class Random
      * 生成数字和字母
      *
      * @param int $len 长度
+     *
      * @return string
      */
     public static function alnum($len = 6)
@@ -23,6 +24,7 @@ class Random
      * 仅生成字符
      *
      * @param int $len 长度
+     *
      * @return string
      */
     public static function alpha($len = 6)
@@ -34,6 +36,7 @@ class Random
      * 生成指定长度的随机数字
      *
      * @param int $len 长度
+     *
      * @return string
      */
     public static function numeric($len = 4)
@@ -45,6 +48,7 @@ class Random
      * 数字和字母组合的随机字符串
      *
      * @param int $len 长度
+     *
      * @return string
      */
     public static function nozero($len = 4)
@@ -54,8 +58,10 @@ class Random
 
     /**
      * 能用的随机数生成
+     *
      * @param string $type 类型 alpha/alnum/numeric/nozero/unique/md5/encrypt/sha1
      * @param int    $len  长度
+     *
      * @return string
      */
     public static function build($type = 'alnum', $len = 8)
@@ -79,6 +85,7 @@ class Random
                         $pool = '123456789';
                         break;
                 }
+
                 return substr(str_shuffle(str_repeat($pool, ceil($len / strlen($pool)))), 0, $len);
             case 'unique':
             case 'md5':
@@ -95,22 +102,24 @@ class Random
      * @param array $ps     array('p1'=>20, 'p2'=>30, 'p3'=>50);
      * @param int   $num    默认为1,即随机出来的数量
      * @param bool  $unique 默认为true,即当num>1时,随机出的数量是否唯一
+     *
      * @return mixed 当num为1时返回键名,反之返回一维数组
      */
     public static function lottery($ps, $num = 1, $unique = true)
     {
-        if (!$ps) {
+        if ( ! $ps) {
             return $num == 1 ? '' : [];
         }
         if ($num >= count($ps) && $unique) {
             $res = array_keys($ps);
+
             return $num == 1 ? $res[0] : $res;
         }
         $max_exp = 0;
-        $res = [];
+        $res     = [];
         foreach ($ps as $key => $value) {
             $value = substr($value, 0, stripos($value, ".") + 6);
-            $exp = strlen(strchr($value, '.')) - 1;
+            $exp   = strlen(strchr($value, '.')) - 1;
             if ($exp > $max_exp) {
                 $max_exp = $exp;
             }
@@ -147,6 +156,7 @@ class Random
                 unset($ps[$key]);
             }
         }
+
         return $res;
     }
 
@@ -156,16 +166,8 @@ class Random
      */
     public static function uuid()
     {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0x0fff) | 0x4000,
-            mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
-        );
+        return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff), mt_rand(0, 0x0fff) | 0x4000, mt_rand(0, 0x3fff) | 0x8000, mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff));
     }
 }

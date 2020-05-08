@@ -7,23 +7,25 @@
  */
 
 namespace app\admin\controller\general;
+
 use app\admin\controller\Common;
 use app\admin\library\LibAuth;
 
 class Adminlog extends Common
 {
-    
+
     public function index()
     {
-        if(input('get.do')){
-            $res = model('admin_log')->selectData(input('get.'));
-            $return = ["code"    => 0, 'msg' => '获取成功', 'count' => $res['count'], 'data' => $res['data']];
+        if (input('get.do')) {
+            $res    = model('admin_log')->selectData(input('get.'));
+            $return = ["code" => 0, 'msg' => '获取成功', 'count' => $res['count'], 'data' => $res['data']];
+
             return json($return);
-        }else{
+        } else {
             return $this->fetch();
         }
     }
-    
+
     /**
      * 创建日志
      *
@@ -32,21 +34,22 @@ class Adminlog extends Common
     {
         //$res = model('admin_log')->record();
     }
-    
+
     /**
      * 删除
      */
     public function delete()
     {
         $ids = input('ids');
-        if($ids){
+        if ($ids) {
             $res = model('admin_log')->delData($ids);
+
             return json($res);
-        }else{
+        } else {
             $this->error('错错错！！！');
         }
     }
-    
+
     /**
      * 查看详情
      */
@@ -55,14 +58,15 @@ class Adminlog extends Common
         if ( ! check_auth('general.adminlog/detail')) {
             exit('2222');
         }
-        $id = input('get.id');
+        $id  = input('get.id');
         $res = model('admin_log')->detailData($id);
-        if($res['status']==1){
+        if ($res['status'] == 1) {
             $data = $res['data'];
-        }else{
+        } else {
             $this->error($res['msg']);
         }
-        return $this->fetch('',['data'=>$data]);
+
+        return $this->fetch('', ['data' => $data]);
     }
-    
+
 }

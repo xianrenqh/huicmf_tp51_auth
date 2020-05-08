@@ -6,6 +6,7 @@ use think\facade\Request;
 
 class AdminLog
 {
+
     public function run()
     {
         if (Request::isPost()) {

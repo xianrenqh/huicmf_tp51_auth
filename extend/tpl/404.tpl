@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <title>404</title>
-    <link rel="stylesheet" href="/static/lib/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/static/lib/layui/css/layui.css" media="all"/>
 </head>
 <body class="childrenBody">
 <div style="text-align: center; padding:11% 0;">

@@ -56,7 +56,7 @@ return [
     // 默认模块名
     'default_module'         => 'index',
     // 禁止访问模块
-    'deny_module_list'       => ['common','admin'],
+    'deny_module_list'       => ['common', 'admin'],
     // 默认控制器名
     'default_controller'     => 'Index',
     // 默认操作名
@@ -130,8 +130,8 @@ return [
     'route_cache_option'     => [],
 
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => Env::get('think_path') . 'tpl/dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => Env::get('think_path') . 'tpl/dispatch_jump.tpl',
+    'dispatch_success_tmpl'  => Env::get('think_path').'tpl/dispatch_jump.tpl',
+    'dispatch_error_tmpl'    => Env::get('think_path').'tpl/dispatch_jump.tpl',
 
     // 异常页面的模板文件
     //'exception_tmpl'         =>Env::get('think_path').'tpl/think_exception.tpl',
@@ -144,9 +144,9 @@ return [
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
-    'data_backup_path'=>Env::get('root_path').'/public/databak/',  //数据库备份根路径
-    'data_backup_path_size'=>'20971520',  //数据库备份卷大小 该值用于限制压缩后的分卷最大长度。单位：B；建议设置20M
-    'data_backup_compress'=>1,  //数据库备份文件是否启用压缩 压缩备份文件需要PHP环境支持gzopen,gzwrite函数 1:启用压缩 0:不压缩
-    'data_backup_compress_level'=>4, //数据库备份文件压缩级别 1:普通4:一般9:最高
+    'data_backup_path'           => Env::get('root_path').'/public/databak/',  //数据库备份根路径
+    'data_backup_path_size'      => '20971520',  //数据库备份卷大小 该值用于限制压缩后的分卷最大长度。单位：B；建议设置20M
+    'data_backup_compress'       => 1,  //数据库备份文件是否启用压缩 压缩备份文件需要PHP环境支持gzopen,gzwrite函数 1:启用压缩 0:不压缩
+    'data_backup_compress_level' => 4, //数据库备份文件压缩级别 1:普通4:一般9:最高
 
 ];

@@ -11,19 +11,23 @@ namespace app\admin\library;
 
 class Sql
 {
+
     public static $tablename;
-    
-    public static function set_tablename($tablename){
+
+    public static function set_tablename($tablename)
+    {
         self::$tablename = config('database.prefix').$tablename;
     }
-    
-    public static function sql_delete($tablename){
+
+    public static function sql_delete($tablename)
+    {
         self::set_tablename($tablename);
         $sql = "DROP TABLE IF EXISTS `".self::$tablename."`";
         self::sql_exec($sql);
     }
-    
-    public static function sql_create_siteModel($tablename){
+
+    public static function sql_create_siteModel($tablename)
+    {
         self::set_tablename($tablename);
         self::sql_delete($tablename);
         $sql = "CREATE TABLE `".self::$tablename."` (
@@ -57,8 +61,9 @@ class Sql
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
         self::sql_exec($sql);
     }
-    
-    public static function sql_create_diyForm($tablename){
+
+    public static function sql_create_diyForm($tablename)
+    {
         self::set_tablename($tablename);
         self::sql_delete($tablename);
         $sql = "CREATE TABLE `".self::$tablename."` (
@@ -71,45 +76,47 @@ class Sql
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
         self::sql_exec($sql);
     }
-    
-    public static function sql_add_field($tablename, $field, $defaultvalue='', $maxlength=250){
+
+    public static function sql_add_field($tablename, $field, $defaultvalue = '', $maxlength = 250)
+    {
         self::set_tablename($tablename);
         $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` varchar($maxlength) NOT NULL DEFAULT '$defaultvalue'";
         self::sql_exec($sql);
     }
-    
-    
-    public static function sql_add_field_mediumtext($tablename, $field){
+
+    public static function sql_add_field_mediumtext($tablename, $field)
+    {
         self::set_tablename($tablename);
         $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` mediumtext NOT NULL";
         self::sql_exec($sql);
     }
-    
-    
-    public static function sql_add_field_text($tablename, $field){
+
+    public static function sql_add_field_text($tablename, $field)
+    {
         self::set_tablename($tablename);
         $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` text NOT NULL";
         self::sql_exec($sql);
     }
-    
-    
-    public static function sql_add_field_int($tablename, $field, $defaultvalue=0){
+
+    public static function sql_add_field_int($tablename, $field, $defaultvalue = 0)
+    {
         self::set_tablename($tablename);
         $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` int(10) UNSIGNED NOT NULL DEFAULT $defaultvalue";
         self::sql_exec($sql);
     }
-    
-    
-    public static function sql_del_field($tablename, $field){
+
+    public static function sql_del_field($tablename, $field)
+    {
         self::set_tablename($tablename);
         $sql = "ALTER TABLE `".self::$tablename."` DROP COLUMN `$field`";
         self::sql_exec($sql);
     }
-    
-    public static function sql_exec($sql){
+
+    public static function sql_exec($sql)
+    {
         global $model;
         $model = isset($model) ? $model : \think\Db::name('model');
         $model->query($sql);
     }
-    
+
 }

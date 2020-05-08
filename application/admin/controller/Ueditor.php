@@ -18,31 +18,40 @@ use lib\FtpLib;
 
 class Ueditor extends Controller
 {
-    
+
     private $userid;
+
     private $username;
-    
+
     private $upload_mode;
+
     private $ftp_host;
+
     private $ftp_port;
+
     private $ftp_user;
+
     private $ftp_pwd;
+
     private $ftp_url;
+
     private $ftp_path_article;
+
     private $ftp_path_video;
+
     private $ftp_path_comic;
-    
+
     function __construct()
     {
         parent::__construct();
         $this->upload_mode = get_config('upload_mode');
-        $this->ftp_host = get_config('ftp_host');
-        $this->ftp_port = get_config('ftp_port');
-        $this->ftp_user = get_config('ftp_user');
-        $this->ftp_pwd = get_config('ftp_pwd');
-        $this->ftp_url = get_config('ftp_url');
+        $this->ftp_host    = get_config('ftp_host');
+        $this->ftp_port    = get_config('ftp_port');
+        $this->ftp_user    = get_config('ftp_user');
+        $this->ftp_pwd     = get_config('ftp_pwd');
+        $this->ftp_url     = get_config('ftp_url');
     }
-    
+
     public function index()
     {
         header('Access-Control-Allow-Origin: http://www.baidu.com'); //设置http://www.baidu.com允许跨域访问
@@ -53,7 +62,7 @@ class Ueditor extends Controller
         //新，调用config/ueditor.php
         $CONFIG = config('ueditor.');
         $action = input('action');
-        
+
         switch ($action) {
             case 'config':
                 $result = json_encode($CONFIG);
@@ -61,65 +70,82 @@ class Ueditor extends Controller
             //上传图片
             case 'uploadimage':
                 $fieldName = $CONFIG['imageFieldName'];
-                $result = $this->upFile($fieldName);    //使用tp上传
+                $result    = $this->upFile($fieldName);    //使用tp上传
                 break;
             //上传涂鸦
             case 'uploadscrawl':
-                $config = array("pathFormat" => $CONFIG['scrawlPathFormat'], "maxSize" => $CONFIG['scrawlMaxSize'], "allowFiles" => $CONFIG['scrawlAllowFiles'], "oriName" => "scrawl.png");
+                $config    = array(
+                    "pathFormat" => $CONFIG['scrawlPathFormat'],
+                    "maxSize"    => $CONFIG['scrawlMaxSize'],
+                    "allowFiles" => $CONFIG['scrawlAllowFiles'],
+                    "oriName"    => "scrawl.png"
+                );
                 $fieldName = $CONFIG['scrawlFieldName'];
-                $base64 = "base64";
-                $result = $this->upBase64($config, $fieldName);
+                $base64    = "base64";
+                $result    = $this->upBase64($config, $fieldName);
                 break;
             //上传视频
             case 'uploadvideo':
                 $fieldName = $CONFIG['videoFieldName'];
-                $result = $this->upFile($fieldName);
+                $result    = $this->upFile($fieldName);
                 break;
             //上传文件
             case 'uploadfile':
                 $fieldName = $CONFIG['fileFieldName'];
-                $result = $this->upFile($fieldName);
+                $result    = $this->upFile($fieldName);
                 break;
             //列出图片
             case 'listimage':
                 $allowFiles = $CONFIG['imageManagerAllowFiles'];
-                $listSize = $CONFIG['imageManagerListSize'];
-                $path = $CONFIG['imageManagerListPath'];
-                $get = $_GET;
-                $result = $this->fileList($allowFiles, $listSize, $get);
+                $listSize   = $CONFIG['imageManagerListSize'];
+                $path       = $CONFIG['imageManagerListPath'];
+                $get        = $_GET;
+                $result     = $this->fileList($allowFiles, $listSize, $get);
                 break;
             //列出文件
             case 'listfile':
                 $allowFiles = $CONFIG['fileManagerAllowFiles'];
-                $listSize = $CONFIG['fileManagerListSize'];
-                $path = $CONFIG['fileManagerListPath'];
-                $get = $_GET;
-                $result = $this->fileList($allowFiles, $listSize, $get);
+                $listSize   = $CONFIG['fileManagerListSize'];
+                $path       = $CONFIG['fileManagerListPath'];
+                $get        = $_GET;
+                $result     = $this->fileList($allowFiles, $listSize, $get);
                 break;
             //抓取远程文件
             case 'catchimage':
-                $config = array("pathFormat" => $CONFIG['catcherPathFormat'], "maxSize" => $CONFIG['catcherMaxSize'], "allowFiles" => $CONFIG['catcherAllowFiles'], "oriName" => "remote.png");
+                $config    = array(
+                    "pathFormat" => $CONFIG['catcherPathFormat'],
+                    "maxSize"    => $CONFIG['catcherMaxSize'],
+                    "allowFiles" => $CONFIG['catcherAllowFiles'],
+                    "oriName"    => "remote.png"
+                );
                 $fieldName = $CONFIG['catcherFieldName'];
                 //抓取远程图片
                 $list = array();
                 isset($_POST[$fieldName]) ? $source = $_POST[$fieldName] : $source = $_GET[$fieldName];
-                
+
                 foreach ($source as $imgUrl) {
                     $info = json_decode($this->saveRemote($config, $imgUrl), true);
-                    array_push($list, array("state" => $info["state"], "url" => $info["url"], "size" => $info["size"], "title" => htmlspecialchars($info["title"]), "original" => htmlspecialchars($info["original"]), "source" => htmlspecialchars($imgUrl)));
+                    array_push($list, array(
+                        "state"    => $info["state"],
+                        "url"      => $info["url"],
+                        "size"     => $info["size"],
+                        "title"    => htmlspecialchars($info["title"]),
+                        "original" => htmlspecialchars($info["original"]),
+                        "source"   => htmlspecialchars($imgUrl)
+                    ));
                 }
-                
+
                 $result = json_encode(array('state' => count($list) ? 'SUCCESS' : 'ERROR', 'list' => $list));
                 break;
             default:
                 $result = json_encode(array('state' => '请求地址出错'));
                 break;
         }
-        
+
         //输出结果
         if (isset($_GET["callback"])) {
             if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
-                echo htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+                echo htmlspecialchars($_GET["callback"]).'('.$result.')';
             } else {
                 echo json_encode(array('state' => 'callback参数不合法'));
             }
@@ -127,122 +153,147 @@ class Ueditor extends Controller
             echo $result;
         }
     }
-    
+
     //上传文件
     private function upFile($fieldName)
     {
-        switch (input('act')){
+        switch (input('act')) {
             default:
-                $file_path=get_config('file_path').'ueditor/';
+                $file_path = get_config('file_path').'ueditor/';
                 break;
         }
-        switch ($this->upload_mode){
+        switch ($this->upload_mode) {
             case 'local':   //上传到本地服务器
-                $file = request()->file($fieldName);
-                $ext = str_replace("|",",",get_config('upload_types'));
-                $conf_size = get_config('upload_maxsize')*1024;
-                $info = $file->validate(['size'=>$conf_size,'ext'=>$ext])->move(".".$file_path);
-                $fileInfo = $info->getInfo();
+                $file        = request()->file($fieldName);
+                $ext         = str_replace("|", ",", get_config('upload_types'));
+                $conf_size   = get_config('upload_maxsize') * 1024;
+                $info        = $file->validate(['size' => $conf_size, 'ext' => $ext])->move(".".$file_path);
+                $fileInfo    = $info->getInfo();
                 $fileOldName = $fileInfo['name'];
                 if ($info) {//上传成功
-                    $filename=str_replace('\\','/',$info->getSaveName());
-                    $fname = $file_path.$filename;
-                    $imgArr = explode(',', 'jpg,gif,png,jpeg,bmp,tif,ttf');
-                    $imgExt = strtolower($info->getExtension());
-                    $isImg = in_array($imgExt, $imgArr);
+                    $filename = str_replace('\\', '/', $info->getSaveName());
+                    $fname    = $file_path.$filename;
+                    $imgArr   = explode(',', 'jpg,gif,png,jpeg,bmp,tif,ttf');
+                    $imgExt   = strtolower($info->getExtension());
+                    $isImg    = in_array($imgExt, $imgArr);
                     if ($isImg) {//如果是图片，开始处理
                         //获取水印配置
                         $this->add_water(".".$fname);
                     }
                     $file_url = str_replace(".".get_config('file_path'), get_config('file_path'), $fname);
-                    
-                    $imgInfo = getimagesize($fileInfo['tmp_name']);
-                    $imagewidth = isset($imgInfo[0]) ? $imgInfo[0] : '';
+
+                    $imgInfo     = getimagesize($fileInfo['tmp_name']);
+                    $imagewidth  = isset($imgInfo[0]) ? $imgInfo[0] : '';
                     $imageheight = isset($imgInfo[1]) ? $imgInfo[1] : '';
                     //写入数据库
-                    $FileInfo['imagewidth']=$imagewidth;
-                    $FileInfo['imageheight']=$imageheight;
-                    $FileInfo['url']=$file_url;
-                    $FileInfo['filesize']=$fileInfo['size'];
-                    $FileInfo['fileext']=$imgExt;
-                    $FileInfo['mimetype']=$fileInfo['type'];
-                    $FileInfo['originname']=$fileInfo['name'];
-                    $FileInfo['storage']= "local";
-                    $FileInfo['sha1'] = sha1($file_url);
-                    $Upload = new \app\admin\controller\Upload;
-                    $insert_data = $Upload->_att_write($FileInfo);
-                    $data = array('state' => 'SUCCESS', 'url' => $file_url, 'title' => $info->getFilename(), 'original' => $info->getFilename(), 'type' => '.' . $info->getExtension(), 'size' => $info->getSize(),);
+                    $FileInfo['imagewidth']  = $imagewidth;
+                    $FileInfo['imageheight'] = $imageheight;
+                    $FileInfo['url']         = $file_url;
+                    $FileInfo['filesize']    = $fileInfo['size'];
+                    $FileInfo['fileext']     = $imgExt;
+                    $FileInfo['mimetype']    = $fileInfo['type'];
+                    $FileInfo['originname']  = $fileInfo['name'];
+                    $FileInfo['storage']     = "local";
+                    $FileInfo['sha1']        = sha1($file_url);
+                    $Upload                  = new \app\admin\controller\Upload;
+                    $insert_data             = $Upload->_att_write($FileInfo);
+                    $data                    = array(
+                        'state'    => 'SUCCESS',
+                        'url'      => $file_url,
+                        'title'    => $info->getFilename(),
+                        'original' => $info->getFilename(),
+                        'type'     => '.'.$info->getExtension(),
+                        'size'     => $info->getSize(),
+                    );
                 } else {
                     $data = array('state' => $file->getError(),);
                 }
+
                 return json_encode($data);
                 break;
             case 'Ftp':     //上传到ftp服务器
-                $ftp_conn =  new FtpLib();
-                if($ftp_conn->connect()==1){
-                    $File = $_FILES[$fieldName];
+                $ftp_conn = new FtpLib();
+                if ($ftp_conn->connect() == 1) {
+                    $File        = $_FILES[$fieldName];
                     $get_ftp_url = get_config('ftp_url');
-                    $file_p=$File['tmp_name'];
-                    $file_name = md5(getMillisecond());
-                    $file_ext = $this->get_file_ext($File['name']);
-                    $newpath = $file_path.$file_name.".".$file_ext;
+                    $file_p      = $File['tmp_name'];
+                    $file_name   = md5(getMillisecond());
+                    $file_ext    = $this->get_file_ext($File['name']);
+                    $newpath     = $file_path.$file_name.".".$file_ext;
                     $this->add_water($file_p);
-                    $dd=$ftp_conn->up_file($file_p,$newpath);
-                    if($dd['code']==1){
-                        $data = (['state'=>'SUCCESS','title'=>$get_ftp_url.$newpath,'filetype'=>$file_ext,'url'=>$get_ftp_url.$newpath,'msg'=>$dd['msg']]);
+                    $dd = $ftp_conn->up_file($file_p, $newpath);
+                    if ($dd['code'] == 1) {
+                        $data = ([
+                            'state'    => 'SUCCESS',
+                            'title'    => $get_ftp_url.$newpath,
+                            'filetype' => $file_ext,
+                            'url'      => $get_ftp_url.$newpath,
+                            'msg'      => $dd['msg']
+                        ]);
                     }
-                }else{
-                    $data =(['state'=>'FTP配置错误，请检查！！！','msg'=>'FTP配置错误，请检查！！！']);
+                } else {
+                    $data = (['state' => 'FTP配置错误，请检查！！！', 'msg' => 'FTP配置错误，请检查！！！']);
                 }
+
                 return json_encode($data);
                 break;
         }
     }
-    
+
     //添加水印
     private function add_water($imginfo)
     {
         //获取水印配置
-        if(get_config('watermark_enable')){
+        if (get_config('watermark_enable')) {
             $waterpic = "./static/water/".get_config('watermark_name');
-            $pic_url =$imginfo;
-            $image=Image::open($pic_url);
-            $image->water($waterpic,get_config('watermark_position'),get_config('watermark_touming'))->save($pic_url);
-        }else{
+            $pic_url  = $imginfo;
+            $image    = Image::open($pic_url);
+            $image->water($waterpic, get_config('watermark_position'), get_config('watermark_touming'))->save($pic_url);
+        } else {
             return true;
         }
     }
-    
+
     //列出图片
     private function fileList($allowFiles, $listSize, $get)
     {
-        $dirname = '.'.get_config('file_path');
+        $dirname    = '.'.get_config('file_path');
         $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);
-        
+
         //获取参数
-        $size = isset($get['size']) ? htmlspecialchars($get['size']) : $listSize;
+        $size  = isset($get['size']) ? htmlspecialchars($get['size']) : $listSize;
         $start = isset($get['start']) ? htmlspecialchars($get['start']) : 0;
-        $end = $start + $size;
-        
+        $end   = $start + $size;
+
         //获取文件列表
-        $path = $dirname;
+        $path  = $dirname;
         $files = $this->getFiles($path, $allowFiles);
-        if (!count($files)) {
-            return json_encode(array("state" => "no match file", "list" => array(), "start" => $start, "total" => count($files)));
+        if ( ! count($files)) {
+            return json_encode(array(
+                "state" => "no match file",
+                "list"  => array(),
+                "start" => $start,
+                "total" => count($files)
+            ));
         }
-        
+
         //获取指定范围的列表
         $len = count($files);
         for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $start; $i--) {
             $list[] = $files[$i];
         }
-        
+
         //返回数据
-        $result = json_encode(array("state" => "SUCCESS", "list" => $list, "start" => $start, "total" => count($files)));
-        
+        $result = json_encode(array(
+            "state" => "SUCCESS",
+            "list"  => $list,
+            "start" => $start,
+            "total" => count($files)
+        ));
+
         return $result;
     }
-    
+
     /*
   * 遍历获取目录下的指定类型的文件
   * @param $path
@@ -251,95 +302,116 @@ class Ueditor extends Controller
  */
     private function getFiles($path, $allowFiles, &$files = array())
     {
-        if (!is_dir($path))
+        if ( ! is_dir($path)) {
             return null;
-        if (substr($path, strlen($path) - 1) != '/')
+        }
+        if (substr($path, strlen($path) - 1) != '/') {
             $path .= '/';
+        }
         $handle = opendir($path);
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
-                $path2 = $path . $file;
+                $path2 = $path.$file;
                 //dump($path);
                 if (is_dir($path2)) {
                     $this->getFiles($path2, $allowFiles, $files);
                 } else {
-                    if (preg_match("/\.(" . $allowFiles . ")$/i", $file)) {
+                    if (preg_match("/\.(".$allowFiles.")$/i", $file)) {
                         $files[] = array('url' => substr($path2, 1), 'mtime' => filemtime($path2));
                     }
                 }
             }
         }
-        
+
         return $files;
     }
-    
+
     //抓取远程图片
     private function saveRemote($config, $fieldName)
     {
         $imgUrl = htmlspecialchars($fieldName);
         $imgUrl = str_replace("&amp;", "&", $imgUrl);
-        
+
         //http开头验证
         if (strpos($imgUrl, "http") !== 0) {
             $data = array('state' => '链接不是http链接',);
+
             return json_encode($data);
         }
         //获取请求头并检测死链
         $heads = get_headers($imgUrl);
-        if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
+        if ( ! (stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
             $data = array('state' => '链接不可用',);
+
             return json_encode($data);
         }
         //格式验证(扩展名验证和Content-Type验证)
         $fileType = strtolower(strrchr($imgUrl, '.'));
-        if (!in_array($fileType, $config['allowFiles']) || stristr($heads['Content-Type'], "image")) {
+        if ( ! in_array($fileType, $config['allowFiles']) || stristr($heads['Content-Type'], "image")) {
             $data = array('state' => '链接contentType不正确',);
+
             return json_encode($data);
         }
-        
+
         //打开输出缓冲区并获取远程图片
         ob_start();
-        $context = stream_context_create(array('http' => array('follow_location' => false // don't follow redirects
-        )));
+        $context = stream_context_create(array(
+            'http' => array(
+                'follow_location' => false // don't follow redirects
+            )
+        ));
         readfile($imgUrl, false, $context);
         $img = ob_get_contents();
         ob_end_clean();
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
-        
-        $dirname = './public/uploads/remote/';
-        $file['oriName'] = $m ? $m[1] : "";
+
+        $dirname          = './public/uploads/remote/';
+        $file['oriName']  = $m ? $m[1] : "";
         $file['filesize'] = strlen($img);
-        $file['ext'] = strtolower(strrchr($config['oriName'], '.'));
-        $file['name'] = uniqid() . $file['ext'];
-        $file['fullName'] = $dirname . $file['name'];
-        $fullName = $file['fullName'];
-        
+        $file['ext']      = strtolower(strrchr($config['oriName'], '.'));
+        $file['name']     = uniqid().$file['ext'];
+        $file['fullName'] = $dirname.$file['name'];
+        $fullName         = $file['fullName'];
+
         //检查文件大小是否超出限制
         if ($file['filesize'] >= ($config["maxSize"])) {
             $data = array('state' => '文件大小超出网站限制',);
+
             return json_encode($data);
         }
-        
+
         //创建目录失败
-        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
+        if ( ! file_exists($dirname) && ! mkdir($dirname, 0777, true)) {
             $data = array('state' => '目录创建失败',);
+
             return json_encode($data);
-        } else if (!is_writeable($dirname)) {
-            $data = array('state' => '目录没有写权限',);
-            return json_encode($data);
+        } else {
+            if ( ! is_writeable($dirname)) {
+                $data = array('state' => '目录没有写权限',);
+
+                return json_encode($data);
+            }
         }
-        
+
         //移动文件
-        if (!(file_put_contents($fullName, $img) && file_exists($fullName))) { //移动失败
+        if ( ! (file_put_contents($fullName, $img) && file_exists($fullName))) { //移动失败
             $data = array('state' => '写入文件内容错误',);
+
             return json_encode($data);
         } else { //移动成功
-            $data = array('state' => 'SUCCESS', 'url' => substr($file['fullName'], 1), 'title' => $file['name'], 'original' => $file['oriName'], 'type' => $file['ext'], 'size' => $file['filesize'],);
+            $data = array(
+                'state'    => 'SUCCESS',
+                'url'      => substr($file['fullName'], 1),
+                'title'    => $file['name'],
+                'original' => $file['oriName'],
+                'type'     => $file['ext'],
+                'size'     => $file['filesize'],
+            );
         }
-        
+
         return json_encode($data);
     }
-    
+
     /*
 	 * 处理base64编码的图片上传
 	 * 例如：涂鸦图片上传
@@ -347,41 +419,53 @@ class Ueditor extends Controller
     private function upBase64($config, $fieldName)
     {
         $base64Data = $_POST[$fieldName];
-        $img = base64_decode($base64Data);
-        
-        $dirname = './public/uploads/scrawl/';
+        $img        = base64_decode($base64Data);
+
+        $dirname          = './public/uploads/scrawl/';
         $file['filesize'] = strlen($img);
-        $file['oriName'] = $config['oriName'];
-        $file['ext'] = strtolower(strrchr($config['oriName'], '.'));
-        $file['name'] = uniqid() . $file['ext'];
-        $file['fullName'] = $dirname . $file['name'];
-        $fullName = $file['fullName'];
-        
+        $file['oriName']  = $config['oriName'];
+        $file['ext']      = strtolower(strrchr($config['oriName'], '.'));
+        $file['name']     = uniqid().$file['ext'];
+        $file['fullName'] = $dirname.$file['name'];
+        $fullName         = $file['fullName'];
+
         //检查文件大小是否超出限制
         if ($file['filesize'] >= ($config["maxSize"])) {
             $data = array('state' => '文件大小超出网站限制',);
+
             return json_encode($data);
         }
-        
+
         //创建目录失败
-        if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
+        if ( ! file_exists($dirname) && ! mkdir($dirname, 0777, true)) {
             $data = array('state' => '目录创建失败',);
+
             return json_encode($data);
-        } else if (!is_writeable($dirname)) {
-            $data = array('state' => '目录没有写权限',);
-            return json_encode($data);
+        } else {
+            if ( ! is_writeable($dirname)) {
+                $data = array('state' => '目录没有写权限',);
+
+                return json_encode($data);
+            }
         }
-        
+
         //移动文件
-        if (!(file_put_contents($fullName, $img) && file_exists($fullName))) { //移动失败
+        if ( ! (file_put_contents($fullName, $img) && file_exists($fullName))) { //移动失败
             $data = array('state' => '写入文件内容错误',);
         } else { //移动成功
-            $data = array('state' => 'SUCCESS', 'url' => substr($file['fullName'], 1), 'title' => $file['name'], 'original' => $file['oriName'], 'type' => $file['ext'], 'size' => $file['filesize'],);
+            $data = array(
+                'state'    => 'SUCCESS',
+                'url'      => substr($file['fullName'], 1),
+                'title'    => $file['name'],
+                'original' => $file['oriName'],
+                'type'     => $file['ext'],
+                'size'     => $file['filesize'],
+            );
         }
-        
+
         return json_encode($data);
     }
-    
+
     //获取上传文件后缀
     private function get_file_ext($file_name)
     {
@@ -389,7 +473,8 @@ class Ueditor extends Controller
         $file_ext = array_pop($temp_arr);
         $file_ext = trim($file_ext);
         $file_ext = strtolower($file_ext);
+
         return $file_ext;
     }
-    
+
 }

@@ -9,65 +9,74 @@
 
 /**
  * 使用方法
-    $outTradeNo = ''; //要查询的订单号
-    $wxPay = new Orderquery($mchid,$appid,$apiKey);
-    $result = $wxPay->orderquery($outTradeNo);
-    echo json_encode($result);
-    die;
-*/
+ * $outTradeNo = ''; //要查询的订单号
+ * $wxPay = new Orderquery($mchid,$appid,$apiKey);
+ * $result = $wxPay->orderquery($outTradeNo);
+ * echo json_encode($result);
+ * die;
+ */
 
 namespace wxpay;
-class Orderquery{
+
+class Orderquery
+{
+
     protected $mchid;
+
     protected $appid;
+
     protected $apiKey;
+
     protected $returnUrl;
+
     public function __construct($mchid, $appid, $key)
     {
-        $this->mchid = $mchid;
-        $this->appid = $appid;
+        $this->mchid  = $mchid;
+        $this->appid  = $appid;
         $this->apiKey = $key;
     }
-    
+
     public function setReturnUrl($returnUrl)
     {
         $this->returnUrl = $returnUrl;
     }
-    
+
     public function orderquery($outTradeNo)
     {
         $config = array(
             'mch_id' => $this->mchid,
-            'appid' => $this->appid,
-            'key' => $this->apiKey,
+            'appid'  => $this->appid,
+            'key'    => $this->apiKey,
         );
         //$orderName = iconv('GBK','UTF-8',$orderName);
-        $unified = array(
-            'appid' => $config['appid'],
-            'mch_id' => $config['mch_id'],
+        $unified         = array(
+            'appid'        => $config['appid'],
+            'mch_id'       => $config['mch_id'],
             'out_trade_no' => $outTradeNo,
-            'nonce_str' => self::createNonceStr(),
+            'nonce_str'    => self::createNonceStr(),
         );
         $unified['sign'] = self::getSign($unified, $config['key']);
-        $responseXml = self::curlPost('https://api.mch.weixin.qq.com/pay/orderquery', self::arrayToXml($unified));
-        $queryResult = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $responseXml     = self::curlPost('https://api.mch.weixin.qq.com/pay/orderquery', self::arrayToXml($unified));
+        $queryResult     = simplexml_load_string($responseXml, 'SimpleXMLElement', LIBXML_NOCDATA);
         if ($queryResult === false) {
             die('parse xml error');
         }
         if ($queryResult->return_code != 'SUCCESS') {
             die($queryResult->return_msg);
         }
-        $trade_state = $queryResult->trade_state;
-        $data['code'] = $trade_state=='SUCCESS' ? 0 : 1;
+        $trade_state  = $queryResult->trade_state;
+        $data['code'] = $trade_state == 'SUCCESS' ? 0 : 1;
         $data['data'] = $trade_state;
-        $data['msg'] = $this->getTradeSTate($trade_state);
+        $data['msg']  = $this->getTradeSTate($trade_state);
         $data['time'] = date('Y-m-d H:i:s');
-        return $data;exit();
+
+        return $data;
+        exit();
     }
-    
+
     public function getTradeSTate($str)
     {
-        switch ($str){
+        switch ($str) {
             case 'SUCCESS';
                 return '支付成功';
             case 'REFUND';
@@ -84,11 +93,13 @@ class Orderquery{
                 return '支付失败';
         }
     }
+
     /**
      * curl get
      *
      * @param string $url
-     * @param array $options
+     * @param array  $options
+     *
      * @return mixed
      */
     public static function curlGet($url = '', $options = array())
@@ -96,7 +107,7 @@ class Orderquery{
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        if (!empty($options)) {
+        if ( ! empty($options)) {
             curl_setopt_array($ch, $options);
         }
         //https请求 不验证证书和host
@@ -104,8 +115,10 @@ class Orderquery{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         $data = curl_exec($ch);
         curl_close($ch);
+
         return $data;
     }
+
     public static function curlPost($url = '', $postData = '', $options = array())
     {
         if (is_array($postData)) {
@@ -117,7 +130,7 @@ class Orderquery{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置cURL允许执行的最长秒数
-        if (!empty($options)) {
+        if ( ! empty($options)) {
             curl_setopt_array($ch, $options);
         }
         //https请求 不验证证书和host
@@ -125,29 +138,36 @@ class Orderquery{
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         $data = curl_exec($ch);
         curl_close($ch);
+
         return $data;
     }
+
     public static function createNonceStr($length = 16)
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $str = '';
+        $str   = '';
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
+
         return $str;
     }
+
     public static function arrayToXml($arr)
     {
         $xml = "<xml>";
         foreach ($arr as $key => $val) {
             if (is_numeric($val)) {
-                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
-            } else
-                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+                $xml .= "<".$key.">".$val."</".$key.">";
+            } else {
+                $xml .= "<".$key."><![CDATA[".$val."]]></".$key.">";
+            }
         }
         $xml .= "</xml>";
+
         return $xml;
     }
+
     /**
      * 获取签名
      */
@@ -155,9 +175,11 @@ class Orderquery{
     {
         ksort($params, SORT_STRING);
         $unSignParaString = self::formatQueryParaMap($params, false);
-        $signStr = strtoupper(md5($unSignParaString . "&key=" . $key));
+        $signStr          = strtoupper(md5($unSignParaString."&key=".$key));
+
         return $signStr;
     }
+
     protected static function formatQueryParaMap($paraMap, $urlEncode = false)
     {
         $buff = "";
@@ -167,13 +189,14 @@ class Orderquery{
                 if ($urlEncode) {
                     $v = urlencode($v);
                 }
-                $buff .= $k . "=" . $v . "&";
+                $buff .= $k."=".$v."&";
             }
         }
         $reqPar = '';
         if (strlen($buff) > 0) {
             $reqPar = substr($buff, 0, strlen($buff) - 1);
         }
+
         return $reqPar;
     }
 }

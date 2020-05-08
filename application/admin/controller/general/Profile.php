@@ -8,22 +8,25 @@
  */
 
 namespace app\admin\controller\general;
+
 use app\admin\controller\Common;
 
 class Profile extends Common
 {
-    
+
     public function index()
     {
         $data = model('admin')->field('id,username,nickname,email,createtime')->get($this->uid);
-        return $this->fetch('',['data'=>$data]);
+
+        return $this->fetch('', ['data' => $data]);
     }
-    
+
     public function update()
     {
         $param = input('post.');
-        $res = model('admin')->saveData($param);
+        $res   = model('admin')->saveData($param);
+
         return json($res);
     }
-    
+
 }

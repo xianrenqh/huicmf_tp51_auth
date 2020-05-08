@@ -10,44 +10,44 @@
 define('DS', DIRECTORY_SEPARATOR);
 
 // 定义根目录
-define('ROOT_PATH', __DIR__ . DS . '..' . DS."..".DS);
+define('ROOT_PATH', __DIR__.DS.'..'.DS."..".DS);
 // 定义应用目录
-define('APP_PATH', ROOT_PATH . 'application' . DS);
-define('CONFIG_PATH', ROOT_PATH . 'config' . DS);
+define('APP_PATH', ROOT_PATH.'application'.DS);
+define('CONFIG_PATH', ROOT_PATH.'config'.DS);
 
 // 安装包目录
-define('INSTALL_PATH',__DIR__.DS);
+define('INSTALL_PATH', __DIR__.DS);
 $sitename = "HuiCMF3.0";
 
 // 检测目录是否存在
 $checkDirs = [
     'thinkphp',
     'vendor',
-    'public' . DS . 'static' . DS . 'libs'
+    'public'.DS.'static'.DS.'libs'
 ];
 //缓存目录
-$runtimeDir = APP_PATH . 'runtime';
+$runtimeDir = APP_PATH.'runtime';
 
 //错误信息
 $errInfo = '';
 
 //数据库配置文件
-$dbConfigFile = CONFIG_PATH . 'database.php';
+$dbConfigFile = CONFIG_PATH.'database.php';
 //后台入口文件
-$adminFile = ROOT_PATH . 'public' . DS . 'admin.php';
+$adminFile = ROOT_PATH.'public'.DS.'admin.php';
 
 // 锁定的文件
-$lockFile = ROOT_PATH .DS."public".DS. 'install.lock';
+$lockFile = ROOT_PATH.DS."public".DS.'install.lock';
 if (is_file($lockFile)) {
     $errInfo = "当前已经安装{$sitename}，如果需要重新安装，请手动移除public/install.lock文件";
 } else {
     if (version_compare(PHP_VERSION, '7.0', '<')) {
-        $errInfo = "当前版本(" . PHP_VERSION . ")过低，请使用PHP7.0以上版本";
+        $errInfo = "当前版本(".PHP_VERSION.")过低，请使用PHP7.0以上版本";
     } else {
-        if (!extension_loaded("PDO")) {
+        if ( ! extension_loaded("PDO")) {
             $errInfo = "当前未开启PDO，无法进行安装";
         } else {
-            if (!is_really_writable($dbConfigFile)) {
+            if ( ! is_really_writable($dbConfigFile)) {
                 $open_basedir = ini_get('open_basedir');
                 if ($open_basedir) {
                     $dirArr = explode(PATH_SEPARATOR, $open_basedir);
@@ -55,11 +55,11 @@ if (is_file($lockFile)) {
                         $errInfo = '当前服务器因配置了open_basedir，导致无法读取父目录<br>';
                     }
                 }
-                if (!$errInfo) {
+                if ( ! $errInfo) {
                     $errInfo = '当前权限不足，无法写入配置文件application/database.php<br>';
                 }
             } else {
-            
+
             }
         }
     }
@@ -70,28 +70,28 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         echo $errInfo;
         exit;
     }
-    $err = '';
+    $err           = '';
     $mysqlHostname = isset($_POST['mysqlHost']) ? $_POST['mysqlHost'] : '127.0.0.1';
     $mysqlHostport = isset($_POST['mysqlHostport']) ? $_POST['mysqlHostport'] : 3306;
-    $hostArr = explode(':', $mysqlHostname);
+    $hostArr       = explode(':', $mysqlHostname);
     if (count($hostArr) > 1) {
         $mysqlHostname = $hostArr[0];
         $mysqlHostport = $hostArr[1];
     }
-    $mysqlUsername = isset($_POST['mysqlUsername']) ? $_POST['mysqlUsername'] : 'root';
-    $mysqlPassword = isset($_POST['mysqlPassword']) ? $_POST['mysqlPassword'] : '';
-    $mysqlDatabase = isset($_POST['mysqlDatabase']) ? $_POST['mysqlDatabase'] : 'fastadmin';
-    $mysqlPrefix = isset($_POST['mysqlPrefix']) ? $_POST['mysqlPrefix'] : 'fa_';
-    $adminUsername = isset($_POST['adminUsername']) ? $_POST['adminUsername'] : 'admin';
-    $adminPassword = isset($_POST['adminPassword']) ? $_POST['adminPassword'] : '123456';
+    $mysqlUsername             = isset($_POST['mysqlUsername']) ? $_POST['mysqlUsername'] : 'root';
+    $mysqlPassword             = isset($_POST['mysqlPassword']) ? $_POST['mysqlPassword'] : '';
+    $mysqlDatabase             = isset($_POST['mysqlDatabase']) ? $_POST['mysqlDatabase'] : 'fastadmin';
+    $mysqlPrefix               = isset($_POST['mysqlPrefix']) ? $_POST['mysqlPrefix'] : 'fa_';
+    $adminUsername             = isset($_POST['adminUsername']) ? $_POST['adminUsername'] : 'admin';
+    $adminPassword             = isset($_POST['adminPassword']) ? $_POST['adminPassword'] : '123456';
     $adminPasswordConfirmation = isset($_POST['adminPasswordConfirmation']) ? $_POST['adminPasswordConfirmation'] : '123456';
-    $adminEmail = isset($_POST['adminEmail']) ? $_POST['adminEmail'] : 'admin@admin.com';
+    $adminEmail                = isset($_POST['adminEmail']) ? $_POST['adminEmail'] : 'admin@admin.com';
 
-    if (!preg_match("/^\w{3,12}$/", $adminUsername)) {
+    if ( ! preg_match("/^\w{3,12}$/", $adminUsername)) {
         echo "用户名只能由3-12位数字、字母、下划线组合";
         exit;
     }
-    if (!preg_match("/^[\S]{6,16}$/", $adminPassword)) {
+    if ( ! preg_match("/^[\S]{6,16}$/", $adminPassword)) {
         echo "密码长度必须在6-16位之间，不能包含空格";
         exit;
     }
@@ -102,8 +102,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         //检测能否读取安装文件
-        $sql = @file_get_contents(INSTALL_PATH . 'database.sql');
-        if (!$sql) {
+        $sql = @file_get_contents(INSTALL_PATH.'database.sql');
+        if ( ! $sql) {
             throw new Exception("无法读取public/install/database.sql文件，请检查是否有读权限");
         }
         $sql = str_replace("`hui_", "`{$mysqlPrefix}", $sql);
@@ -111,18 +111,18 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         ));
-    
+
         //检测mysql版本是否符合要求（最低需要5.5版本）
-        $res = $pdo->query("select VERSION()");
+        $res    = $pdo->query("select VERSION()");
         $result = $res->fetch();
-        if ($result[0]<5.5) {
+        if ($result[0] < 5.5) {
             throw new Exception("本系统需要数据库版本最低为5.5，当前数据库版本为".$result[0]);
         }
 
         //检测是否支持innodb存储引擎
         $pdoStatement = $pdo->query("SHOW VARIABLES LIKE 'innodb_version'");
-        $result = $pdoStatement->fetch();
-        if (!$result) {
+        $result       = $pdoStatement->fetch();
+        if ( ! $result) {
             throw new Exception("当前数据库不支持innodb存储引擎，请开启后再重新尝试安装");
         }
 
@@ -131,33 +131,41 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $pdo->query("USE `{$mysqlDatabase}`");
 
         $pdo->exec($sql);
-        
-        $config2 = @file_get_contents($dbConfigFile);
-        $callback = function ($matches) use ($mysqlHostname, $mysqlHostport, $mysqlUsername, $mysqlPassword, $mysqlDatabase, $mysqlPrefix) {};
-        $config = array();
-        $config['type'] = 'mysql';
+
+        $config2            = @file_get_contents($dbConfigFile);
+        $callback           = function ($matches) use (
+            $mysqlHostname,
+            $mysqlHostport,
+            $mysqlUsername,
+            $mysqlPassword,
+            $mysqlDatabase,
+            $mysqlPrefix
+        ) {
+        };
+        $config             = array();
+        $config['type']     = 'mysql';
         $config['hostname'] = $mysqlHostname;
         $config['database'] = $mysqlDatabase;
         $config['username'] = $mysqlUsername;
         $config['password'] = $mysqlPassword;
         $config['hostport'] = $mysqlHostport;
-        $config['prefix'] = $mysqlPrefix;
-        $result = set_config($config);
+        $config['prefix']   = $mysqlPrefix;
+        $result             = set_config($config);
         //检测能否成功写入数据库配置
         //$result = @file_put_contents($dbConfigFile, $config);
-        if (!$result) {
+        if ( ! $result) {
             throw new Exception("无法写入数据库信息到config/database.php文件，请检查是否有写权限");
         }
 
         //检测能否成功写入lock文件
         $result = @file_put_contents($lockFile, 1);
-        if (!$result) {
+        if ( ! $result) {
             throw new Exception("无法写入安装锁定到public/install.lock文件，请检查是否有写权限");
         }
 
-        $newSalt = substr(md5(uniqid(true)), 0, 6);
-        $newPassword = md5(md5($adminPassword) . $newSalt);
-        $times = time();
+        $newSalt     = substr(md5(uniqid(true)), 0, 6);
+        $newPassword = md5(md5($adminPassword).$newSalt);
+        $times       = time();
         $pdo->query("UPDATE {$mysqlPrefix}admin SET username = '{$adminUsername}', email = '{$adminEmail}',password = '{$newPassword}', salt = '{$newSalt}',createtime ='{$times}' WHERE username = 'admin'");
         $adminName = 'admin.php';
         /*if (is_file($adminFile)) {
@@ -181,26 +189,31 @@ function is_really_writable($file)
     if (DIRECTORY_SEPARATOR == '/' AND @ ini_get("safe_mode") == false) {
         return is_writable($file);
     }
-    if (!is_file($file) OR ($fp = @fopen($file, "r+")) === false) {
+    if ( ! is_file($file) OR ($fp = @fopen($file, "r+")) === false) {
         return false;
     }
-    
+
     fclose($fp);
+
     return true;
 }
 
-function set_config($config) {
+function set_config($config)
+{
     $configfile = CONFIG_PATH.'database.php';
-    if(!is_writable($configfile)) die('Please chmod '.$configfile.' to 0777 !');
+    if ( ! is_writable($configfile)) {
+        die('Please chmod '.$configfile.' to 0777 !');
+    }
     $pattern = $replacement = array();
-    foreach($config as $k=>$v) {
-        $v = trim($v);
-        $configs[$k] = $v;
-        $pattern[$k] = "/'".$k."'\s*=>\s*([']?)[^']*([']?)(\s*),/is";
+    foreach ($config as $k => $v) {
+        $v               = trim($v);
+        $configs[$k]     = $v;
+        $pattern[$k]     = "/'".$k."'\s*=>\s*([']?)[^']*([']?)(\s*),/is";
         $replacement[$k] = "'".$k."' => \${1}".$v."\${2}\${3},";
     }
     $str = file_get_contents($configfile);
     $str = preg_replace($pattern, $replacement, $str);
+
     return file_put_contents($configfile, $str, LOCK_EX);
 }
 
@@ -455,53 +468,53 @@ function set_config($config) {
         <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
 
         <script>
-            $(function () {
-                $('form :input:first').select();
+          $(function () {
+            $('form :input:first').select();
 
-                $('form').on('submit', function (e) {
-                    e.preventDefault();
-                    var form = this;
-                    var $button = $(this).find('button')
-                        .text('安装中...')
-                        .prop('disabled', true);
+            $('form').on('submit', function (e) {
+              e.preventDefault();
+              var form = this;
+              var $button = $(this).find('button')
+                .text('安装中...')
+                .prop('disabled', true);
 
-                    $.post('', $(this).serialize())
-                        .done(function (ret) {
-                            if (ret.substr(0, 7) === 'success') {
-                                var retArr = ret.split(/\|/);
-                                $('#error').hide();
-                                $(".form-group", form).remove();
-                                $button.remove();
-                                $("#success").text("安装成功！开始你的<?php echo $sitename; ?>之旅吧！如果出现访问404，请配置伪静态").show();
+              $.post('', $(this).serialize())
+                .done(function (ret) {
+                  if (ret.substr(0, 7) === 'success') {
+                    var retArr = ret.split(/\|/);
+                    $('#error').hide();
+                    $(".form-group", form).remove();
+                    $button.remove();
+                    $("#success").text("安装成功！开始你的<?php echo $sitename; ?>之旅吧！如果出现访问404，请配置伪静态").show();
 
-                                $buttons = $(".form-buttons", form);
-                                $('<a class="btn" href="/">访问首页</a>').appendTo($buttons);
+                    $buttons = $(".form-buttons", form);
+                    $('<a class="btn" href="/">访问首页</a>').appendTo($buttons);
 
-                                if (typeof retArr[1] !== 'undefined' && retArr[1] !== '') {
-                                    var url = location.href.replace("/install/", "/"+retArr[1]);
-                                    $("#warmtips").html('温馨提示：请将以下后台登录入口添加到你的收藏夹，为了你的安全，不要泄漏或发送给他人！如有泄漏请及时修改！<a href="' + url + '">' + url + '</a>').show();
-                                    $('<a class="btn" target="_blank" href="' + url + '" id="btn-admin" style="background:#18bc9c">访问后台</a>').appendTo($buttons);
-                                }
-                                localStorage.setItem("fastep", "installed");
-                            } else {
-                                $('#error').show().text(ret);
-                                $button.prop('disabled', false).text('点击安装');
-                                $("html,body").animate({
-                                    scrollTop: 0
-                                }, 500);
-                            }
-                        })
-                        .fail(function (data) {
-                            $('#error').show().text('发生错误:\n\n' + data.responseText);
-                            $button.prop('disabled', false).text('点击安装');
-                            $("html,body").animate({
-                                scrollTop: 0
-                            }, 500);
-                        });
-
-                    return false;
+                    if (typeof retArr[1] !== 'undefined' && retArr[1] !== '') {
+                      var url = location.href.replace("/install/", "/" + retArr[1]);
+                      $("#warmtips").html('温馨提示：请将以下后台登录入口添加到你的收藏夹，为了你的安全，不要泄漏或发送给他人！如有泄漏请及时修改！<a href="' + url + '">' + url + '</a>').show();
+                      $('<a class="btn" target="_blank" href="' + url + '" id="btn-admin" style="background:#18bc9c">访问后台</a>').appendTo($buttons);
+                    }
+                    localStorage.setItem("fastep", "installed");
+                  } else {
+                    $('#error').show().text(ret);
+                    $button.prop('disabled', false).text('点击安装');
+                    $("html,body").animate({
+                      scrollTop: 0
+                    }, 500);
+                  }
+                })
+                .fail(function (data) {
+                  $('#error').show().text('发生错误:\n\n' + data.responseText);
+                  $button.prop('disabled', false).text('点击安装');
+                  $("html,body").animate({
+                    scrollTop: 0
+                  }, 500);
                 });
+
+              return false;
             });
+          });
         </script>
     </div>
 </div>

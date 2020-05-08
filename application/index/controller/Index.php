@@ -6,22 +6,25 @@
  * Time: 14:22:06
  * Info:
  */
+
 namespace app\index\controller;
-class Index{
-    
+
+class Index
+{
+
     public function index()
     {
-        $site = get_config();
-        $seo_title = $site['site_name'];
-        $keywords = $site['site_keyword'];
+        $site        = get_config();
+        $seo_title   = $site['site_name'];
+        $keywords    = $site['site_keyword'];
         $description = $site['site_description'];
-        include template('index','index');
+        include template('index', 'index');
     }
-    
+
     //内容展示页
     public function show()
     {
         echo "这是内容展示页";
     }
-    
+
 }

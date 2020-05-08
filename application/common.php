@@ -14,24 +14,29 @@ use lib\HuiTpl;
 use lib\Auth;
 
 /*错误页。不跳转*/
-function error2($msg){
-    echo "<h2 align='center'>".$msg."</h2>";exit;
+function error2($msg)
+{
+    echo "<h2 align='center'>".$msg."</h2>";
+    exit;
 }
 
 /**
  * 按钮权限验证
  */
-function check_auth($rule_name=''){
+function check_auth($rule_name = '')
+{
     $Auth = Auth::instance();
-    return $Auth->check($rule_name,session('user_info.uid'));
-}
 
+    return $Auth->check($rule_name, session('user_info.uid'));
+}
 
 /**
  * 数组层级缩进转换
+ *
  * @param array $array 源数组
  * @param int   $pid
  * @param int   $level
+ *
  * @return array
  */
 function array2level($array, $pid = 0, $level = 1)
@@ -44,59 +49,67 @@ function array2level($array, $pid = 0, $level = 1)
             array2level($array, $v['id'], $level + 1);
         }
     }
+
     return $list;
 }
 
-
 /**
  * 转换字节数为其他单位
- * @param	string	$filesize	字节大小
- * @return	string	返回大小
+ *
+ * @param string $filesize 字节大小
+ *
+ * @return    string    返回大小
  */
-function sizecount($filesize) {
+function sizecount($filesize)
+{
     if ($filesize >= 1073741824) {
         $filesize = round($filesize / 1073741824 * 100) / 100 .' GB';
     } elseif ($filesize >= 1048576) {
         $filesize = round($filesize / 1048576 * 100) / 100 .' MB';
-    } elseif($filesize >= 1024) {
-        $filesize = round($filesize / 1024 * 100) / 100 . ' KB';
+    } elseif ($filesize >= 1024) {
+        $filesize = round($filesize / 1024 * 100) / 100 .' KB';
     } else {
         $filesize = $filesize.' Bytes';
     }
+
     return $filesize;
 }
 
 /**
  * 根据key删除数组中指定元素
- * @param  array  $arr  数组
- * @param  string/int  $key  键（key）
+ *
+ * @param array $arr 数组
+ * @param string/int  $key  键（key）
+ *
  * @return array
  */
-function array_remove_by_key($arr, $key){
-    if(!array_key_exists($key, $arr)){
+function array_remove_by_key($arr, $key)
+{
+    if ( ! array_key_exists($key, $arr)) {
         return $arr;
     }
-    $keys = array_keys($arr);
+    $keys  = array_keys($arr);
     $index = array_search($key, $keys);
-    if($index !== FALSE){
+    if ($index !== false) {
         array_splice($arr, $index, 1);
     }
-    
+
     return $arr;
 }
 
-
 /**
  * 构建层级（树状）数组
+ *
  * @param array  $array          要进行处理的一维数组，经过该函数处理后，该数组自动转为树状数组
  * @param string $pid_name       父级ID的字段名
  * @param string $child_key_name 子元素键名
+ *
  * @return array|bool
  */
 function array2tree(&$array, $pid_name = 'pid', $child_key_name = 'children')
 {
     $counter = array_children_count($array, $pid_name);
-    if (!isset($counter[0]) || $counter[0] == 0) {
+    if ( ! isset($counter[0]) || $counter[0] == 0) {
         return $array;
     }
     $tree = [];
@@ -108,38 +121,46 @@ function array2tree(&$array, $pid_name = 'pid', $child_key_name = 'children')
             if ($temp[$pid_name] == 0) {
                 $tree[] = $temp;
             } else {
-                $array =  array_child_append($array, $temp[$pid_name], $temp, $child_key_name);
+                $array = array_child_append($array, $temp[$pid_name], $temp, $child_key_name);
             }
         }
-        $counter =  array_children_count($array, $pid_name);
+        $counter = array_children_count($array, $pid_name);
     }
+
     return $tree;
 }
+
 /**
  * 把元素插入到对应的父元素$child_key_name字段
+ *
  * @param        $parent
  * @param        $pid
  * @param        $child
  * @param string $child_key_name 子元素键名
+ *
  * @return mixed
  */
 function array_child_append($parent, $pid, $child, $child_key_name)
 {
     foreach ($parent as &$item) {
         if ($item['id'] == $pid) {
-            if (!isset($item[$child_key_name])) {
+            if ( ! isset($item[$child_key_name])) {
                 $item[$child_key_name] = [];
             }
-            
+
             $item[$child_key_name][] = $child;
         }
     }
+
     return $parent;
 }
+
 /**
  * 子元素计数器
+ *
  * @param array $array
  * @param int   $pid
+ *
  * @return array
  */
 function array_children_count($array, $pid)
@@ -150,55 +171,72 @@ function array_children_count($array, $pid)
         $count++;
         $counter[$item[$pid]] = $count;
     }
+
     return $counter;
 }
-
 
 /**
  * 列出目录下所有文件
  *
- * @param   string $path     路径
- * @param   string $exts     扩展名
- * @param   array  $list     增加的文件列表
+ * @param string $path 路径
+ * @param string $exts 扩展名
+ * @param array  $list 增加的文件列表
+ *
  * @return  array  所有满足条件的文件
  */
-function dir_path($path) {
+function dir_path($path)
+{
     $path = str_replace('\\', '/', $path);
-    if (substr($path, -1) != '/') $path = $path . '/';
+    if (substr($path, -1) != '/') {
+        $path = $path.'/';
+    }
+
     return $path;
 }
 
 /**
  * 删除目录及目录下面的所有文件
  *
- * @param   string $dir      路径
+ * @param string $dir 路径
+ *
  * @return  bool   如果成功则返回 TRUE，失败则返回 FALSE
  */
-function dir_delete($dir) {
+function dir_delete($dir)
+{
     $dir = dir_path($dir);
-    if (!is_dir($dir)) return FALSE;
+    if ( ! is_dir($dir)) {
+        return false;
+    }
     $list = glob($dir.'*');
-    foreach($list as $v) {
+    foreach ($list as $v) {
         is_dir($v) ? dir_delete($v) : @unlink($v);
     }
+
     return @rmdir($dir);
 }
 
-
 /**
  * 文件下载
+ *
  * @param $filepath 文件路径
  * @param $filename 文件名称
  */
 
-function file_down($filepath, $filename = '') {
-    if(!$filename) $filename = basename($filepath);
-    if(is_ie()) $filename = rawurlencode($filename);
+function file_down($filepath, $filename = '')
+{
+    if ( ! $filename) {
+        $filename = basename($filepath);
+    }
+    if (is_ie()) {
+        $filename = rawurlencode($filename);
+    }
     $filetype = fileext($filename);
     $filesize = sprintf("%u", filesize($filepath));
-    if(ob_get_length() !== false) @ob_end_clean();
+    if (ob_get_length() !== false) {
+        @ob_end_clean();
+    }
     header('Pragma: public');
-    header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
     header('Cache-Control: no-store, no-cache, must-revalidate');
     header('Cache-Control: pre-check=0, post-check=0, max-age=0');
     header('Content-Transfer-Encoding: binary');
@@ -212,13 +250,15 @@ function file_down($filepath, $filename = '') {
 
 /**
  * gb2312转为utf-8
- * @param $str
+ *
+ * @param      $str
  * @param bool $is true：其它编码转utf8   false：utf8转gb2312
+ *
  * @return string
  */
 function gbk_utf($str, $is = true)
 {
-    $encode = mb_detect_encoding($str, ['ASCII', 'UTF-8', 'GB2312', 'GBK','CP936']);
+    $encode = mb_detect_encoding($str, ['ASCII', 'UTF-8', 'GB2312', 'GBK', 'CP936']);
     // return $encode;
     if ($encode == 'UTF-8' && $is) {
         return $str;
@@ -229,15 +269,20 @@ function gbk_utf($str, $is = true)
     }
 }
 
-
 /**
  * IE浏览器判断
  */
 
-function is_ie() {
+function is_ie()
+{
     $useragent = strtolower($_SERVER['HTTP_USER_AGENT']);
-    if((strpos($useragent, 'opera') !== false) || (strpos($useragent, 'konqueror') !== false)) return false;
-    if(strpos($useragent, 'msie ') !== false) return true;
+    if ((strpos($useragent, 'opera') !== false) || (strpos($useragent, 'konqueror') !== false)) {
+        return false;
+    }
+    if (strpos($useragent, 'msie ') !== false) {
+        return true;
+    }
+
     return false;
 }
 
@@ -245,113 +290,176 @@ function is_ie() {
  * 取得文件扩展
  *
  * @param $filename 文件名
+ *
  * @return 扩展名
  */
-function fileext($filename) {
+function fileext($filename)
+{
     return strtolower(trim(substr(strrchr($filename, '.'), 1, 10)));
 }
 
 // 转换大小
-function changeSize($size,$num = 0)
+function changeSize($size, $num = 0)
 {
-    $type = ['B','KB','MB','GB','TB'];
-    $i = 0;
-    for ($i; $size >= 1024; $i++){
+    $type = ['B', 'KB', 'MB', 'GB', 'TB'];
+    $i    = 0;
+    for ($i; $size >= 1024; $i++) {
         $size /= 1024;
     }
-    return round($size,$num).$type[$i];// round四舍五入取值$num位小数
+
+    return round($size, $num).$type[$i];// round四舍五入取值$num位小数
 }
 
 // 显示图片
-function getpic($file,$height = 30)
+function getpic($file, $height = 30)
 {
     //$file = mb_convert_encoding(urldecode($file),'GB2312','UTF-8');
     $server = PHP_OS;
     //防止 有些中文windows或linux乱码
-    if($server == "Linux"){
+    if ($server == "Linux") {
         $file = urldecode($file);// 有些会不支持iconv 换mb_convert_encoding函数
-    }elseif($server == "WINNT"){
-        $file = iconv('UTF-8','GB2312',urldecode($file));// 有些会不支持iconv 换mb_convert_encoding函数
-    }else{
+    } elseif ($server == "WINNT") {
+        $file = iconv('UTF-8', 'GB2312', urldecode($file));// 有些会不支持iconv 换mb_convert_encoding函数
+    } else {
         $file = urldecode($file);
     }
-    if($fileinfo = @getimagesize($file)){
+    if ($fileinfo = @getimagesize($file)) {
         $filecontent = file_get_contents($file);
-        $_b64 = chunk_split(base64_encode($filecontent));
-        $pic = 'data:'.$fileinfo['mime'].';base64,'.$_b64;
+        $_b64        = chunk_split(base64_encode($filecontent));
+        $pic         = 'data:'.$fileinfo['mime'].';base64,'.$_b64;
+
         return "<img src='{$pic}' height='{$height}.px'>";
     }
+
     return '';
 }
 
-
 /**
  * 获取内容中的图片
+ *
  * @param string $content 内容
+ *
  * @return string
  */
-function match_img($content){
+function match_img($content)
+{
     preg_match('/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/', $content, $match);
-    return !empty($match) ? $match[1] : '';
+
+    return ! empty($match) ? $match[1] : '';
 }
 
 /**
  * 字符截取
- * @param $string 要截取的字符串
- * @param $length 截取长度
- * @param $dot	  截取之后用什么表示
- * @param $code	  编码格式，支持UTF8/GBK
+ *
+ * @param $string    要截取的字符串
+ * @param $length    截取长度
+ * @param $dot       截取之后用什么表示
+ * @param $code      编码格式，支持UTF8/GBK
  */
-function str_cut($string, $length, $dot = '...', $code = 'utf-8') {
+function str_cut($string, $length, $dot = '...', $code = 'utf-8')
+{
     $strlen = strlen($string);
-    if($strlen <= $length) return $string;
-    $string = str_replace(array(' ','&nbsp;', '&amp;', '&quot;', '&#039;', '&ldquo;', '&rdquo;', '&mdash;', '&lt;', '&gt;', '&middot;', '&hellip;'), array('∵',' ', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), $string);
+    if ($strlen <= $length) {
+        return $string;
+    }
+    $string = str_replace(array(
+        ' ',
+        '&nbsp;',
+        '&amp;',
+        '&quot;',
+        '&#039;',
+        '&ldquo;',
+        '&rdquo;',
+        '&mdash;',
+        '&lt;',
+        '&gt;',
+        '&middot;',
+        '&hellip;'
+    ), array('∵', ' ', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), $string);
     $strcut = '';
-    if($code == 'utf-8') {
-        $length = intval($length-strlen($dot)-$length/3);
-        $n = $tn = $noc = 0;
-        while($n < strlen($string)) {
+    if ($code == 'utf-8') {
+        $length = intval($length - strlen($dot) - $length / 3);
+        $n      = $tn = $noc = 0;
+        while ($n < strlen($string)) {
             $t = ord($string[$n]);
-            if($t == 9 || $t == 10 || (32 <= $t && $t <= 126)) {
-                $tn = 1; $n++; $noc++;
-            } elseif(194 <= $t && $t <= 223) {
-                $tn = 2; $n += 2; $noc += 2;
-            } elseif(224 <= $t && $t <= 239) {
-                $tn = 3; $n += 3; $noc += 2;
-            } elseif(240 <= $t && $t <= 247) {
-                $tn = 4; $n += 4; $noc += 2;
-            } elseif(248 <= $t && $t <= 251) {
-                $tn = 5; $n += 5; $noc += 2;
-            } elseif($t == 252 || $t == 253) {
-                $tn = 6; $n += 6; $noc += 2;
+            if ($t == 9 || $t == 10 || (32 <= $t && $t <= 126)) {
+                $tn = 1;
+                $n++;
+                $noc++;
+            } elseif (194 <= $t && $t <= 223) {
+                $tn  = 2;
+                $n   += 2;
+                $noc += 2;
+            } elseif (224 <= $t && $t <= 239) {
+                $tn  = 3;
+                $n   += 3;
+                $noc += 2;
+            } elseif (240 <= $t && $t <= 247) {
+                $tn  = 4;
+                $n   += 4;
+                $noc += 2;
+            } elseif (248 <= $t && $t <= 251) {
+                $tn  = 5;
+                $n   += 5;
+                $noc += 2;
+            } elseif ($t == 252 || $t == 253) {
+                $tn  = 6;
+                $n   += 6;
+                $noc += 2;
             } else {
                 $n++;
             }
-            if($noc >= $length) {
+            if ($noc >= $length) {
                 break;
             }
         }
-        if($noc > $length) {
+        if ($noc > $length) {
             $n -= $tn;
         }
         $strcut = substr($string, 0, $n);
-        $strcut = str_replace(array('∵', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), array(' ', '&amp;', '&quot;', '&#039;', '&ldquo;', '&rdquo;', '&mdash;', '&lt;', '&gt;', '&middot;', '&hellip;'), $strcut);
+        $strcut = str_replace(array('∵', '&', '"', "'", '“', '”', '—', '<', '>', '·', '…'), array(
+            ' ',
+            '&amp;',
+            '&quot;',
+            '&#039;',
+            '&ldquo;',
+            '&rdquo;',
+            '&mdash;',
+            '&lt;',
+            '&gt;',
+            '&middot;',
+            '&hellip;'
+        ), $strcut);
     } else {
-        $dotlen = strlen($dot);
-        $maxi = $length - $dotlen - 1;
+        $dotlen      = strlen($dot);
+        $maxi        = $length - $dotlen - 1;
         $current_str = '';
-        $search_arr = array('&',' ', '"', "'", '“', '”', '—', '<', '>', '·', '…','∵');
-        $replace_arr = array('&amp;','&nbsp;', '&quot;', '&#039;', '&ldquo;', '&rdquo;', '&mdash;', '&lt;', '&gt;', '&middot;', '&hellip;',' ');
+        $search_arr  = array('&', ' ', '"', "'", '“', '”', '—', '<', '>', '·', '…', '∵');
+        $replace_arr = array(
+            '&amp;',
+            '&nbsp;',
+            '&quot;',
+            '&#039;',
+            '&ldquo;',
+            '&rdquo;',
+            '&mdash;',
+            '&lt;',
+            '&gt;',
+            '&middot;',
+            '&hellip;',
+            ' '
+        );
         $search_flip = array_flip($search_arr);
         for ($i = 0; $i < $maxi; $i++) {
             $current_str = ord($string[$i]) > 127 ? $string[$i].$string[++$i] : $string[$i];
             if (in_array($current_str, $search_arr)) {
-                $key = $search_flip[$current_str];
+                $key         = $search_flip[$current_str];
                 $current_str = str_replace($search_arr[$key], $replace_arr[$key], $current_str);
             }
             $strcut .= $current_str;
         }
     }
+
     return $strcut.$dot;
 }
 
@@ -359,38 +467,41 @@ function str_cut($string, $length, $dot = '...', $code = 'utf-8') {
  * 安全过滤函数
  *
  * @param $string
+ *
  * @return string
  */
-function safe_replace($string) {
-    $string = str_replace('%20','',$string);
-    $string = str_replace('%27','',$string);
-    $string = str_replace('%2527','',$string);
-    $string = str_replace('*','',$string);
-    $string = str_replace('"','',$string);
-    $string = str_replace("'",'',$string);
-    $string = str_replace(';','',$string);
-    $string = str_replace('<','&lt;',$string);
-    $string = str_replace('>','&gt;',$string);
-    $string = str_replace("{",'',$string);
-    $string = str_replace('}','',$string);
-    $string = str_replace('\\','',$string);
+function safe_replace($string)
+{
+    $string = str_replace('%20', '', $string);
+    $string = str_replace('%27', '', $string);
+    $string = str_replace('%2527', '', $string);
+    $string = str_replace('*', '', $string);
+    $string = str_replace('"', '', $string);
+    $string = str_replace("'", '', $string);
+    $string = str_replace(';', '', $string);
+    $string = str_replace('<', '&lt;', $string);
+    $string = str_replace('>', '&gt;', $string);
+    $string = str_replace("{", '', $string);
+    $string = str_replace('}', '', $string);
+    $string = str_replace('\\', '', $string);
+
     return $string;
 }
 
 function public_gethtml($ftype = '', $val = '', $setting = '')
 {
-    $fieldtype = $ftype ? $ftype : (isset($_POST['fieldtype'])&&is_string($_POST['fieldtype']) ? safe_replace($_POST['fieldtype']) : 'textarea');
-    if($fieldtype == 'textarea'){
+    $fieldtype = $ftype ? $ftype : (isset($_POST['fieldtype']) && is_string($_POST['fieldtype']) ? safe_replace($_POST['fieldtype']) : 'textarea');
+    if ($fieldtype == 'textarea') {
         echo '<textarea name="value" class="layui-textarea"  placeholder="例如：214243830">'.$val.'</textarea>';
-    }elseif(in_array($fieldtype, array('select', 'radio'))){
-        if($val){
+    } elseif (in_array($fieldtype, array('select', 'radio'))) {
+        if ($val) {
             echo \lib\Form::$fieldtype('value', $val, string2array($setting));
-        }else{
+        } else {
             echo '<textarea name="setting" class="layui-textarea"  placeholder="选项用“|”分开，如“男|女|人妖”"></textarea> &nbsp;<input type="text" name="value" class="layui-input" style="width:180px" placeholder="默认值用配置值填写">';
         }
-    }elseif($fieldtype == 'image' || $fieldtype == 'attachment'){
+    } elseif ($fieldtype == 'image' || $fieldtype == 'attachment') {
         echo \lib\Form::$fieldtype('value', $val);
-    }else{
+    } else {
         echo '<textarea name="value" class="layui-textarea"  placeholder="例如：214243830">'.$val.'</textarea>';
     }
 }
@@ -399,33 +510,40 @@ function public_gethtml($ftype = '', $val = '', $setting = '')
  * 获取请求ip
  * @return ip地址
  */
-function ip() {
-    if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+function ip()
+{
+    if (getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
         $ip = getenv('HTTP_CLIENT_IP');
-    } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+    } elseif (getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
         $ip = getenv('HTTP_X_FORWARDED_FOR');
-    } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+    } elseif (getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
         $ip = getenv('REMOTE_ADDR');
-    } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+    } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'],
+            'unknown')) {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
-    return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '';
-}
 
+    return preg_match('/[\d\.]{7,15}/', $ip, $matches) ? $matches [0] : '';
+}
 
 /**
  * 根据IP获取请求地区（太平洋IP库）
+ *
  * @param $ip
+ *
  * @return 所在位置
  */
-function get_address($ip){
-    if($ip == '127.0.0.1') return '本地地址';
+function get_address($ip)
+{
+    if ($ip == '127.0.0.1') {
+        return '本地地址';
+    }
     $content = @file_get_contents('http://whois.pconline.com.cn/ipJson.jsp?ip='.$ip.'&json=true');
-    $content=iconv('GB2312', 'UTF-8', $content);
-    $arr = json_decode($content, true);
-    if(is_array($arr)&& $arr['regionCode']==0){
+    $content = iconv('GB2312', 'UTF-8', $content);
+    $arr     = json_decode($content, true);
+    if (is_array($arr) && $arr['regionCode'] == 0) {
         return $arr['addr'];
-    }else{
+    } else {
         return '未知';
     }
 }
@@ -433,259 +551,318 @@ function get_address($ip){
 /**
  * 数组去重
  */
-function getArray($arr){
+function getArray($arr)
+{
     $count = count($arr);
-    $arrs = array();
-    for ($i=0;$i<$count;$i++){
+    $arrs  = array();
+    for ($i = 0; $i < $count; $i++) {
         $a = $arr[$i];
         unset($arr[$i]);
-        if(!in_array($a,$arr)){
+        if ( ! in_array($a, $arr)) {
             $arrs[] = $a;
         }
     }
+
     return $arrs;
 }
 
 //字符串去重
-function unique($str){
+function unique($str)
+{
     //字符串中，需要去重的数据是以数字和“，”号连接的字符串，如$str,explode()是用逗号为分割，变成一个新的数组，见打印
-    $arr = explode(',', $str);
-    $arr = array_unique($arr);//内置数组去重算法
+    $arr  = explode(',', $str);
+    $arr  = array_unique($arr);//内置数组去重算法
     $data = implode(',', $arr);
-    $data = trim($data,',');//trim — 去除字符串首尾处的空白字符（或者其他字符）,假如不使用，后面会多个逗号
+    $data = trim($data, ',');//trim — 去除字符串首尾处的空白字符（或者其他字符）,假如不使用，后面会多个逗号
+
     return $data;//返回值，返回到函数外部
 }
 
 /**
  * 创建目录
  *
- * @param   string $path  路径
- * @param   string $mode  属性
+ * @param string $path 路径
+ * @param string $mode 属性
+ *
  * @return  string 如果已经存在则返回true，否则为flase
  */
-function dir_create($path, $mode = 0777) {
-    if(is_dir($path)) return TRUE;
+function dir_create($path, $mode = 0777)
+{
+    if (is_dir($path)) {
+        return true;
+    }
     $ftp_enable = 0;
-    $path = dir_path($path);
-    $temp = explode('/', $path);
-    $cur_dir = '';
-    $max = count($temp) - 1;
-    for($i=0; $i<$max; $i++) {
+    $path       = dir_path($path);
+    $temp       = explode('/', $path);
+    $cur_dir    = '';
+    $max        = count($temp) - 1;
+    for ($i = 0; $i < $max; $i++) {
         $cur_dir .= $temp[$i].'/';
-        if (@is_dir($cur_dir)) continue;
-        @mkdir($cur_dir, 0777,true);
+        if (@is_dir($cur_dir)) {
+            continue;
+        }
+        @mkdir($cur_dir, 0777, true);
         @chmod($cur_dir, 0777);
     }
+
     return is_dir($path);
 }
 
 /*
 返回13位的时间戳
 */
-function getMillisecond() {
+function getMillisecond()
+{
     list($t1, $t2) = explode(' ', microtime());
-    return (float)sprintf('%.0f',(floatval($t1)+floatval($t2))*1000);
+
+    return (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
 }
 
 /**
  * 获取系统配置信息
+ *
  * @param $key 键值，可为空，为空获取整个数组
+ *
  * @return array|string
  */
 function get_config($key = '')
 {
-    if(cache('configs')){
-        $configs= cache('configs');
-    }else{
-        $data = Db::name('config')->where('status',1)->select();
+    if (cache('configs')) {
+        $configs = cache('configs');
+    } else {
+        $data    = Db::name('config')->where('status', 1)->select();
         $configs = array();
-        foreach($data as $val){
+        foreach ($data as $val) {
             $configs[$val['name']] = $val['value'];
         }
-        cache('configs',$configs);
+        cache('configs', $configs);
     }
-    if(!$key){
+    if ( ! $key) {
         return $configs;
-    }else{
+    } else {
         return array_key_exists($key, $configs) ? $configs[$key] : '';
     }
 }
 
 /**
  * 修改config的函数
+ *
  * @param $string 配置名 ，字符串
- * @param $arr2 配置前缀，数组
- * @param $arr3 数据变量，数组
+ * @param $arr2   配置前缀，数组
+ * @param $arr3   数据变量，数组
+ *
  * @return bool 返回状态
  */
-function setconfig($filename , $pat, $rep)
+function setconfig($filename, $pat, $rep)
 {
     if (is_array($pat) and is_array($rep)) {
         for ($i = 0; $i < count($pat); $i++) {
-            $pats[$i] = '/\'' . $pat[$i] . '\'(.*?),/';
-            $reps[$i] = "'". $pat[$i]. "'". "=>" . "'".$rep[$i] ."',";
+            $pats[$i] = '/\''.$pat[$i].'\'(.*?),/';
+            $reps[$i] = "'".$pat[$i]."'"."=>"."'".$rep[$i]."',";
         }
-        $fileurl = ROOT_PATH.'config/'.$filename.'.php' ;
-        $string = file_get_contents($fileurl); //加载配置文件
-        $string = preg_replace($pats, $reps, $string); // 正则查找然后替换
+        $fileurl = ROOT_PATH.'config/'.$filename.'.php';
+        $string  = file_get_contents($fileurl); //加载配置文件
+        $string  = preg_replace($pats, $reps, $string); // 正则查找然后替换
         file_put_contents($fileurl, $string); // 写入配置文件
+
         return true;
     } else {
         return false;
     }
 }
 
-
 /**
  * 返回经addslashes处理过的字符串或数组
+ *
  * @param $string 需要处理的字符串或数组
+ *
  * @return mixed
  */
-function new_addslashes($string){
-    if(!is_array($string)) return addslashes($string);
-    foreach($string as $key => $val) $string[$key] = new_addslashes($val);
+function new_addslashes($string)
+{
+    if ( ! is_array($string)) {
+        return addslashes($string);
+    }
+    foreach ($string as $key => $val) {
+        $string[$key] = new_addslashes($val);
+    }
+
     return $string;
 }
-
 
 /**
  * 返回经stripslashes处理过的字符串或数组
+ *
  * @param $string 需要处理的字符串或数组
+ *
  * @return mixed
  */
-function new_stripslashes($string) {
-    if(!is_array($string)) return stripslashes($string);
-    foreach($string as $key => $val) $string[$key] = new_stripslashes($val);
+function new_stripslashes($string)
+{
+    if ( ! is_array($string)) {
+        return stripslashes($string);
+    }
+    foreach ($string as $key => $val) {
+        $string[$key] = new_stripslashes($val);
+    }
+
     return $string;
 }
-
 
 /**
  * 返回经htmlspecialchars处理过的字符串或数组
+ *
  * @param $obj 需要处理的字符串或数组
+ *
  * @return mixed
  */
-function new_html_special_chars($string) {
-    if(!is_array($string)) return htmlspecialchars($string,ENT_QUOTES,'utf-8');
-    foreach($string as $key => $val) $string[$key] = new_html_special_chars($val);
+function new_html_special_chars($string)
+{
+    if ( ! is_array($string)) {
+        return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
+    }
+    foreach ($string as $key => $val) {
+        $string[$key] = new_html_special_chars($val);
+    }
+
     return $string;
 }
-
 
 /**
  * 转义 javascript 代码标记
  *
  * @param $str
+ *
  * @return mixed
  */
-function trim_script($str) {
-    if(is_array($str)){
-        foreach ($str as $key => $val){
+function trim_script($str)
+{
+    if (is_array($str)) {
+        foreach ($str as $key => $val) {
             $str[$key] = trim_script($val);
         }
-    }else{
-        $str = preg_replace ( '/\<([\/]?)script([^\>]*?)\>/si', '&lt;\\1script\\2&gt;', $str );
-        $str = preg_replace ( '/\<([\/]?)iframe([^\>]*?)\>/si', '&lt;\\1iframe\\2&gt;', $str );
-        $str = preg_replace ( '/\<([\/]?)frame([^\>]*?)\>/si', '&lt;\\1frame\\2&gt;', $str );
-        $str = str_replace ( 'javascript:', 'javascript：', $str );
+    } else {
+        $str = preg_replace('/\<([\/]?)script([^\>]*?)\>/si', '&lt;\\1script\\2&gt;', $str);
+        $str = preg_replace('/\<([\/]?)iframe([^\>]*?)\>/si', '&lt;\\1iframe\\2&gt;', $str);
+        $str = preg_replace('/\<([\/]?)frame([^\>]*?)\>/si', '&lt;\\1frame\\2&gt;', $str);
+        $str = str_replace('javascript:', 'javascript：', $str);
     }
+
     return $str;
 }
-
 
 /**
  * 将字符串转换为数组
  *
- * @param	string	$data	字符串
- * @return	array	返回数组格式，如果，data为空，则返回空数组
+ * @param string $data 字符串
+ *
+ * @return    array    返回数组格式，如果，data为空，则返回空数组
  */
-function string2array($data) {
+function string2array($data)
+{
     $data = trim($data);
-    if($data == '') return array();
-    
-    if(strpos($data, '{\\')===0) $data = stripslashes($data);
-    $array=json_decode($data,true);
+    if ($data == '') {
+        return array();
+    }
+
+    if (strpos($data, '{\\') === 0) {
+        $data = stripslashes($data);
+    }
+    $array = json_decode($data, true);
+
     return $array;
 }
-
 
 /**
  * 将数组转换为字符串
  *
- * @param	array	$data		数组
- * @param	bool	$isformdata	如果为0，则不使用new_stripslashes处理，可选参数，默认为1
- * @return	string	返回字符串，如果，data为空，则返回空
+ * @param array $data       数组
+ * @param bool  $isformdata 如果为0，则不使用new_stripslashes处理，可选参数，默认为1
+ *
+ * @return    string    返回字符串，如果，data为空，则返回空
  */
-function array2string($data, $isformdata = 1) {
-    if($data == '' || empty($data)) return '';
-    
-    if($isformdata) $data = new_stripslashes($data);
-    if (version_compare(PHP_VERSION,'5.3.0','<')){
+function array2string($data, $isformdata = 1)
+{
+    if ($data == '' || empty($data)) {
+        return '';
+    }
+
+    if ($isformdata) {
+        $data = new_stripslashes($data);
+    }
+    if (version_compare(PHP_VERSION, '5.3.0', '<')) {
         return addslashes(json_encode($data));
-    }else{
-        return addslashes(json_encode($data,JSON_FORCE_OBJECT));
+    } else {
+        return addslashes(json_encode($data, JSON_FORCE_OBJECT));
     }
 }
 
 // CurlPOST数据提交-----------------------------------------
-function cmf_curl_get($url,$heads=array(),$cookie='')
+function cmf_curl_get($url, $heads = array(), $cookie = '')
 {
     $ch = @curl_init();
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
-    
+    curl_setopt($ch, CURLOPT_USERAGENT,
+        'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
+
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-    curl_setopt($ch, CURLOPT_HEADER,0);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_REFERER, $url);
     curl_setopt($ch, CURLOPT_POST, 0);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    if(!empty($cookie)){
+    if ( ! empty($cookie)) {
         curl_setopt($ch, CURLOPT_COOKIE, $cookie);
     }
-    if(count($heads)>0){
-        curl_setopt ($ch, CURLOPT_HTTPHEADER , $heads );
+    if (count($heads) > 0) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $heads);
     }
     $response = @curl_exec($ch);
-    if(curl_errno($ch)){//出错则显示错误信息
+    if (curl_errno($ch)) {//出错则显示错误信息
         //print curl_error($ch);die;
     }
     curl_close($ch); //关闭curl链接
+
     return $response;//显示返回信息
 }
-
 
 /**
  *  提示信息页面跳转
  *
- * @param     string  $msg      消息提示信息
- * @param     string  $gourl    跳转地址
- * @param     int     $limittime  限制时间
+ * @param string $msg       消息提示信息
+ * @param string $gourl     跳转地址
+ * @param int    $limittime 限制时间
+ *
  * @return    void
  */
-function showmsg($msg, $gourl='', $limittime='3') {
+function showmsg($msg, $gourl = '', $limittime = '3')
+{
     $gourl = empty($gourl) ? HTTP_REFERER : $gourl;
-    $stop = $gourl!='stop' ? false : true;
+    $stop  = $gourl != 'stop' ? false : true;
     include(Env::get('root_path').'extend'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'message.tpl');
-    if(config('app.app_debug')){
+    if (config('app.app_debug')) {
         exit;
     }
 }
 
 /**
  * 获取模板主题列表
+ *
  * @param string $m 模块
+ *
  * @return array
  */
-function get_theme_list($m = 'index'){
+function get_theme_list($m = 'index')
+{
     $theme_list = array();
-    $list = glob(APP_PATH.$m.DS.'view'.DS.'*', GLOB_ONLYDIR);
-    foreach($list as $v){
+    $list       = glob(APP_PATH.$m.DS.'view'.DS.'*', GLOB_ONLYDIR);
+    foreach ($list as $v) {
         $theme_list[] = basename($v);
     }
+
     return $theme_list;
 }
 
@@ -694,43 +871,52 @@ function get_theme_list($m = 'index'){
  *
  * @param $module
  * @param $template
+ *
  * @return unknown_type
  */
 function template($module = '', $template = 'index')
 {
-    if(!$module) $module = 'index';
-    $template_c = Env::get('runtime_path').$module.DIRECTORY_SEPARATOR;
-    $template_path = !defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.get_config('site_theme').DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
-    $filename = $template.'.html';
-    $tplfile = $template_path.$filename;
-    if(!is_file($tplfile)) {
-        showmsg(str_replace(Env::get('root_path'),"",$tplfile).' 模板不存在！','stop');
+    if ( ! $module) {
+        $module = 'index';
     }
-    if(!is_dir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR)){
+    $template_c    = Env::get('runtime_path').$module.DIRECTORY_SEPARATOR;
+    $template_path = ! defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.get_config('site_theme').DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
+    $filename = $template.'.html';
+    $tplfile  = $template_path.$filename;
+    if ( ! is_file($tplfile)) {
+        showmsg(str_replace(Env::get('root_path'), "", $tplfile).' 模板不存在！', 'stop');
+    }
+    if ( ! is_dir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR)) {
         @mkdir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR, 0777, true);
     }
-    $template = md5($template_path.$template);
+    $template   = md5($template_path.$template);
     $template_c = $template_c.$template.'.tpl.php';
-    if(!is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
-        $HuiTPL = new HuiTpl();
+    if ( ! is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
+        $HuiTPL  = new HuiTpl();
         $compile = $HuiTPL->tpl_replace(@file_get_contents($tplfile));
         file_put_contents($template_c, $compile);
     }
+
     return $template_c;
 }
 
 /**
  * 将数组转换为对象
- * @param  array  $data  数组
+ *
+ * @param array $data 数组
+ *
  * @return 返回对象（object）
  */
-function array2object($array) {
+function array2object($array)
+{
     if (is_array($array)) {
         $obj = new StdClass();
-        foreach ($array as $key => $val){
+        foreach ($array as $key => $val) {
             $obj->$key = $val;
         }
+    } else {
+        $obj = $array;
     }
-    else { $obj = $array; }
+
     return $obj;
 }

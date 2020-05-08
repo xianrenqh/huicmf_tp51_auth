@@ -9,10 +9,11 @@
 
 namespace app\index\controller;
 
-
 class Error
 {
-    public function _empty(){
-        return fetch(Env::get('extend_path') . 'tpl/404.html');
+
+    public function _empty()
+    {
+        return fetch(Env::get('extend_path').'tpl/404.html');
     }
 }

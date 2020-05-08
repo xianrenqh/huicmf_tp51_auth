@@ -8,68 +8,70 @@
  */
 
 namespace app\admin\controller;
+
 use think\facade\Config;
 
 class File extends Common
 {
-    
+
     /**
      *
      */
     public function index($dirname = null)
     {
-        $dirname = urldecode($dirname);
-        $ROOT_PATH = str_replace("\public\..\\","",ROOT_PATH);
+        $dirname   = urldecode($dirname);
+        $ROOT_PATH = str_replace("\public\..\\", "", ROOT_PATH);
         if ($dirname) {
             // 是否能够返回上一级
-            if (stripos($dirname, $ROOT_PATH) === 0 && stripos($dirname, $ROOT_PATH . '..') === false) {
+            if (stripos($dirname, $ROOT_PATH) === 0 && stripos($dirname, $ROOT_PATH.'..') === false) {
                 if (file_exists(gbk_utf($dirname, false))) {
                     chdir(gbk_utf($dirname, false));// 切换目录
                 }
             }
         }
-        $rootpath = getcwd();// 获取工作目录
-        $data = [];
+        $rootpath    = getcwd();// 获取工作目录
+        $data        = [];
         $num['file'] = 0;
-        $num['dir'] = 0;
-        $dirFile = opendir($rootpath);
-        
+        $num['dir']  = 0;
+        $dirFile     = opendir($rootpath);
+
         while ($fileName = readdir($dirFile)) {
             if ($fileName != '.' && $fileName != '..') {
-            
+
                 // 是否是目录以选择图标并计算目录内的文件大小
                 if (is_dir($fileName)) {
                     // 目录
                     $fileInfo['icon'] = '#icon-wenjianjia';
                     $fileInfo['size'] = $this->dirsize($fileName);
-                    $fileInfo['dir'] = 1;
+                    $fileInfo['dir']  = 1;
                     $num['dir']++;
                 } else {
                     // 文件
                     $fileInfo['icon'] = $this->geticon($fileName);
                     $fileInfo['size'] = filesize($fileName);
-                    $fileInfo['dir'] = 0;
+                    $fileInfo['dir']  = 0;
                     $num['file']++;
                 }
-                $fileInfo['dirname'] = gbk_utf($rootpath . DIRECTORY_SEPARATOR . $fileName);// 获取绝对路径
-                $fileInfo['name'] = gbk_utf($fileName);
-                $fileInfo['ctime'] = filectime($fileName);
-                $fileInfo['mtime'] = filemtime($fileName);
-                $data[] = $fileInfo;
+                $fileInfo['dirname'] = gbk_utf($rootpath.DIRECTORY_SEPARATOR.$fileName);// 获取绝对路径
+                $fileInfo['name']    = gbk_utf($fileName);
+                $fileInfo['ctime']   = filectime($fileName);
+                $fileInfo['mtime']   = filemtime($fileName);
+                $data[]              = $fileInfo;
             }
         }
         array_multisort(array_column($data, 'dir'), SORT_DESC, $data);
         $page = $this->getpage($data, 10, input('page'));
+
         return $this->fetch('index', [
-            'dirs' => $page['data'],
-            'page' => $page['page'],
-            'path' => gbk_utf($rootpath),
-            'uppath' => gbk_utf($rootpath) . '/' . '..',
-            'num' => $num,
+            'dirs'   => $page['data'],
+            'page'   => $page['page'],
+            'path'   => gbk_utf($rootpath),
+            'uppath' => gbk_utf($rootpath).'/'.'..',
+            'num'    => $num,
         ]);
-        
+
     }
-    
+
     // 删除
     public function del()
     {
@@ -99,25 +101,26 @@ class File extends Common
                     return $this->result('', 0, '文件删除失败');
                 }
             }
+
             return $data;
         }
     }
-    
+
     // 重命名
     public function rname()
     {
         if (request()->isPost()) {
-            
+
             $oldName = urldecode(input('oldname'));
-            
+
             $name = input('newname');
-            
-            $newName = dirname($oldName) . '/' . $name;
-            
+
+            $newName = dirname($oldName).'/'.$name;
+
             if (file_exists($newName) && is_writable($oldName)) {
-                return $this->result('', 0, $name . ' 文件名已存在');
+                return $this->result('', 0, $name.' 文件名已存在');
             }
-            
+
             try {
                 $is = rename(gbk_utf($oldName, false), gbk_utf($newName, false));
             } catch (\Exception $e) {
@@ -128,11 +131,12 @@ class File extends Common
             } else {
                 return $this->result('', 0, '文件名修改失败');
             }
+
             return $this->result('', 0, '操作异常');
-            
+
         }
     }
-    
+
     // 文件下载
     public function down()
     {
@@ -140,20 +144,21 @@ class File extends Common
         if (request()->isAjax()) {
             $data = urldecode(input('file'));
             $file = gbk_utf($data, false);
-            if (!file_exists($file)) {
+            if ( ! file_exists($file)) {
                 return $this->result('', 0, '文件不存在');
             }
+
             return $this->result('', 1, '');
         }
-        $data = urldecode(input('file'));
-        $file = gbk_utf($data, false);
+        $data     = urldecode(input('file'));
+        $file     = gbk_utf($data, false);
         $filename = basename($file);
         // 设置头
-        header('Content-Disposition:attachment;filename=' . $filename);
+        header('Content-Disposition:attachment;filename='.$filename);
         readfile($file);// 下载
-        
+
     }
-    
+
     // 文件编辑
     public function edit()
     {
@@ -162,43 +167,41 @@ class File extends Common
             $file = urldecode(input('filename'));
             if (file_put_contents($file, $data)) {
                 return $this->result('', 1, '修改成功');
-            }else{
+            } else {
                 return $this->result('', 0, '修改失败');
             }
-            
-        }else{
+
+        } else {
             $data = urldecode(input('file'));
-            $exts = ['PHP', 'HTML', 'JS', 'CSS', 'TXT', 'JSON', 'XML', 'HTACCESS','SQL','LOG','MD'];
-            $ext = strtoupper(pathinfo($data, PATHINFO_EXTENSION));
-    
-            if (!in_array($ext, $exts)) {
+            $exts = ['PHP', 'HTML', 'JS', 'CSS', 'TXT', 'JSON', 'XML', 'HTACCESS', 'SQL', 'LOG', 'MD'];
+            $ext  = strtoupper(pathinfo($data, PATHINFO_EXTENSION));
+
+            if ( ! in_array($ext, $exts)) {
                 return $this->result('', 0, '该文件不支持编辑');
             }
-    
-    
+
             // return $data;
-            if (empty($data) || !file_exists($data)) {
+            if (empty($data) || ! file_exists($data)) {
                 return $this->result('', 0, '文件不存在');
             }
-    
+
             $code = htmlentities(file_get_contents($data), ENT_COMPAT, 'UTF-8');
+
             return $this->fetch('edit', [
-                'code' => $code,
-                'ext' => strtolower($ext),
-                'filename'=>$data,
-                'fontSize'=>config('huiadmin.ace_editor_fontSize'),
-                'aceTheme'=>config('huiadmin.ace_editor_Theme'),
+                'code'     => $code,
+                'ext'      => strtolower($ext),
+                'filename' => $data,
+                'fontSize' => config('huiadmin.ace_editor_fontSize'),
+                'aceTheme' => config('huiadmin.ace_editor_Theme'),
             ]);
         }
     }
-    
-    
-    
+
     // 分页
     private function getpage($arr, $list = 3, $curr)
     {
         $arrCount = count($arr);
-        $total = ceil($arrCount / $list);// 获取页数
+        $total    = ceil($arrCount / $list);// 获取页数
         if ($curr <= 0) {
             $curr = 1;
         }
@@ -206,17 +209,17 @@ class File extends Common
             $curr = $total;
         }
         $data = array_slice($arr, ($curr - 1) * $list, $list);// 按页数分割数组
-        
+
         return [
             'data' => $data,
             'page' => [
                 'count' => $arrCount,
                 'limit' => $list,
-                'curr' => $curr,
+                'curr'  => $curr,
             ],
         ];
     }
-    
+
     // 返回文件图标
     private function geticon($file)
     {
@@ -261,11 +264,10 @@ class File extends Common
                 $ico = '#icon-file';
                 break;
         }
+
         return $ico;
     }
-    
 
-    
     // 删除含有目录的文件
     public function deldir($path)
     {
@@ -274,31 +276,32 @@ class File extends Common
             //扫描一个文件夹内的所有文件夹和文件并返回数组
             $dirs = opendir($path);
             while ($file = readdir($dirs)) {
-                
+
                 if ($file != '.' && $file != '..') {
                     //如果是目录则递归子目录，继续操作
-                    if (is_dir($path . '/' . $file)) {
-                        $this->deldir($path . '/' . $file);
+                    if (is_dir($path.'/'.$file)) {
+                        $this->deldir($path.'/'.$file);
                     } else {
-                        unlink($path . '/' . $file);
+                        unlink($path.'/'.$file);
                     }
                 }
             }
             closedir($dirs);
             // 最后删除要处理的根目录
             $res = rmdir($path);
+
             return $res;
         }
     }
-    
+
     // 获取目录的大小
     public function dirsize($dirname)
     {
-        $dir = opendir($dirname);
+        $dir  = opendir($dirname);
         $size = 0;
         while ($fileName = readdir($dir)) {
             if ($fileName != '.' and $fileName != '..') {
-                $path = $dirname . '/' . $fileName;// 获取文件夹下的目录
+                $path = $dirname.'/'.$fileName;// 获取文件夹下的目录
                 if (is_dir($path)) {
                     $size += $this->dirsize($path);
                 } elseif (is_file($path)) {
@@ -306,23 +309,22 @@ class File extends Common
                 }
             }
         }
-        
+
         return $size;
     }
-    
+
     public function ace_editor_config()
     {
         $type = input('get.type');
         $text = input('get.text');
-        switch($type){
+        switch ($type) {
             case "fontSize":
-                setconfig('huiadmin',['ace_editor_fontSize'],[$text]);
+                setconfig('huiadmin', ['ace_editor_fontSize'], [$text]);
                 break;
             case "setTheme":
-                setconfig('huiadmin',['ace_editor_Theme'],[$text]);
+                setconfig('huiadmin', ['ace_editor_Theme'], [$text]);
                 break;
         }
     }
-    
-    
+
 }

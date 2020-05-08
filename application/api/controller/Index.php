@@ -8,18 +8,20 @@
  */
 
 namespace app\api\controller;
+
 use think\Db;
 
 header('Content-type:text/html; Charset=utf-8');
+
 class Index
 {
-    
+
     /**
-     * @api {post} api/index/link 01、获取友情链接列表
-     * @apiName link
-     * @apiGroup index
-     * @apiVersion 1.0.0
-     * @apiDescription  获取友情链接列表
+     * @api               {post} api/index/link 01、获取友情链接列表
+     * @apiName           link
+     * @apiGroup          index
+     * @apiVersion        1.0.0
+     * @apiDescription    获取友情链接列表
      * @apiParam {String}  key key，第几页
      * @apiParam {String}  [page=1] 分页，第几页
      * @apiParam {int} [limit=10] 期望分页返回的数据页数量.
@@ -47,15 +49,14 @@ class Index
     public function link()
     {
         $order = "id desc";
-        $first = !(empty(input('post.page')))?input('post.page'):1;
-        $limit = !(empty(input('post.limit')))?input('post.limit'):10;
-        $list = Db::name('link')->where(['status'=>1])->order($order)->limit($first-1,$limit)->select();
-        if($list){
-            return json(['status'=>200,'msg'=>'success','data'=>$list]);
-        }else{
-            return json(['status'=>201,'msg'=>'error']);
+        $first = ! (empty(input('post.page'))) ? input('post.page') : 1;
+        $limit = ! (empty(input('post.limit'))) ? input('post.limit') : 10;
+        $list  = Db::name('link')->where(['status' => 1])->order($order)->limit($first - 1, $limit)->select();
+        if ($list) {
+            return json(['status' => 200, 'msg' => 'success', 'data' => $list]);
+        } else {
+            return json(['status' => 201, 'msg' => 'error']);
         }
     }
-    
-    
+
 }

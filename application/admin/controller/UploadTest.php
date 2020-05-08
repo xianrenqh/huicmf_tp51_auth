@@ -8,14 +8,15 @@
  */
 
 namespace app\admin\controller;
+
 use think\facade\View;
 
 class UploadTest
 {
-    
+
     public function index()
     {
         return View::fetch();
     }
-    
+
 }
