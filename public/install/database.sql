@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 127.0.0.1
+ Source Server         : 127.0.01
  Source Server Type    : MySQL
- Source Server Version : 50725
+ Source Server Version : 50726
  Source Host           : localhost:3306
- Source Schema         : 1055tp5_test
+ Source Schema         : huicmf3.io
 
  Target Server Type    : MySQL
- Target Server Version : 50725
+ Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 26/04/2020 09:44:32
+ Date: 05/06/2020 14:12:43
 */
 
 SET NAMES utf8mb4;
@@ -30,10 +30,10 @@ CREATE TABLE `hui_admin`  (
   `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
   `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '电子邮箱',
   `loginfailure` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '失败次数',
-  `logintime` int(10) DEFAULT NULL COMMENT '登录时间',
-  `loginip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '登录IP',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `logintime` int(10) NOT NULL DEFAULT 0 COMMENT '登录时间',
+  `loginip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '登录IP',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `updatetime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `token` varchar(59) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'Session标识',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'normal' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
@@ -43,7 +43,7 @@ CREATE TABLE `hui_admin`  (
 -- ----------------------------
 -- Records of hui_admin
 -- ----------------------------
-INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'c09fa70972b70b93163be14a545e23a5', '697a26', '/assets/img/avatar.png', 'admin@admin.com', 0, 1587344524, '127.0.0.1', 1492186163, 1583655724, '54b434fa-73db-4ad3-b4cd-9c38700695d5', 'normal');
+INSERT INTO `hui_admin` VALUES (1, 'admin', 'Admin', 'a179a58eb94223fc8fa60e77facf911e', '2bff1d', '/assets/img/avatar.png', 'admin@admin.com', 0, 1591337117, '127.0.0.1', 1588923131, 1583655724, 'dbd57282-7c7c-45a5-b52b-5746faa26c48', 'normal');
 
 -- ----------------------------
 -- Table structure for hui_admin_log
@@ -58,7 +58,7 @@ CREATE TABLE `hui_admin_log`  (
   `content` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '内容',
   `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'IP',
   `useragent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'User-Agent',
-  `createtime` int(10) DEFAULT NULL COMMENT '操作时间',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `name`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '管理员日志表' ROW_FORMAT = Compact;
@@ -122,9 +122,9 @@ CREATE TABLE `hui_attachment`  (
   `filesize` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件大小',
   `mimetype` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'mime类型',
   `extparam` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '透传数据',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建日期',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `uploadtime` int(10) DEFAULT NULL COMMENT '上传时间',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '创建日期',
+  `updatetime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `uploadtime` int(10) NOT NULL DEFAULT 0 COMMENT '上传时间',
   `storage` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'local' COMMENT '存储位置',
   `sha1` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
   PRIMARY KEY (`id`) USING BTREE
@@ -139,8 +139,8 @@ CREATE TABLE `hui_auth_group`  (
   `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父组别',
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '组名',
   `rules` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则ID',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `updatetime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '分组表' ROW_FORMAT = Compact;
@@ -183,8 +183,8 @@ CREATE TABLE `hui_auth_rule`  (
   `condition` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '条件',
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
   `ismenu` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否为菜单',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `updatetime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `weigh` int(10) NOT NULL DEFAULT 0 COMMENT '权重',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE,
@@ -279,7 +279,7 @@ INSERT INTO `hui_auth_rule` VALUES (83, 'file', 82, 'datareplace/dosql', '执行
 INSERT INTO `hui_auth_rule` VALUES (84, 'file', 81, 'content/add', '添加内容', 'icon-round_text_fill', '', '', 0, 1586393298, 0, 1, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (85, 'file', 81, 'content/edit', '修改内容', 'icon-round_text_fill', '', '', 0, 1586393314, 0, 2, 'normal');
 INSERT INTO `hui_auth_rule` VALUES (86, 'file', 81, 'content/delete', '删除内容', 'icon-round_text_fill', '', '', 0, 1586393328, 0, 3, 'normal');
-INSERT INTO `hui_auth_rule` VALUES (87, 'file', 62, 'tag/select', '选择tag', 'icon-round_text_fill', '', '', 0, 1586825049, NULL, 4, 'normal');
+INSERT INTO `hui_auth_rule` VALUES (87, 'file', 62, 'tag/select', '选择tag', 'icon-round_text_fill', '', '', 0, 1586825049, 0, 4, 'normal');
 
 -- ----------------------------
 -- Table structure for hui_banner
@@ -321,24 +321,24 @@ DROP TABLE IF EXISTS `hui_category`;
 CREATE TABLE `hui_category`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父ID',
-  `modelid` int(3) DEFAULT NULL COMMENT '模型类型',
+  `modelid` int(3) NOT NULL DEFAULT 0 COMMENT '模型类型',
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '栏目类型',
   `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `nickname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `flag` set('hot','index','recommend') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `image` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图片',
-  `seo_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'seo标题',
+  `seo_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'seo标题',
   `seo_keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '关键字',
   `seo_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '描述',
   `diyname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '自定义名称',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+  `createtime` int(10) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `updatetime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `weigh` int(10) NOT NULL DEFAULT 0 COMMENT '权重',
   `status` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '状态',
-  `category_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '频道页模板',
-  `list_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '列表页模板',
-  `show_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '内容页模板',
-  `pc_link` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '链接',
+  `category_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '频道页模板',
+  `list_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '列表页模板',
+  `show_template` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '内容页模板',
+  `pc_link` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '链接',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `weigh`(`weigh`, `id`) USING BTREE,
   INDEX `pid`(`pid`) USING BTREE
@@ -357,7 +357,7 @@ CREATE TABLE `hui_config`  (
   `fieldtype` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '字段类型',
   `setting` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '字段设置',
   `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态',
-  `tips` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `tips` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `type`(`type`) USING BTREE
@@ -644,7 +644,7 @@ CREATE TABLE `hui_tag`  (
   `tag` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `total` mediumint(9) UNSIGNED NOT NULL DEFAULT 0,
   `inputtime` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `times` int(10) DEFAULT NULL COMMENT '次数',
+  `times` int(10) NOT NULL DEFAULT 0 COMMENT '次数',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tag`(`tag`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 201 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;

@@ -28,7 +28,7 @@ class Admin extends Model
         } else {
             $Random            = new Random();
             $param['salt']     = $Random->alnum();
-            $param['password'] = md5(md5($param['password']).$param['salt']);
+            $param['password'] = cmf_password($param['password'],$param['salt']);
         }
         $param['updatetime'] = time();
         $res                 = Db::name('admin')->where('id', $param['id'])->data($param)->strict(false)->update();

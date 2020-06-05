@@ -135,7 +135,7 @@ class Admin extends Common
             }
             $salt                = Random::alnum();
             $param['salt']       = $salt;
-            $param['password']   = md5(md5($param['password']).$salt);
+            $param['password']   = cmf_password($param['password'],$salt);
             $param['createtime'] = time();
             $ins_id              = Db::name('admin')->strict(false)->insertGetId($param);
             $group_ids           = explode(",", $param['group']);
@@ -169,7 +169,7 @@ class Admin extends Common
             $param['updatetime'] = time();
             if ($param['password'] != '') {
                 $param['salt']     = $Random->alnum();
-                $param['password'] = md5(md5($param['password']).$param['salt']);
+                $param['password'] = cmf_password($param['password'],$param['salt']);
             } else {
                 unset($param['password']);
             }

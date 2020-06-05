@@ -119,8 +119,10 @@ class Content extends Common
     {
         if (input('post.dosubmit')) {
             $param = input('post.');
-
-            return json(['status' => 0]);
+            $param['inputtime']=time();
+            //这里随便写点，测试添加数据的
+            $insert = Db::name('article')->strict(false)->insert($param);
+            return json(['status' => 1,'msg'=>'ok']);
         }
         $param       = input('get.');
         $modelid     = ! empty($param['modelid']) ? $param['modelid'] : 1;
@@ -161,8 +163,9 @@ class Content extends Common
     //栏目option树结构
     private function select_cate($pid, $modelid)
     {
-        $cateList = Db::name('category')->field("id,pid,modelid,type,name")->where(['type'    => 1,
-                                                                                    'modelid' => $modelid
+        $cateList = Db::name('category')->field("id,pid,modelid,type,name")->where([
+            'type'    => 1,
+            'modelid' => $modelid
         ])->order('id ASC,weigh ASC')->select();
         $pppidstr = '';
         foreach ($cateList as $v) {

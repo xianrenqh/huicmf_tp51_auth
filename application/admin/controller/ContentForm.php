@@ -79,8 +79,9 @@ class ContentForm extends Controller
             if ( ! Db::name('model')->where(['modelid' => $this->modelid])->find()) {
                 showmsg('模型不存在！');
             }
-            $modelinfo = Db::name('model_field')->where(['modelid'  => $this->modelid,
-                                                         'disabled' => 0
+            $modelinfo = Db::name('model_field')->where([
+                'modelid'  => $this->modelid,
+                'disabled' => 0
             ])->order('listorder ASC')->select();
             cache($this->modelid.'_model', $modelinfo);
             cache($this->modelid.'_model_string', null);
