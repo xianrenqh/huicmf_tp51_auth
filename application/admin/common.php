@@ -78,7 +78,6 @@ function cmf_get_admin_id()
     return session('uid');
 }
 
-
 /**
  * 转换字节数为其他单位
  *
@@ -645,59 +644,6 @@ function getMillisecond()
 }
 
 /**
- * 获取系统配置信息
- *
- * @param $key 键值，可为空，为空获取整个数组
- *
- * @return array|string
- */
-function get_config($key = '')
-{
-    if (cache('configs')) {
-        $configs = cache('configs');
-    } else {
-        $data    = Db::name('config')->where('status', 1)->select();
-        $configs = array();
-        foreach ($data as $val) {
-            $configs[$val['name']] = $val['value'];
-        }
-        cache('configs', $configs);
-    }
-    if ( ! $key) {
-        return $configs;
-    } else {
-        return array_key_exists($key, $configs) ? $configs[$key] : '';
-    }
-}
-
-/**
- * 修改config的函数
- *
- * @param $string 配置名 ，字符串
- * @param $arr2   配置前缀，数组
- * @param $arr3   数据变量，数组
- *
- * @return bool 返回状态
- */
-function setconfig($filename, $pat, $rep)
-{
-    if (is_array($pat) and is_array($rep)) {
-        for ($i = 0; $i < count($pat); $i++) {
-            $pats[$i] = '/\''.$pat[$i].'\'(.*?),/';
-            $reps[$i] = "'".$pat[$i]."'"."=>"."'".$rep[$i]."',";
-        }
-        $fileurl = ROOT_PATH.'config/'.$filename.'.php';
-        $string  = file_get_contents($fileurl); //加载配置文件
-        $string  = preg_replace($pats, $reps, $string); // 正则查找然后替换
-        file_put_contents($fileurl, $string); // 写入配置文件
-
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
  * 返回经addslashes处理过的字符串或数组
  *
  * @param $string 需要处理的字符串或数组
@@ -892,39 +838,6 @@ function get_theme_list($m = 'index')
     return $theme_list;
 }
 
-/**
- * 模板调用
- *
- * @param $module
- * @param $template
- *
- * @return unknown_type
- */
-function template($module = '', $template = 'index')
-{
-    if ( ! $module) {
-        $module = 'index';
-    }
-    $template_c    = Env::get('runtime_path').$module.DIRECTORY_SEPARATOR;
-    $template_path = ! defined('MODULE_THEME') ? Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.get_config('site_theme').DIRECTORY_SEPARATOR : Env::get('app_path').$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
-    $filename = $template.'.html';
-    $tplfile  = $template_path.$filename;
-    if ( ! is_file($tplfile)) {
-        showmsg(str_replace(Env::get('root_path'), "", $tplfile).' 模板不存在！', 'stop');
-    }
-    if ( ! is_dir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR)) {
-        @mkdir(Env::get('runtime_path').$module.DIRECTORY_SEPARATOR, 0777, true);
-    }
-    $template   = md5($template_path.$template);
-    $template_c = $template_c.$template.'.tpl.php';
-    if ( ! is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
-        $HuiTPL  = new HuiTpl();
-        $compile = $HuiTPL->tpl_replace(@file_get_contents($tplfile));
-        file_put_contents($template_c, $compile);
-    }
-
-    return $template_c;
-}
 
 /**
  * 将数组转换为对象
