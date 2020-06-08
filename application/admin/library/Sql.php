@@ -87,7 +87,7 @@ class Sql
     public static function sql_add_field_mediumtext($tablename, $field)
     {
         self::set_tablename($tablename);
-        $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` mediumtext";
+        $sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` mediumtext DEFAULT '' ";
         self::sql_exec($sql);
     }
 

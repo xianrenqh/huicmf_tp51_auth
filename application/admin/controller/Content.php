@@ -21,9 +21,8 @@ class Content extends Common
 
     public $childrenGroupIds;
 
-    public function __construct()
+    public function _initialize()
     {
-        parent::__construct();
         $LibAuth                = new LibAuth();
         $this->childrenAdminIds = $LibAuth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $LibAuth->getChildrenGroupIds(true);
@@ -118,11 +117,12 @@ class Content extends Common
     public function add()
     {
         if (input('post.dosubmit')) {
-            $param = input('post.');
-            $param['inputtime']=time();
+            $param              = input('post.');
+            $param['inputtime'] = time();
             //这里随便写点，测试添加数据的
             $insert = Db::name('article')->strict(false)->insert($param);
-            return json(['status' => 1,'msg'=>'ok']);
+
+            return json(['status' => 1, 'msg' => 'ok']);
         }
         $param       = input('get.');
         $modelid     = ! empty($param['modelid']) ? $param['modelid'] : 1;
@@ -138,7 +138,19 @@ class Content extends Common
     //编辑
     public function edit()
     {
+        $modelid     = input('modelid');
+        $id          = input('id');
+        $ContentForm = new ContentForm($modelid);
+        $string      = $ContentForm->content_add();
+        $tablename   = self::get_model($modelid)->tablename;
+        $data        = Db::name($tablename)->find($id);
+        dump($data);
+        $select_cate = $this->select_cate($data['catid'], $modelid);
+        $this->assign('select_cate', $select_cate);
+        $this->assign('string', $string);
+        $this->assign('data', $data);
 
+        return $this->fetch('content_edit');
     }
 
     //删除

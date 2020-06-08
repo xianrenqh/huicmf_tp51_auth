@@ -39,20 +39,20 @@ class Index extends Common
             //如果有超级管理员权限的话，
             if ($this->group_id == 1) {
                 $menu_list = Db::name('auth_rule')->where([
-                        'ismenu' => 1,
-                        'pid'    => 0,
-                        'status' => 'normal'
-                    ])->order('weigh ASC')->select();
+                    'ismenu' => 1,
+                    'pid'    => 0,
+                    'status' => 'normal'
+                ])->order('weigh ASC')->select();
                 for ($i = 0; $i < count($menu_list); $i++) {
                     $menu_list[$i]['icon'] = $menu_list[$i]['icon'];
                     $child[$i]['url']      = url($menu_list[$i]['name']);
                 }
                 foreach ($menu_list as $key => $value) {
                     $child = Db::name('auth_rule')->where([
-                            'pid'    => $value['id'],
-                            'ismenu' => 1,
-                            'status' => 'normal'
-                        ])->order('weigh ASC')->select();
+                        'pid'    => $value['id'],
+                        'ismenu' => 1,
+                        'status' => 'normal'
+                    ])->order('weigh ASC')->select();
                     for ($i = 0; $i < count($child); $i++) {
                         $child[$i]['url'] = url($child[$i]['name']);
                     }
@@ -78,11 +78,10 @@ class Index extends Common
                 $u_group    = $this->auth->getGroups($this->uid);
                 $u_group    = $u_group[0]['rules'];
                 $menu_list2 = Db::name('auth_rule')->where("id in($u_group) and ismenu=1")->order('weigh ASC')->select();
-
                 for ($i = 0; $i < count($menu_list2); $i++) {
                     $menu_list2[$i]['url'] = url($menu_list2[$i]['name']);
                 }
-                $menu_list = (array2tree($menu_list2));
+                $menu_list = listToTree($menu_list2, 'id', 'pid', 'children');
                 foreach ($menu_list as $k2 => $v2) {
                     if (empty($v2['children'])) {
                         unset($menu_list[$k2]);

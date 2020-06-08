@@ -167,12 +167,12 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $newPassword = md5(md5($adminPassword).$newSalt);
         $times       = time();
         $pdo->query("UPDATE {$mysqlPrefix}admin SET username = '{$adminUsername}', email = '{$adminEmail}',password = '{$newPassword}', salt = '{$newSalt}',createtime ='{$times}' WHERE username = 'admin'");
-        $adminName = 'admin.php';
-        /*if (is_file($adminFile)) {
-            $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $adminName = substr(str_shuffle(str_repeat($x, ceil(10 / strlen($x)))), 1, 10) . '.php';
-            rename($adminFile, ROOT_PATH . 'public' . DS . $adminName);
-        }*/
+        //$adminName = 'admin.php';
+        if (is_file($adminFile)) {
+            $x         = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $adminName = substr(str_shuffle(str_repeat($x, ceil(10 / strlen($x)))), 1, 10).'.php';
+            rename($adminFile, ROOT_PATH.'public'.DS.$adminName);
+        }
         echo "success|{$adminName}";
     } catch (PDOException $e) {
         $err = $e->getMessage();
@@ -186,10 +186,10 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
 // 判断文件或目录是否有写的权限
 function is_really_writable($file)
 {
-    if (DIRECTORY_SEPARATOR == '/' AND @ ini_get("safe_mode") == false) {
+    if (DIRECTORY_SEPARATOR == '/' and @ ini_get("safe_mode") == false) {
         return is_writable($file);
     }
-    if ( ! is_file($file) OR ($fp = @fopen($file, "r+")) === false) {
+    if ( ! is_file($file) or ($fp = @fopen($file, "r+")) === false) {
         return false;
     }
 

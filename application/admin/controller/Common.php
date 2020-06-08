@@ -32,6 +32,7 @@ class Common extends Controller
 
     public function __construct()
     {
+        parent::__construct();
         self::$ip = ip();
         self::check_ip();
         $controllername = Loader::parseName(Request::controller());

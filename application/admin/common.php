@@ -156,6 +156,43 @@ function array2tree(&$array, $pid_name = 'pid', $child_key_name = 'children')
 }
 
 /**
+ * 将数组转为tree树形结构函数
+ *
+ * @param        $list
+ * @param string $pk
+ * @param string $pid
+ * @param string $child
+ * @param int    $root
+ *
+ * @return array
+ */
+function listToTree($list, $pk = 'id', $pid = 'pid', $child = 'children', $root = 0)
+{
+    $tree = array();
+    if(is_array($list)) {
+        // 创建基于主键的数组引用
+        $refer = array();
+        foreach ($list as $key => $data) {
+            $refer[$data[$pk]] =& $list[$key];
+        }
+        foreach ($list as $key => $data) {
+            // 判断是否存在parent
+            $parentId = $data[$pid];
+            if ($root == $parentId) {
+                $tree[] =& $list[$key];
+            }else{
+                if(isset($refer[$parentId])) {
+                    $parent =& $refer[$parentId];
+                    $parent[$child][] =& $list[$key];
+                }
+            }
+        }
+    }
+
+    return $tree;
+}
+
+/**
  * 把元素插入到对应的父元素$child_key_name字段
  *
  * @param        $parent
@@ -837,7 +874,6 @@ function get_theme_list($m = 'index')
 
     return $theme_list;
 }
-
 
 /**
  * 将数组转换为对象
