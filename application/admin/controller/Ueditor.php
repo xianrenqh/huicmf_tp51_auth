@@ -365,7 +365,7 @@ class Ueditor extends Controller
         ob_end_clean();
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
 
-        $dirname          = './public/uploads/remote/';
+        $dirname          = './uploads/remote/';
         $file['oriName']  = $m ? $m[1] : "";
         $file['filesize'] = strlen($img);
         $file['ext']      = strtolower(strrchr($config['oriName'], '.'));

@@ -5,6 +5,7 @@
 <body>
 <blockquote class="layui-elem-quote quoteBox">
     <a class="layui-btn layui-btn-lg layui-btn-primary" href="?dirname={$uppath}">上级目录</a>
+    <a class="layui-btn layui-btn-lg layui-btn-primary" href="javascript:;" onclick="create()">新建</a>
     <button id="refreshThis" class="layui-btn layui-btn-lg layui-btn-primary"><i
             class="layui-icon layui-icon-refresh"></i></button>
     <button class="layui-btn layui-btn-lg layui-btn-primary">当前路径：{$path}</button>
@@ -194,6 +195,17 @@
         });
 
     });
+
+    function create() {
+      layer.open({
+        type: 2,
+        title: '新建文件（夹）',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['500px','330px'],
+        content:"{:url('create')}?path={$path_encode}"
+      });
+    }
 </script>
 </body>
 </html>

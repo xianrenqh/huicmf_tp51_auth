@@ -13,6 +13,7 @@
 
 use lib\HuiTpl;
 use lib\Auth;
+use lib\GetImgSrc;
 
 /*错误页。不跳转*/
 function error2($msg)
@@ -28,7 +29,7 @@ function check_auth($rule_name = '')
 {
     $Auth = Auth::instance();
 
-    return $Auth->check($rule_name, session('user_info.uid'));
+    return $Auth->check($rule_name, cmf_get_admin_id());
 }
 
 /**
@@ -75,7 +76,9 @@ function cmf_password($pw, $authCode = '')
  */
 function cmf_get_admin_id()
 {
-    return session('uid');
+    $user_id = ! empty(session('user_info.uid')) ? session('user_info.uid') : 0;
+
+    return $user_id;
 }
 
 /**
@@ -169,7 +172,7 @@ function array2tree(&$array, $pid_name = 'pid', $child_key_name = 'children')
 function listToTree($list, $pk = 'id', $pid = 'pid', $child = 'children', $root = 0)
 {
     $tree = array();
-    if(is_array($list)) {
+    if (is_array($list)) {
         // 创建基于主键的数组引用
         $refer = array();
         foreach ($list as $key => $data) {
@@ -180,9 +183,9 @@ function listToTree($list, $pk = 'id', $pid = 'pid', $child = 'children', $root 
             $parentId = $data[$pid];
             if ($root == $parentId) {
                 $tree[] =& $list[$key];
-            }else{
-                if(isset($refer[$parentId])) {
-                    $parent =& $refer[$parentId];
+            } else {
+                if (isset($refer[$parentId])) {
+                    $parent           =& $refer[$parentId];
                     $parent[$child][] =& $list[$key];
                 }
             }
@@ -394,20 +397,6 @@ function getpic($file, $height = 30)
     }
 
     return '';
-}
-
-/**
- * 获取内容中的图片
- *
- * @param string $content 内容
- *
- * @return string
- */
-function match_img($content)
-{
-    preg_match('/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/', $content, $match);
-
-    return ! empty($match) ? $match[1] : '';
 }
 
 /**
@@ -670,6 +659,29 @@ function dir_create($path, $mode = 0777)
     return is_dir($path);
 }
 
+/**
+ * 创建文件操作
+ * @method create_file
+ *
+ * @param str $filename 文件名
+ *
+ * @return boolean          true|false
+ */
+function create_file($filename)
+{
+    if (file_exists($filename)) {
+        return false;
+    }
+    // 检测目录是否存在，不存在则创建
+    if ( ! file_exists(dirname($filename))) {
+        mkdir(dirname($filename), 0777, true);   //true是指是否创建多级目录
+    }
+    if (file_put_contents($filename, '') !== false) {   // ''是指创建的文件中的内容是空的
+        return true;
+    }
+    return false;
+}
+
 /*
 返回13位的时间戳
 */
@@ -894,4 +906,18 @@ function array2object($array)
     }
 
     return $obj;
+}
+
+/**
+ * 获取远程图片并把它保存到本地, 确定您有把文件写入本地服务器的权限
+ *
+ * @param string $content   文章内容
+ * @param string $targeturl 可选参数，对方网站的网址，防止对方网站的图片使用"/upload/1.jpg"这样的情况
+ *
+ * @return string $content 处理后的内容
+ */
+function grab_image($content)
+{
+    $srcArr = GetImgSrc::srcList($content, 1, 0);
+    dump($srcArr);
 }

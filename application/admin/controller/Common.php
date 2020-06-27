@@ -40,7 +40,7 @@ class Common extends Controller
         $path           = str_replace('.', '/', $controllername).'/'.$actionname;
 
         //初始化判断用户是否已经登陆
-        $this->uid = session('user_info.uid');
+        $this->uid = cmf_get_admin_id();
         if ( ! $this->uid) {
             $this->error('请先登陆系统！', 'login/index');
         } else {

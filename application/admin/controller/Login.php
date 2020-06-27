@@ -36,7 +36,7 @@ class Login extends Controller
     {
         $url = $this->request->get('url', 'index/index');
         if ($this->isLogin()) {
-            $this->success("你已经登录，无需重复登录", $url,'',2);
+            $this->success("你已经登录，无需重复登录", $url, '', 2);
         }
         $captcha = new Captcha();
         if (input('post.dosubmit')) {
@@ -136,7 +136,7 @@ class Login extends Controller
      */
     public function isLogin()
     {
-        if (session('user_info.uid')) {
+        if (cmf_get_admin_id()) {
             return true;
         }
     }

@@ -45,7 +45,7 @@ class AdminLog extends Model
     public function __construct()
     {
         parent::__construct();
-        $this->uid              = $this->uid = session('user_info.uid');
+        $this->uid              = $this->uid = cmf_get_admin_id();
         $LibAuth                = new LibAuth();
         $this->childrenAdminIds = $LibAuth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $LibAuth->getChildrenGroupIds(false);
@@ -75,7 +75,7 @@ class AdminLog extends Model
         $path           = str_replace('.', '/', $controllername).'/'.$actionname;
         //$auth = Auth::instance();
         $LibAuth  = new LibAuth();
-        $admin_id = session('user_info') ? session('user_info.uid') : 0;
+        $admin_id = session('user_info') ? cmf_get_admin_id() : 0;
         $username = session('user_info') ? session('user_info.username') : 0;
         $content  = self::$content;
         if ( ! $content) {
@@ -97,14 +97,14 @@ class AdminLog extends Model
         }
         if (get_config('admin_log')) {
             self::create([
-                    'title'     => $title,
-                    'content'   => ! is_scalar($content) ? json_encode($content) : $content,
-                    'url'       => substr(request()->url(), 0, 1500),
-                    'admin_id'  => $admin_id,
-                    'username'  => $username,
-                    'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
-                    'ip'        => ip()
-                ]);
+                'title'     => $title,
+                'content'   => ! is_scalar($content) ? json_encode($content) : $content,
+                'url'       => substr(request()->url(), 0, 1500),
+                'admin_id'  => $admin_id,
+                'username'  => $username,
+                'useragent' => substr(request()->server('HTTP_USER_AGENT'), 0, 255),
+                'ip'        => ip()
+            ]);
         }
     }
 
@@ -136,7 +136,7 @@ class AdminLog extends Model
         }
 
         $list = Db::name('admin_log')->where($where)->where('admin_id', 'in', $this->childrenAdminIds)->limit($first,
-                $limit)->order('id desc')->select();
+            $limit)->order('id desc')->select();
         for ($i = 0; $i < count($list); $i++) {
             $list[$i]['createtime'] = date("Y-m-d H:i:s", $list[$i]['createtime']);
         }

@@ -40,7 +40,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">发布时间</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="inputtime" class="layui-input" id="inputtime" placeholder="yyyy-MM-dd HH:mm:ss" value="{:date('Y-m-d H:i:s',time())}">
+                    <input type="text" name="create_time" class="layui-input" id="create_time" placeholder="yyyy-MM-dd HH:mm:ss" value="{:date('Y-m-d H:i:s',time())}">
                 </div>
             </div>
         </div>
@@ -114,7 +114,6 @@
             <label class="layui-form-label"></label>
             <div class="layui-input-block">
                 <input type="checkbox" name="auto_thum" value="1" title="提取内容第一张图片为缩略图" lay-skin="primary" checked>&emsp;&emsp;
-                <input type="checkbox" name="grab_img" value="1" title="远程图片本地化" lay-skin="primary">
             </div>
         </div>
 
@@ -146,7 +145,7 @@
         var form = layui.form,laydate = layui.laydate, upload = layui.upload;
         form.render();
         laydate.render({
-            elem: '#inputtime'
+            elem: '#create_time'
             ,type: 'datetime'
             ,calendar: true
             ,theme: 'molv'

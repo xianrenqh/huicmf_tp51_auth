@@ -27,8 +27,8 @@ class LibAuth extends \lib\Auth
     {
         //parent::__construct();
         $this->auth     = \lib\Auth::instance();
-        $this->uid      = session('user_info.uid');
-        $this->group_id = \lib\Auth::instance()->getGroups(session('user_info.uid'));
+        $this->uid      = cmf_get_admin_id();
+        $this->group_id = \lib\Auth::instance()->getGroups(cmf_get_admin_id());
     }
 
     public function getRuleList($uid = null)

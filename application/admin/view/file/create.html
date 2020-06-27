@@ -1,0 +1,64 @@
+{include file='header'/}
+<body>
+<div class="weadmin-body">
+    <form class="layui-form" action="javascript:;" onsubmit="return dosub(this)" method="post">
+        <div class="layui-form-item">
+            <label for="status" class="layui-form-label">类型</label>
+            <div class="layui-input-block" id="type">
+                <input type="radio" name="type" value="file" title="文件" checked>
+                <input type="radio" name="type" value="dir" title="文件夹" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                <span class="we-red">*</span>名称
+            </label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="" lay-verify="required" autocomplete="off" class="layui-input" >
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <input type="hidden" name="dosubmit" value="1">
+            <input type="hidden" name="path" value="{$path}">
+            <button class="layui-btn"  lay-submit=""type="submit"   value="1" name="dosubmit">确定</button>
+        </div>
+    </form>
+</div>
+
+{include file='footer'/}
+
+<script>
+  layui.use(['form','upload'], function() {
+    var form = layui.form,
+      upload = layui.upload;
+    form.render();
+  });
+  function dosub(obj) {
+    if($("input[name='title']").val()==''){
+      layer.msg('标题名称不能为空！');
+      return false;
+    }
+    $.ajax({
+      type: 'POST',
+      url: '{:url('create')}',
+      data: $(obj).serialize(),
+      dataType: "json",
+      success: function (res) {
+        if(res.status == 1){
+          layer.msg(res.msg, {
+            icon: 1,
+            time: 500
+          }, function(){
+            parent.location.reload();
+          });
+        }else{
+          layer.msg(res.msg);
+        }
+      }
+    });
+    return false;
+  }
+</script>
+</body>
+</html>

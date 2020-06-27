@@ -24,7 +24,7 @@ class Upload
 
     public function __construct()
     {
-        $this->uid         = session('user_info.uid') ? session('user_info.uid') : '0';
+        $this->uid         = cmf_get_admin_id() ? cmf_get_admin_id() : '0';
         $this->user_id     = session('user_id') ? session('user_id') : '0';
         $this->upload_mode = get_config('upload_mode');
     }

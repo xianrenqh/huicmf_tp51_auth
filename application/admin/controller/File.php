@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 小灰灰
- * Date: 2020-01-11
- * Time: 16:16:39
- * Info:
- */
 
 namespace app\admin\controller;
 
@@ -20,12 +13,12 @@ class File extends Common
     public function index($dirname = null)
     {
         $dirname   = urldecode($dirname);
-        $ROOT_PATH = str_replace("\public\..\\", "", ROOT_PATH);
+        $ROOT_PATH = str_replace(DS."public".DS."..".DS, "", ROOT_PATH);
         if ($dirname) {
             // 是否能够返回上一级
             if (stripos($dirname, $ROOT_PATH) === 0 && stripos($dirname, $ROOT_PATH.'..') === false) {
                 if (file_exists(gbk_utf($dirname, false))) {
-                    chdir(gbk_utf($dirname, false));// 切换目录
+                    chdir(gbk_utf($dirname, true));// 切换目录
                 }
             }
         }
@@ -63,11 +56,12 @@ class File extends Common
         $page = $this->getpage($data, 10, input('page'));
 
         return $this->fetch('index', [
-            'dirs'   => $page['data'],
-            'page'   => $page['page'],
-            'path'   => gbk_utf($rootpath),
-            'uppath' => gbk_utf($rootpath).'/'.'..',
-            'num'    => $num,
+            'dirs'        => $page['data'],
+            'page'        => $page['page'],
+            'path'        => gbk_utf($rootpath),
+            'path_encode' => base64_encode(gbk_utf($rootpath)),
+            'uppath'      => gbk_utf($rootpath).DS.'..',
+            'num'         => $num,
         ]);
 
     }
@@ -279,10 +273,10 @@ class File extends Common
 
                 if ($file != '.' && $file != '..') {
                     //如果是目录则递归子目录，继续操作
-                    if (is_dir($path.'/'.$file)) {
-                        $this->deldir($path.'/'.$file);
+                    if (is_dir($path.DS.$file)) {
+                        $this->deldir($path.DS.$file);
                     } else {
-                        unlink($path.'/'.$file);
+                        unlink($path.DS.$file);
                     }
                 }
             }
@@ -301,7 +295,7 @@ class File extends Common
         $size = 0;
         while ($fileName = readdir($dir)) {
             if ($fileName != '.' and $fileName != '..') {
-                $path = $dirname.'/'.$fileName;// 获取文件夹下的目录
+                $path = $dirname.DS.$fileName;// 获取文件夹下的目录
                 if (is_dir($path)) {
                     $size += $this->dirsize($path);
                 } elseif (is_file($path)) {
@@ -311,6 +305,29 @@ class File extends Common
         }
 
         return $size;
+    }
+
+    //创建文件（文件夹）
+    public function create()
+    {
+        if (input('dosubmit')) {
+            $type = input('post.type');
+            $name = input('post.name');
+            $path = base64_decode(input('path')).DS.$name;
+            if ($type == "dir") {
+                $create = dir_create($path);
+                return json(['status'=>1,'msg'=>'ok']);
+            } elseif ($type == "file") {
+                $create = create_file($path);
+                return json(['status'=>1,'msg'=>'ok']);
+            } else {
+                return json(['status'=>0,'msg'=>'I do not know what do you want to create!!!']);
+            }
+        } else {
+            $path = input('path');
+
+            return $this->fetch('create', ['path' => $path]);
+        }
     }
 
     public function ace_editor_config()

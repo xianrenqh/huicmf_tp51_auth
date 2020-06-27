@@ -13,6 +13,7 @@ use app\admin\library\LibAuth;
 use think\Db;
 use lib\Tree2;
 use lib\Random;
+use lib\GetImgSrc;
 
 class Content extends Common
 {
@@ -37,15 +38,15 @@ class Content extends Common
             $limit = $param['limit'];
             $first = ($page - 1) * $limit;
             $where = "1=1";
-            $order = "updatetime DESC,id DESC";
+            $order = "update_time DESC,id DESC";
             if ( ! empty($param['key'])) {
                 $getkey     = $param['key'];
-                $updatetime = $getkey['updatetime'] ? $getkey['updatetime'] : "";
+                $updatetime = $getkey['update_time'] ? $getkey['update_time'] : "";
                 if ( ! empty($updatetime)) {
                     $time_first = strtotime(explode(" - ", $updatetime)[0]);
                     $time_last  = strtotime(explode(" - ", $updatetime)[1]) + (60 * 60 * 24 - 1);
                     if ($updatetime != '') {
-                        $where .= " and updatetime>".$time_first." and updatetime<".$time_last;
+                        $where .= " and update_time>".$time_first." and update_time<".$time_last;
                     }
                 }
                 if (isset($getkey["flag"]) && $getkey["flag"] != '0') {
@@ -83,7 +84,7 @@ class Content extends Common
             }
             $modelid   = ! empty($param['modelid']) ? $param['modelid'] : $getModel;
             $tableName = $this->get_model($modelid)->{'tablename'};
-            $field     = "id,catid,click,flag,inputtime,userid,username,updatetime,url,title,thumb,status,is_push";
+            $field     = "id,catid,click,flag,create_time,userid,username,update_time,url,title,thumb,status,is_push";
             $list      = Db::name($tableName)->where($where)->field($field)->limit($first,
                 $limit)->order($order)->select();
             for ($i = 0; $i < count($list); $i++) {
@@ -93,10 +94,10 @@ class Content extends Common
                         $flag .= "<span class='we-red'>[".$this->getFlagName($v)."]</span> ";
                     }
                 }
-                $list[$i]['title']      = "<a href='".$list[$i]['url']."' target='_blank'>".$list[$i]['title']."</a> <i class=\"layui-icon layui-icon-picture\" style='color:#1E9FFF'></i> ".$flag;
-                $list[$i]['updatetime'] = date("Y-m-d H:i:s", $list[$i]['updatetime']);
-                $list[$i]['username']   = $this->getUserName($list[$i]['userid'])->{'username'};
-                $list[$i]['catname']    = $this->getTypeName($list[$i]['catid'])->{'name'};
+                $list[$i]['title']       = "<a href='".$list[$i]['url']."' target='_blank'>".$list[$i]['title']."</a> <i class=\"layui-icon layui-icon-picture\" style='color:#1E9FFF'></i> ".$flag;
+                $list[$i]['update_time'] = date("Y-m-d H:i:s", $list[$i]['update_time']);
+                $list[$i]['username']    = $this->getUserName($list[$i]['userid'])->{'username'};
+                $list[$i]['catname']     = $this->getTypeName($list[$i]['catid'])->{'name'};
             }
             $total           = Db::name($tableName)->where($where)->count();
             $data['code']    = 0;
@@ -117,8 +118,8 @@ class Content extends Common
     public function add()
     {
         if (input('post.dosubmit')) {
-            $param              = input('post.');
-            $param['inputtime'] = time();
+            $param                = input('post.');
+            $param['create_time'] = time();
             //这里随便写点，测试添加数据的
             $insert = Db::name('article')->strict(false)->insert($param);
 
@@ -143,12 +144,44 @@ class Content extends Common
         $ContentForm = new ContentForm($modelid);
         $string      = $ContentForm->content_add();
         $tablename   = self::get_model($modelid)->tablename;
-        $data        = Db::name($tablename)->find($id);
-        dump($data);
-        $select_cate = $this->select_cate($data['catid'], $modelid);
+        if (input('post.dosubmit')) {
+            $param = input('post.', null);
+            if (empty($param['title']) || empty($param['content'])) {
+                return json(['status' => 0, 'msg' => '标题或内容不能为空！']);
+            }
+            $param['userid']      = cmf_get_admin_id();
+            $param['update_time'] = time();
+            $param['flag']        = ! empty($param['flag']) ? implode(',', $param['flag']) : '';
+            $param['description'] = empty($param['description']) ? str_cut(strip_tags($param['content']),
+                400) : $param['description'];
+
+            //自动提取缩略图
+            if (isset($param['auto_thumb']) && $param['thumb'] == '') {
+                $param['thumb'] = GetImgSrc::src($param['content'], 1);
+            }
+            //如果不是跳转URL，则更新URL
+            if (strpos($param['flag'], '7') == false) {
+                $param['url'] = '';
+            }
+
+            $param['content'] = htmlspecialchars($param['content']);
+            unset($param['create_time']);
+
+            //halt($param);
+            $update = Db::name($tablename)->where('id', $param['id'])->data($param)->strict(false)->update();
+            if ($update) {
+                return json(['status' => 1, 'msg' => '操作成功']);
+            } else {
+                return json(['status' => 0, 'msg' => '操作失败~~~']);
+            }
+        }
+        $data            = Db::name($tablename)->find($id);
+        $data['content'] = htmlspecialchars_decode($data['content']);
+        $select_cate     = $this->select_cate($data['catid'], $modelid);
         $this->assign('select_cate', $select_cate);
         $this->assign('string', $string);
         $this->assign('data', $data);
+        $this->assign('modelid', $modelid);
 
         return $this->fetch('content_edit');
     }

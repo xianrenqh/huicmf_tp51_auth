@@ -19,7 +19,7 @@ class Admin extends Model
 
     public function saveData($param)
     {
-        if (session('user_info.uid') != $param['id']) {
+        if (cmf_get_admin_id() != $param['id']) {
             return ['status' => 0, 'msg' => '参数错误！！！'];
             exit;
         }
@@ -28,7 +28,7 @@ class Admin extends Model
         } else {
             $Random            = new Random();
             $param['salt']     = $Random->alnum();
-            $param['password'] = cmf_password($param['password'],$param['salt']);
+            $param['password'] = cmf_password($param['password'], $param['salt']);
         }
         $param['updatetime'] = time();
         $res                 = Db::name('admin')->where('id', $param['id'])->data($param)->strict(false)->update();
