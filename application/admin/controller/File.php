@@ -53,7 +53,7 @@ class File extends Common
             }
         }
         array_multisort(array_column($data, 'dir'), SORT_DESC, $data);
-        $page = $this->getpage($data, 10, input('page'));
+        $page = $this->getpage($data, 300, input('page'));
 
         return $this->fetch('index', [
             'dirs'        => $page['data'],
