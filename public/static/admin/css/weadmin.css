@@ -437,6 +437,12 @@ body {
 .page-content .layui-tab-title li .layui-tab-close {
   border-radius: 50%;
 }
+.page-content .layui-tab-title li:nth-of-type(1) .layui-tab-close {
+  display: none;
+}
+.page-content .layui-tab-title li:nth-of-type(1){
+  border-right:1px solid #fff;
+}
 .page-content .layui-tab-title .layui-this:after {
   height: 36px;
 }
