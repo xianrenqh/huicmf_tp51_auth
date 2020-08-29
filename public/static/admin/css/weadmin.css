@@ -180,6 +180,16 @@ body {
   padding: 0px;
   width: 100%;
 }
+.login .layui-form-item{position:relative}
+.login .layui-form-item label{position:absolute;color:#757575;left:10px;top:15px;line-height:20px;background:0 0;padding:0 5px;font-size:14px;cursor:text}
+.login .layui-form-item input{background:#fff!important}
+.login .layui-form-item input,.login .layui-form-item label{transition:all .3s ease-in-out;-webkit-transition:all .3s ease-in-out}
+.login .layui-form-item input::placeholder{color:transparent!important}
+.login .layui-input-focus input::placeholder{color:#757575!important}
+.login .layui-input-focus input{border-color:#ff6700!important}
+.login .layui-input-focus input::placeholder{color:#757575!important}
+.login .layui-input-active label,.login .layui-input-focus label{top:-10px;font-size:13px;color:#ff6700;background:#fff!important;border-color:#ff6700!important}
+
 .weadmin-body {
   padding: 10px 20px 20px;
 }
@@ -323,7 +333,7 @@ body {
   background-color: rgba(0, 0, 0, 0.3);
 }
 .left-nav #nav li {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 0px solid #e5e5e5;
 }
 .left-nav #nav li:hover > a {
   /*color: blue;*/
@@ -359,7 +369,10 @@ body {
   font-size: 15px;
 }
 .left-nav #nav li .sub-menu li a:hover {
-  color: #148cf1;
+  background: #e6e6e6;
+}
+.left-nav #nav li .sub-menu .layui-this a:hover {
+  background: #009688;
 }
 .left-nav #nav li .sub-menu li .sub-menu li a {
   padding-left: 45px;
@@ -373,6 +386,8 @@ body {
   padding-right: 10px;
   line-height: 14px;
 }
+.left-nav #nav .layui-this{ background: #009688;color:#fff;}
+.left-nav #nav .layui-this a{color:#fff;}
 .x-slide_left {
   width: 17px;
   height: 61px;

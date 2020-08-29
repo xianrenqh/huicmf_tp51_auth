@@ -217,6 +217,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
      * 如果有子级就展开，没有就打开frame
      */
     $('body').on('click', '.left-nav #nav li', function (event) {
+        $(this).parent().find('li').removeClass('layui-this');
         if ($(this).children('.sub-menu').length) {
             if ($(this).hasClass('open')) {
                 $(this).removeClass('open');
@@ -232,6 +233,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
                 $(this).siblings().removeClass('open');
             }
         } else {
+            $(this).addClass('layui-this');
             var url = $(this).children('a').attr('_href');
             var title = $(this).find('cite').html();
             var index = $('.left-nav #nav li').index($(this));
