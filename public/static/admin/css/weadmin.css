@@ -283,7 +283,8 @@ body {
 }
 .container .left_open i {
   display: block;
-  background: rgba(255, 255, 255, 0.1) 0 0 no-repeat;
+  /*background: rgba(255, 255, 255, 0.1) 0 0 no-repeat;*/
+  background-color: #1AA094;
   color: #fff;
   width: 32px;
   height: 32px;
@@ -294,7 +295,7 @@ body {
   cursor: pointer;
 }
 .container .left_open i:hover {
-  background: rgba(255, 255, 255, 0.3) 0 0 no-repeat;
+  background-color: #168d84;
 }
 .container .left {
   background-color: rgba(0, 0, 0, 0);
@@ -444,10 +445,10 @@ body {
   border-right:1px solid #fff;
 }
 .page-content .layui-tab-title .layui-this:after {
-  height: 36px;
+  height: 36px;border-bottom: 1px solid #1aa066;
 }
 .page-content .layui-tab-title .layui-this {
-  background: #fff 0 0 no-repeat;
+  background: #1AA094 0 0 no-repeat;color:#fff;border-bottom: 1px solid #1aa066;
 }
 .page-content .layui-tab-bar {
   height: 34px;
