@@ -54,7 +54,40 @@ class ContentForm extends Controller
                     $string .= $this->tag_start($val['name']).Form::$fieldtype($val['field']).$this->tag_end();
                 }
             }
-            //cache($this->modelid.'_model_string', $string);
+            cache($this->modelid.'_model_string', $string);
+        }
+
+        return ($string);
+    }
+
+    public function content_edit($data)
+    {
+        $modelinfo = $this->get_modelinfo();
+        $string    = '';
+        foreach ($modelinfo as $val) {
+            $fieldtype = $val['fieldtype'];
+            if ($fieldtype == 'input' || $fieldtype == 'number') {
+                $errortips = ! empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
+                $required  = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
+                $string    .= $this->tag_start($val['name'],
+                        $val['isrequired']).'<input type="text" value="'.$data[$val['field']].'" name="'.$val['field'].'" autocomplete="off" class="layui-input'.$required.'" placeholder="'.$val['tips'].'">'.$this->tag_end();
+            } elseif ($fieldtype == 'textarea') {
+                $errortips = ! empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
+                $required  = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
+                $string    .= $this->tag_start($val['name'],
+                        $val['isrequired']).'<textarea name="'.$val['field'].'" class="layui-textarea'.$required.'" placeholder="'.$val['tips'].'" onKeyUp="textarealength(this,'.$val['maxlength'].')">'.$data[$val['field']].'</textarea><p class="textarea-numberbar"><em class="textarea-length">0</em>/'.$val['maxlength'].'</p>'.$this->tag_end();
+            } elseif ($fieldtype == 'select') {
+                $string .= $this->tag_start($val['name']).'<span class="select-box">'.Form::select($val['field'],
+                        $data[$val['field']], string2array($val['setting'])).'</span>'.$this->tag_end();
+            } elseif ($fieldtype == 'radio' || $fieldtype == 'checkbox') {
+                $string .= $this->tag_start($val['name']).Form::$fieldtype($val['field'], $data[$val['field']],
+                        string2array($val['setting'])).$this->tag_end();
+            } elseif ($fieldtype == 'datetime') {
+                $string .= $this->tag_start($val['name']).Form::datetime($val['field'], '',
+                        string2array($val['setting'])[0]).$this->tag_end();
+            } else {
+                $string .= $this->tag_start($val['name']).Form::$fieldtype($val['field']).$this->tag_end();
+            }
         }
 
         return ($string);

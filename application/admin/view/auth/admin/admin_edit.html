@@ -70,15 +70,13 @@
 </div>
 {include file='footer'/}
 <script type="text/javascript" src="__LIB__jquery/aspect.js"></script>
-<script type="text/javascript" src="__LIB__jquery/keyWord.js"></script>
 <script>
 
     layui.use(['form','upload', 'layer','element'], function(){
         var form = layui.form
             ,element = layui.element;
         /*通用简单的表单验证*/
-        form.verify({
-            newPwd: [
+        form.verify({newPwd: [
                 /^[\S]{6,12}$/
                 ,'密码必须6到12位，且不能出现空格'
             ],

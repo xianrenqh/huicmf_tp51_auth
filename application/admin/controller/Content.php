@@ -18,6 +18,8 @@ use lib\GetImgSrc;
 class Content extends Common
 {
 
+    public $modelid;
+
     public $childrenAdminIds;
 
     public $childrenGroupIds;
@@ -27,6 +29,7 @@ class Content extends Common
         $LibAuth                = new LibAuth();
         $this->childrenAdminIds = $LibAuth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $LibAuth->getChildrenGroupIds(true);
+        $this->modelid          = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : 1);
     }
 
     public function index()
@@ -120,6 +123,12 @@ class Content extends Common
         if (input('post.dosubmit')) {
             $param                = input('post.');
             $param['create_time'] = time();
+            $notfilter_field      = $this->get_notfilter_field();
+            foreach ($param as $_k => $_v) {
+                if ( ! in_array($_k, $notfilter_field)) {
+                    $data[$_k] = ! is_array($param[$_k]) ? new_html_special_chars($_v) : $this->content_dispose($_v);
+                }
+            }
             //这里随便写点，测试添加数据的
             $insert = Db::name('article')->strict(false)->insert($param);
 
@@ -142,7 +151,6 @@ class Content extends Common
         $modelid     = input('modelid');
         $id          = input('id');
         $ContentForm = new ContentForm($modelid);
-        $string      = $ContentForm->content_add();
         $tablename   = self::get_model($modelid)->tablename;
         if (input('post.dosubmit')) {
             $param = input('post.', null);
@@ -167,7 +175,13 @@ class Content extends Common
             $param['content'] = htmlspecialchars($param['content']);
             unset($param['create_time']);
 
-            //halt($param);
+            $notfilter_field = $this->get_notfilter_field();
+            foreach ($param as $_k => $_v) {
+                if ( ! in_array($_k, $notfilter_field)) {
+                    $param[$_k] = ! is_array($param[$_k]) ? new_html_special_chars($_v) : $this->content_dispose($_v);
+                }
+            }
+
             $update = Db::name($tablename)->where('id', $param['id'])->data($param)->strict(false)->update();
             if ($update) {
                 return json(['status' => 1, 'msg' => '操作成功']);
@@ -178,6 +192,7 @@ class Content extends Common
         $data            = Db::name($tablename)->find($id);
         $data['content'] = htmlspecialchars_decode($data['content']);
         $select_cate     = $this->select_cate($data['catid'], $modelid);
+        $string          = $ContentForm->content_edit($data);
         $this->assign('select_cate', $select_cate);
         $this->assign('string', $string);
         $this->assign('data', $data);
@@ -203,6 +218,50 @@ class Content extends Common
     public function attribute_operation()
     {
 
+    }
+
+    /**
+     * 获取模型非过滤字段
+     */
+    private function get_notfilter_field()
+    {
+        $arr  = array('content');
+        $data = Db::name('model_field')->field('field,fieldtype')->where(['modelid' => $this->modelid])->select();
+        foreach ($data as $val) {
+            if ($val['fieldtype'] == 'editor' || $val['fieldtype'] == 'editor_mini') {
+                $arr[] = $val['field'];
+            }
+        }
+
+        return $arr;
+    }
+
+    /**
+     * 内容处理
+     *
+     * @param $content
+     */
+    private function content_dispose($content)
+    {
+        $is_array = false;
+        foreach ($content as $val) {
+            if (is_array($val)) {
+                $is_array = true;
+            }
+            break;
+        }
+        if ( ! $is_array) {
+            return implode(',', $content);
+        }
+
+        //这里认为是多文件上传
+        $arr = array();
+        foreach ($content['url'] as $key => $val) {
+            $arr[$key]['url'] = $val;
+            $arr[$key]['alt'] = $content['alt'][$key];
+        }
+
+        return array2string($arr);
     }
 
     //栏目option树结构

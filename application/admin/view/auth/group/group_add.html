@@ -47,9 +47,6 @@
 
 {include file='footer'/}
 <script>
-    layui.extend({
-        authtree: 'extends/authtree'
-    });
     //使用拓展模块
     layui.use(['jquery', 'authtree', 'form', 'layer'], function () {
         var $ = layui.jquery;
@@ -108,7 +105,7 @@
                         openall: true,
                         autoclose: false,
                         theme: 'auth-skin-default',
-                        themePath: '__STATIC_ADMIN__js/extends/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
+                        themePath: '__STATIC_ADMIN__js/huimodules/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
                     });
                 }
             });

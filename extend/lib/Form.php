@@ -65,6 +65,21 @@ class Form
     }
 
     /**
+     * 图片上传
+     *
+     * @param $name      name
+     * @param $val       默认值
+     * @param $style     样式
+     * @param $attribute 外加属性
+     */
+    public static function image($name, $val = '', $style = 'width:370px', $iscropper = false, $attribute = '')
+    {
+        $string = '';
+
+        return $string;
+    }
+
+    /**
      * 多图上传
      *
      * @param $name name
@@ -78,7 +93,7 @@ class Form
         $string .= '';
         $string .= '</ul>';
         $string .= "</fieldset>";
-        $string .= "<a class=\"layui-btn\" href=\"javascript:;\" onclick=\"WeAdminShow('上传图片','".url("general.attachment/update_imgs")."','800','500')\">浏览文件</a>";
+        $string .= "<a class=\"layui-btn\" href=\"javascript:;\" onclick=\"WeAdminShow('上传图片','".url("general.attachment/update_imgs")."','800','500')\">多图上传</a>";
         $string .= '';
 
         return $string;
@@ -102,9 +117,7 @@ class Form
         foreach ($array as $value) {
             $value   = trim($value);
             $checked = ($val && in_array($value, $val)) ? 'checked' : '';
-            $string  .= '<label class="layui-form-label" >';
             $string  .= '<input type="checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'" title="'.$value.'">';
-            $string  .= '</label>';
             $i++;
         }
 

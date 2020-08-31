@@ -110,7 +110,7 @@ class Attachment extends Common
     //多图上传
     public function update_imgs()
     {
-        $this->fetch();
+        return $this->fetch();
     }
 
 }

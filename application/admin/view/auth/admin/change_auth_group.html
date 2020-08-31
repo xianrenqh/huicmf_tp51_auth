@@ -32,9 +32,6 @@
 </div>
 {include file='footer'/}
 <script>
-    layui.extend({
-        authtree: 'extends/authtree'
-    });
     layui.use(['form','layer','authtree'], function(){
         var form = layui.form
             ,authtree = layui.authtree;
@@ -64,7 +61,7 @@
                         autochecked: false,
                         autoclose: false,
                         theme: 'auth-skin-default',
-                        themePath: '__STATIC_ADMIN__js/extends/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
+                        themePath: '__STATIC_ADMIN__js/huimodules/tree_themes/' // 主题路径，默认 layui_exts/tree_themes/
                     });
 
                     authtree.on('change(lay-check-convert-auth)', function(data) {
