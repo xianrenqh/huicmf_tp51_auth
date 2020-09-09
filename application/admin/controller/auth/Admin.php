@@ -56,8 +56,12 @@ class Admin extends Common
             $role_id = $LibAuth->getChildrenGroupIds(true);
             if ( ! empty($roles)) {
                 if (in_array($roles, $role_id)) {
-                    $uids = Db::name('auth_group_access')->alias('a')->field('uid')->join('auth_group g',
-                            'g.id = a.group_id')->where('a.group_id', $roles)->select();
+                    $uids = Db::name('auth_group_access')
+                              ->alias('a')
+                              ->field('uid')
+                              ->join('auth_group g', 'g.id = a.group_id')
+                              ->where('a.group_id', $roles)
+                              ->select();
 
                     $cha_ids = '';
                     foreach ($uids as $v) {
@@ -78,8 +82,13 @@ class Admin extends Common
             if ($roles != '') {
                 $where .= " and id in ($cha_idsArr) ";
             }
-            $list = Db::name('admin')->field($field)->where($where)->where('id', 'in',
-                    $this->childrenAdminIds)->limit("$first,$limit")->order('id asc')->select();
+            $list = Db::name('admin')
+                      ->field($field)
+                      ->where($where)
+                      ->where('id', 'in', $this->childrenAdminIds)
+                      ->limit("$first,$limit")
+                      ->order('id asc')
+                      ->select();
             for ($i = 0; $i < count($list); $i++) {
                 $list[$i]['logintime'] = $list[$i]['logintime'] == 0 ? '' : date("Y-m-d H:i:s", $list[$i]['logintime']);
                 $group_list            = $this->auth->getGroups($list[$i]['id']);
@@ -135,7 +144,7 @@ class Admin extends Common
             }
             $salt                = Random::alnum();
             $param['salt']       = $salt;
-            $param['password']   = cmf_password($param['password'],$salt);
+            $param['password']   = cmf_password($param['password'], $salt);
             $param['createtime'] = time();
             $ins_id              = Db::name('admin')->strict(false)->insertGetId($param);
             $group_ids           = explode(",", $param['group']);
@@ -169,7 +178,7 @@ class Admin extends Common
             $param['updatetime'] = time();
             if ($param['password'] != '') {
                 $param['salt']     = $Random->alnum();
-                $param['password'] = cmf_password($param['password'],$param['salt']);
+                $param['password'] = cmf_password($param['password'], $param['salt']);
             } else {
                 unset($param['password']);
             }
@@ -218,8 +227,9 @@ class Admin extends Common
             $ids = array_intersect($this->childrenAdminIds, array_filter(explode(',', $ids)));
             // 避免越权删除管理员
             $childrenGroupIds = $this->childrenGroupIds;
-            $idsss            = Db::name('auth_group_access')->where('group_id', 'in',
-                $childrenGroupIds)->column('uid');
+            $idsss            = Db::name('auth_group_access')
+                                  ->where('group_id', 'in', $childrenGroupIds)
+                                  ->column('uid');
             $adminList        = ModelAdmin::where('id', 'in', $ids)->where('id', 'in', $idsss)->select();
             if ($adminList) {
                 $deleteIds = [];
@@ -248,8 +258,10 @@ class Admin extends Common
     public function public_change_auth_group()
     {
         if (input('do')) {
-            $data       = Db::name('auth_group')->where(['status' => 'normal'])->where('id', 'in',
-                    $this->childrenGroupIds)->select();
+            $data       = Db::name('auth_group')
+                            ->where(['status' => 'normal'])
+                            ->where('id', 'in', $this->childrenGroupIds)
+                            ->select();
             $group_ids  = Db::name('auth_group_access')->where('uid', input('id'))->select();
             $group_idss = [];
             foreach ($group_ids as $k => $v) {
@@ -307,7 +319,6 @@ class Admin extends Common
 
     /**
      * 获取菜单深度
-     *
      * @param $id
      * @param $array
      * @param $i

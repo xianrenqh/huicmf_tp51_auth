@@ -30,6 +30,8 @@ class AdminLog extends Model
 
     protected $uid;
 
+    public $role_id;
+
     //自定义日志标题
     protected static $title = '';
 
@@ -49,6 +51,8 @@ class AdminLog extends Model
         $LibAuth                = new LibAuth();
         $this->childrenAdminIds = $LibAuth->getChildrenAdminIds(true);
         $this->childrenGroupIds = $LibAuth->getChildrenGroupIds(false);
+        $getGroups              = $LibAuth->getGroups($this->uid);
+        $this->role_id          = ! empty($getGroups[0]['id']) ? $getGroups[0]['id'] : '';
     }
 
     public static function setTitle($title)
@@ -64,7 +68,6 @@ class AdminLog extends Model
     /**
      * @param $param
      * 写入日志
-     *
      * @return array
      */
     public static function record($title = '')
@@ -134,13 +137,22 @@ class AdminLog extends Model
                 $where .= " and title like '%$title%' ";
             }
         }
+        if ($this->role_id != 1) {
+            $count = Db::name('admin_log')->where($where)->where('admin_id', 'in', $this->childrenAdminIds)->count();
+            $list  = Db::name('admin_log')
+                       ->where($where)
+                       ->where('admin_id', 'in', $this->childrenAdminIds)
+                       ->limit($first, $limit)
+                       ->order('id desc')
+                       ->select();
+        } else {
+            $count = Db::name('admin_log')->where($where)->count();
+            $list  = Db::name('admin_log')->where($where)->limit($first, $limit)->order('id desc')->select();
+        }
 
-        $list = Db::name('admin_log')->where($where)->where('admin_id', 'in', $this->childrenAdminIds)->limit($first,
-            $limit)->order('id desc')->select();
         for ($i = 0; $i < count($list); $i++) {
             $list[$i]['createtime'] = date("Y-m-d H:i:s", $list[$i]['createtime']);
         }
-        $count = Db::name('admin_log')->where($where)->where('admin_id', 'in', $this->childrenAdminIds)->count();
 
         return ['count' => $count, 'data' => $list, 'status' => 1];
     }

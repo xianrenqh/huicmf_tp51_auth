@@ -209,9 +209,15 @@ class Rule extends Common
         if ( ! check_auth('auth.rule/rule_add')) {
             error2('您没有权限操作');
         }
-        foreach (input('listorders') as $id => $listorder) {
-            Db::name('auth_rule')->where(['id' => $id])->update(['weigh' => $listorder]);
+        $listorders = input('listorders');
+        $AuthRule   = new AuthRule();
+        $list1      = [];
+        foreach ($listorders as $id => $listorder) {
+            $list['id']    = $id;
+            $list['weigh'] = $listorder;
+            $list1[]       = $list;
         }
+        $AuthRule->saveAll($list1);
         Cache::clear();
         $this->success('操作成功！', 'index', 1, 2);
     }

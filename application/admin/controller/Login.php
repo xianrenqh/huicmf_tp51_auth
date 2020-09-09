@@ -75,19 +75,19 @@ class Login extends Controller
                 return json(['status' => 1002, 'msg' => '用户名或密码错误！']);
             }
 
-            $login_failure_retry = config('huiadmin.login_failure_retry');
-            $login_failure_times = config('huiadmin.login_failure_times');
-            $login_failure_min   = config('huiadmin.login_failure_min');
-            if ($login_failure_retry && $user_info['loginfailure'] >= $login_failure_times && (time() - $user_info['updatetime']) < $login_failure_min * 60) {
-                return json([
-                    'status' => 1002,
-                    'msg'    => '密码错误次数超过'.$login_failure_times.'次，请'.$login_failure_min.'分钟之后重试！'
-                ]);
-            }
-
             $pass = cmf_password(input('post.password'), $user_info['salt']);
             if ($user_info['password'] !== $pass) {
                 Db::name('admin')->where('username', input('post.username'))->setInc('loginfailure');
+
+                $login_failure_retry = config('huiadmin.login_failure_retry');
+                $login_failure_times = config('huiadmin.login_failure_times');
+                $login_failure_min   = config('huiadmin.login_failure_min');
+                if ($login_failure_retry && $user_info['loginfailure'] >= $login_failure_times && (time() - $user_info['updatetime']) < $login_failure_min * 60) {
+                    return json([
+                        'status' => 1002,
+                        'msg'    => '密码错误次数超过'.$login_failure_times.'次，请'.$login_failure_min.'分钟之后重试！'
+                    ]);
+                }
 
                 return ['status' => 1002, 'msg' => '用户名或密码错误！！！'];
             } else {
@@ -131,7 +131,6 @@ class Login extends Controller
 
     /**
      * 检测是否登录
-     *
      * @return boolean
      */
     public function isLogin()

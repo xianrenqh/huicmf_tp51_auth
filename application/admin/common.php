@@ -679,6 +679,7 @@ function create_file($filename)
     if (file_put_contents($filename, '') !== false) {   // ''是指创建的文件中的内容是空的
         return true;
     }
+
     return false;
 }
 
