@@ -6,7 +6,8 @@
         	<a href="">权限管理</a><span lay-separator="">/</span>
             <a><cite>管理员管理</cite></a>
       </span>
-    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px" href="javascript:location.replace(location.href);" title="刷新">
+    <a class="layui-btn layui-btn-sm" style="float:right;margin-top: 5px"
+       href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon">&#xe9aa;</i></a>
 </div>
 <div class="weadmin-body">
@@ -15,7 +16,8 @@
         <form class="layui-form layui-col-md12" action="javascript:;" id="form_admin_search">
             搜索：
             <div class="layui-inline">
-                <input type="text" name="username" id="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input type="text" name="username" id="username" placeholder="请输入用户名" autocomplete="off"
+                       class="layui-input">
             </div>
             <div class="layui-input-inline" style="">
                 <select name="roles" id="roles">
@@ -24,21 +26,23 @@
                 </select>
             </div>
 
-            <div class="layui-input-inline"  style="width:150px;text-align: center">
+            <div class="layui-input-inline" style="width:150px;text-align: center">
                 <select name="status" id="isuse">
                     <option value="99">==是否启用==</option>
                     <option value="normal">已启用</option>
                     <option value="hidden">已禁用</option>
                 </select>
             </div>
-            <button class="layui-btn" data-type="reload" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>搜索</button>
-            <button class="layui-btn layui-btn-danger" type="reset"><i class="layui-icon">&#xe63f;</i>清空</button>
+            <button class="layui-btn" data-type="reload" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i>搜索
+            </button>
+            <button class="layui-btn layui-btn-danger reset" type="reset"><i class="layui-icon">&#xe63f;</i>清空</button>
         </form>
     </div>
 
     <div class="weadmin-block">
-        <button class="layui-btn" onclick="WeAdminShow('添加管理员','{:url('admin_add')}','800')"><i class="layui-icon"></i>添加</button>
-        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span  id="total"></span> 条</span>
+        <button class="layui-btn" onclick="WeAdminShow('添加管理员','{:url('admin_add')}','800')"><i class="layui-icon"></i>添加
+        </button>
+        <span class="fr" style="line-height:40px;padding-right: 10px;">共有数据：<span id="total"></span> 条</span>
     </div>
     <table id="role_list" lay-filter="role_list"></table>
 </div>
@@ -57,69 +61,72 @@
 
 {include file='footer'/}
 <script>
-    layui.use('table', function(){
-        var table = layui.table;
-        //第一个实例
-        table.render({
-            elem: '#role_list'
-            ,page: false
-            ,where:{do:1}
-            ,method: 'get'
-            ,url: '{:url('index')}' //数据接口
-            ,done: function(res){ //res 即为原始返回的数据
-                $("#total").html(res.count);
-            }
-            ,cols: [[ //表头
-                {type:'numbers'}
-                ,{field: 'id', title: 'ID', width:60,  align:'center'}
-                ,{field: 'username', title: '用户名'}
-                ,{field: 'nickname', title: '昵称',width:110}
-                ,{field: 'usergroup', title: '所属组别'}
-                ,{field: 'email', title: '邮箱'}
-                ,{field: 'logintime', title: '上次登录时间',width:170}
-                ,{field: 'loginip', title: '上次登录IP',width:170}
-                ,{field: 'status', title: '状态', sort: true,templet: '#status',align:'center',width:90}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo',align:'center',width:170}
-            ]]
-            ,id: 'testReload'
-            ,page:true
-            ,limit:10
-        });
-        var $ = layui.$, active = {
-            reload: function() {
-                //执行重载
-                table.reload('testReload', {
-                    page: {curr: 1},
-                    where: {
-                        key: {
-                            username: $('#username').val(),
-                            roles: $('#roles').val(),
-                            isuse: $('#isuse').val(),
-                        }
-                    }
-                });
-            }
-        };
-        $('.demoTable .layui-btn').on('click', function() {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
-        //监听行工具事件
-        table.on('tool(role_list)', function(obj){
-            var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('你确定要删除吗？', {
-                    btn: ['确定','取消'] //按钮
-                }, function(){
-                    var postdata ={ids :data.id};
-                    posttips("{:url('admin_delete')}",postdata);
-                });
-            } else if(obj.event === 'edit'){
-                WeAdminShow("编辑","{:url('admin_edit')}?id="+data.id,'800');
-            }
-        });
+  layui.use('table', function () {
+    var table = layui.table;
+    //第一个实例
+    table.render({
+      elem: '#role_list'
+      , page: false
+      , where: {do: 1}
+      , method: 'get'
+      , url: '{:url('index')}' //数据接口
+      , done: function (res) { //res 即为原始返回的数据
+        $("#total").html(res.count);
+      }
+      , cols: [[ //表头
+        {type: 'numbers'}
+        , {field: 'id', title: 'ID', width: 60, align: 'center'}
+        , {field: 'username', title: '用户名'}
+        , {field: 'nickname', title: '昵称', width: 110}
+        , {field: 'usergroup', title: '所属组别'}
+        , {field: 'email', title: '邮箱'}
+        , {field: 'logintime', title: '上次登录时间', width: 170}
+        , {field: 'loginip', title: '上次登录IP', width: 170}
+        , {field: 'status', title: '状态', sort: true, templet: '#status', align: 'center', width: 90}
+        , {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center', width: 170}
+      ]]
+      , id: 'testReload'
+      , page: true
+      , limit: 10
     });
+    var $ = layui.$, active = {
+      reload: function () {
+        //执行重载
+        table.reload('testReload', {
+          page: {curr: 1},
+          where: {
+            key: {
+              username: $('#username').val(),
+              roles: $('#roles').val(),
+              isuse: $('#isuse').val(),
+            }
+          }
+        });
+      }
+    };
+    $('.demoTable .layui-btn').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+    $('.demoTable .reset').on('click', function () {
+      window.location.reload();
+    });
+
+    //监听行工具事件
+    table.on('tool(role_list)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.confirm('你确定要删除吗？', {
+          btn: ['确定', '取消'] //按钮
+        }, function () {
+          var postdata = {ids: data.id};
+          posttips("{:url('admin_delete')}", postdata);
+        });
+      } else if (obj.event === 'edit') {
+        WeAdminShow("编辑", "{:url('admin_edit')}?id=" + data.id, '800');
+      }
+    });
+  });
 </script>
 </body>
 </html>

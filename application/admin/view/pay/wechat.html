@@ -7,43 +7,69 @@
                 <span class="we-red">*</span>支付名称
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off" class="layui-input readonly-bg" readonly>
+                <input type="text" id="name" name="name" value="{$data.name}" lay-verify="required" autocomplete="off"
+                       class="layui-input readonly-bg" readonly>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>微信商户号</label>
             <div class="layui-input-block">
-                <input type="text" name="config[mch_id]" value="{$data.config.mch_id}" autocomplete="off" class="layui-input" lay-verify="required" placeholder="微信商户号">
+                <input type="text" name="config[mch_id]" value="{$data.config.mch_id}" autocomplete="off"
+                       class="layui-input" lay-verify="required" placeholder="微信商户号">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>微信AppID</label>
             <div class="layui-input-block">
-                <input type="text" name="config[app_id]" value="{$data.config.app_id}" autocomplete="off" class="layui-input" lay-verify="required" placeholder="微信支付申请对应的公众号的APPID">
+                <input type="text" name="config[app_id]" value="{$data.config.app_id}" autocomplete="off"
+                       class="layui-input" lay-verify="required" placeholder="微信支付申请对应的公众号的APPID">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>API密钥</label>
             <div class="layui-input-block">
-                <input type="text" name="config[app_secret]" value="{$data.config.app_secret}" autocomplete="off" class="layui-input" lay-verify="required" placeholder="帐户设置-安全设置-API安全-API密钥-设置API密钥">
+                <input type="text" name="config[app_secret]" value="{$data.config.app_secret}" autocomplete="off"
+                       class="layui-input" lay-verify="required" placeholder="帐户设置-安全设置-API安全-API密钥-设置API密钥">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="we-red">*</span>商户秘钥(KEY)</label>
             <div class="layui-input-block">
-                <input type="text" name="config[key]" value="{$data.config.key}" autocomplete="off" class="layui-input" lay-verify="required" placeholder="微信支付申请对应的公众号的APP Key">
+                <input type="text" name="config[key]" value="{$data.config.key}" autocomplete="off" class="layui-input"
+                       lay-verify="required" placeholder="微信支付申请对应的公众号的APP Key">
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">商户证书MCH_CERT</label>
-            <div class="layui-inline">
-                1
+
+        <div class="layui-form-item"><label class="layui-form-label"><b>P12证书</b><br><span class="nowrap color-desc">微信P12证书</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="config[p12_cert]" value="{$data.config.p12_cert}" autocomplete="off"
+                       class="layui-input"
+                       lay-verify="required" placeholder="先上传证书，然后填写证书名称：例如 123.pem">
+                <p class="help-block">请使用ftp将证书上传到/upload/cert文件夹下，并正确填写好证书名称</p>
             </div>
         </div>
+        <div class="layui-form-item"><label class="layui-form-label"><b>Key证书</b><br><span class="nowrap color-desc">微信PEM证书</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="config[pem_key]" value="{$data.config.pem_key}" autocomplete="off"
+                       class="layui-input"
+                       lay-verify="required" placeholder="先上传证书，然后填写证书名称：例如 123.pem">
+                <p class="help-block">请使用ftp将证书上传到/upload/cert文件夹下，并正确填写好证书名称</p>
+            </div>
+        </div>
+        <div class="layui-form-item"><label class="layui-form-label"><b>Cert证书</b><br><span class="nowrap color-desc">微信PEM证书</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="config[pem_cert]" value="{$data.config.pem_cert}" autocomplete="off"
+                       class="layui-input"
+                       lay-verify="required" placeholder="先上传证书，然后填写证书名称：例如 123.pem">
+                <p class="help-block">请使用ftp将证书上传到/upload/cert文件夹下，并正确填写好证书名称</p>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
-                <textarea name="desc" class="layui-textarea"  placeholder="描述">{:htmlspecialchars_decode($data.desc)}</textarea>&nbsp;
+                <textarea name="desc" class="layui-textarea"
+                          placeholder="描述">{:htmlspecialchars_decode($data.desc)}</textarea>&nbsp;
             </div>
         </div>
 
@@ -58,7 +84,7 @@
             <label class="layui-form-label"></label>
             <input type="hidden" name="dosubmit" value="1">
             <input type="hidden" name="id" value="{$data.id}">
-            <button class="layui-btn"  lay-submit=""type="submit"   value="1" name="dosubmit">确定</button>
+            <button class="layui-btn" lay-submit="" type="submit" value="1" name="dosubmit">确定</button>
         </div>
     </form>
 </div>
@@ -66,31 +92,32 @@
 {include file='footer'/}
 
 <script>
-    layui.use(['form'], function() {
-        var form = layui.form;
-        form.render();
+  layui.use(['form'], function () {
+    var form = layui.form;
+    form.render();
+  });
+
+  function dosub(obj) {
+    $.ajax({
+      type: 'POST',
+      url: '{:url('edit')}',
+      data: $(obj).serialize(),
+      dataType: "json",
+      success: function (res) {
+        if (res.status == 1) {
+          layer.msg(res.msg, {
+            icon: 1,
+            time: 200
+          }, function () {
+            parent.location.reload();
+          });
+        } else {
+          layer.msg(res.msg);
+        }
+      }
     });
-    function dosub(obj) {
-        $.ajax({
-            type: 'POST',
-            url: '{:url('edit')}',
-            data: $(obj).serialize(),
-            dataType: "json",
-            success: function (res) {
-                if(res.status == 1){
-                    layer.msg(res.msg, {
-                        icon: 1,
-                        time: 200
-                    }, function(){
-                        parent.location.reload();
-                    });
-                }else{
-                    layer.msg(res.msg);
-                }
-            }
-        });
-        return false;
-    }
+    return false;
+  }
 </script>
 </body>
 </html>
