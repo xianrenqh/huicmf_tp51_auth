@@ -40,11 +40,12 @@ class Upload
             //上传到本地
             case "local":
                 $file    = request()->file('Filedata');
+                $hash    = $file->hash();
                 $getsize = $file->getSize();
                 $info    = $file->validate([
-                        'size' => get_config('upload_maxsize') * 1024,
-                        'ext'  => $option['allowtype']
-                    ])->move(".".$file_path);
+                    'size' => get_config('upload_maxsize') * 1024,
+                    'ext'  => $option['allowtype']
+                ])->move(".".$file_path);
                 if ($info) {
                     $filename = str_replace('\\', '/', $info->getSaveName());
                     $fileInfo = $file->getInfo();
@@ -72,7 +73,7 @@ class Upload
                     $fileinfo['storage']     = 'local';
                     $fileinfo['imagewidth']  = $imagewidth;
                     $fileinfo['imageheight'] = $imageheight;
-                    $fileinfo['sha1']        = $file->hash();
+                    $fileinfo['sha1']        = $hash;
                     $fileinfo['url']         = $fileinfo['filepath'].$fileinfo['filename'];
 
                     $this->add_water(".".$fileinfo['filepath'].$fileinfo['filename']);

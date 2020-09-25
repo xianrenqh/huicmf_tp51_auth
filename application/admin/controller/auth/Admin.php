@@ -48,9 +48,9 @@ class Admin extends Common
             $field = "id,username,nickname,email,logintime,loginip,status";
 
             $getkey   = input('get.key');
-            $username = $getkey['username'] ? $getkey['username'] : "";
-            $roles    = $getkey['roles'] ? $getkey['roles'] : "";
-            $status   = $getkey['isuse'] == '' ? '' : $getkey['isuse'];
+            $username = ! empty($getkey['username']) ? $getkey['username'] : "";
+            $roles    = ! empty($getkey['roles']) ? $getkey['roles'] : "";
+            $status   = empty($getkey['isuse']) ? '' : $getkey['isuse'];
 
             $LibAuth = new LibAuth();
             $role_id = $LibAuth->getChildrenGroupIds(true);

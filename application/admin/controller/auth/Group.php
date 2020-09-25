@@ -86,6 +86,9 @@ class Group extends Common
         if (input('post.dosubmit')) {
             $rulesArr = input('post.rules');
             $rules    = '';
+            if(empty($rulesArr)){
+                return json(['status' => 0, 'msg' => '权限不能为空啦，请先选择哦']);
+            }
             foreach ($rulesArr as $v) {
                 $rules .= $v.",";
             }
@@ -145,6 +148,9 @@ class Group extends Common
         if (input('dosubmit')) {
             $groupList = Db::name('auth_group')->where(['status' => 'normal'])->select();
             $params    = input('post.');
+            if(empty($params['rules'])){
+                return json(['status'=>0,'msg'=>'权限值不能为空，请先选择哦']);
+            }
             $rulesArr  = $params['rules'];
             $rulesStr  = implode(",", $rulesArr);
 
