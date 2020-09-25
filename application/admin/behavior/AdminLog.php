@@ -9,7 +9,7 @@ class AdminLog
 
     public function run()
     {
-        if (Request::isPost()) {
+        if (Request::module() == 'admin' && Request::isPost()) {
             \app\admin\model\AdminLog::record();
         }
     }
