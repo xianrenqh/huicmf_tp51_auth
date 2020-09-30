@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cea3c40cf6aedbcca2ca562db7eb2fed",
+    "content-hash": "54cf0b90162249348a2c3b8c958db2aa",
     "packages": [
         {
             "name": "phpmailer/phpmailer",
@@ -274,6 +274,48 @@
                 }
             ],
             "time": "2018-05-11T06:45:42+00:00"
+        },
+        {
+            "name": "xianrenqh/api-doc-php",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xianrenqh/api-doc-php.git",
+                "reference": "7c611fca8ed2531b8554966307dff15996cf1438"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xianrenqh/api-doc-php/zipball/7c611fca8ed2531b8554966307dff15996cf1438",
+                "reference": "7c611fca8ed2531b8554966307dff15996cf1438",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "xianrenqh\\apidoc\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "xiaohuihui",
+                    "email": "762229008@qq.com"
+                }
+            ],
+            "description": "api-doc-php",
+            "time": "2020-09-28T08:41:46+00:00"
         }
     ],
     "packages-dev": [],

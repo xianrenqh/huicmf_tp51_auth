@@ -9,42 +9,42 @@
 
 namespace app\api\controller;
 
+use app\member\model\BaseUser;
+use think\facade\Request;
+
 use think\Db;
 
 header('Content-type:text/html; Charset=utf-8');
 
-class Index
+/**
+ * @title HuiCMF-API
+ * @desc API接口
+ * Class APi
+ * @package app\api\controller
+ */
+class Index extends Base
 {
 
     /**
-     * @api               {post} api/index/link 01、获取友情链接列表
-     * @apiName           link
-     * @apiGroup          index
-     * @apiVersion        1.0.0
-     * @apiDescription    获取友情链接列表
-     * @apiParam {String}  key key，第几页
-     * @apiParam {String}  [page=1] 分页，第几页
-     * @apiParam {int} [limit=10] 期望分页返回的数据页数量.
-     *
-     * @apiSuccessExample Success-Response://这里的JSON可以不用格式化，因为apidoc.js会自动格式化,但是最好格式化放在这里，方便别人看.
-     *  {
-     *    "status": 200,
-     *    "msg": "success",
-     *    "data": [{
-     *       "id": 3,
-     *       "typeid": 1,
-     *       "linktype": 0,
-     *       "name": "新浪",
-     *       "url": "http:\/\/www.sina.com.cn",
-     *       "logo": "",
-     *       "msg": "",
-     *       "username": "新浪",
-     *       "email": "",
-     *       "listorder": 2,
-     *       "status": 1,
-     *       "addtime": 1583827200
-     *    }]
-     *  }
+     * 获取标签列表
+     */
+    public function index()
+    {
+        return json(['msg' => '恭喜您,API访问成功!']);
+    }
+
+    /**
+     * @title 友情链接
+     * @url /api.php/index/link
+     * @header string MX-device-type 设备类型 空 必须
+     * @header string MX-Admin-Type 管理类型 空 必须
+     * @header string MX-Token 用户token 空 必须
+     * @json {"code":200,"msg":"获取成功","data":[]}
+     * @method POST
+     * @code 200 成功
+     * @code 0 失败
+     * @return int code 状态码 （具体参见状态码说明）
+     * @return string msg 提示信息
      */
     public function link()
     {
@@ -52,11 +52,7 @@ class Index
         $first = ! (empty(input('post.page'))) ? input('post.page') : 1;
         $limit = ! (empty(input('post.limit'))) ? input('post.limit') : 10;
         $list  = Db::name('link')->where(['status' => 1])->order($order)->limit($first - 1, $limit)->select();
-        if ($list) {
-            return json(['status' => 200, 'msg' => 'success', 'data' => $list]);
-        } else {
-            return json(['status' => 201, 'msg' => 'error']);
-        }
+        $this->success('获取成功', $list);
     }
 
 }
