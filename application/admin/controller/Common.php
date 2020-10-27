@@ -13,6 +13,7 @@ use app\ApplicationName\controller\View;
 use think\Controller;
 use lib\Auth;
 use think\facade\Request;
+use think\facade\Session;
 use think\Loader;
 
 class Common extends Controller
@@ -41,8 +42,10 @@ class Common extends Controller
 
         //初始化判断用户是否已经登陆
         $this->uid = cmf_get_admin_id();
-        if ( ! $this->uid) {
-            $this->error('请先登陆系统！', 'login/index');
+        $cookieId  = intval(cookie('adminid'));
+
+        if ( ! Session::get('adminid') || Session::get('adminid') != $cookieId) {
+            $this->error('请先登录', 'login/index', '', 1);
         } else {
             $this->auth = Auth::instance();
             self::not_check_priv();
