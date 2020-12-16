@@ -17,7 +17,7 @@ HuiCMF3.0基于ThinkPHP5.1框架进行二次开发，其主要特性包括：
 > HuiCMF3.0的运行环境要求PHP7.0以上。
 
 ## 安装
-
+###1、
 使用git进行安装
 ~~~
 git clone https://github.com/xianrenqh/huicmf_tp51_auth.git
@@ -26,8 +26,9 @@ git clone https://github.com/xianrenqh/huicmf_tp51_auth.git
 之后使用composer update进行更新
 
 启动服务
-
-
+###2、
+composer require xianrenqh/huicmf_tp51_auth
+之后使用composer update进行更新
 
 ## 代码里已用到的缓存名称
 cache_auth_rule  
