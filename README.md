@@ -27,21 +27,7 @@ git clone https://github.com/xianrenqh/huicmf_tp51_auth.git
 
 启动服务
 
-~~~
-cd tp
-php think run
-~~~
 
-然后就可以在浏览器中访问
-
-~~~
-http://localhost:8000
-~~~
-
-更新框架
-~~~
-composer update topthink/framework
-~~~
 
 ## 代码里已用到的缓存名称
 cache_auth_rule  
@@ -174,7 +160,7 @@ www  WEB部署目录（或者子目录）
 
 ## 参与开发
 
-请参阅 [ThinkPHP5 核心框架包](https://github.com/top-think/framework)。
+请参阅 [ThinkPHP5 核心框架包]
 
 ## 版权信息
 
