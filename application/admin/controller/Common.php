@@ -42,9 +42,8 @@ class Common extends Controller
 
         //初始化判断用户是否已经登陆
         $this->uid = cmf_get_admin_id();
-        $cookieId  = intval(cookie('adminid'));
 
-        if ( ! Session::get('adminid') || Session::get('adminid') != $cookieId) {
+        if (empty($this->uid)) {
             $this->error('请先登录', 'login/index', '', 1);
         } else {
             $this->auth = Auth::instance();

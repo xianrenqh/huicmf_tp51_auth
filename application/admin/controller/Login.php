@@ -106,9 +106,6 @@ class Login extends Controller
                     ];
                     Session::set('adminid', $user_info['id']);
                     Session::set('user_info', $user_session_info);
-                    Session::set('session_shopId', $user_info['shop_id']);
-                    Cookie::set('adminid', $user_info['id']);
-                    Cookie::set('adminname', $user_info['username']);
                     $data = ['loginip' => ip(), 'loginfailure' => 0, 'logintime' => time(), 'token' => $token];
                     Db::name('admin')->where('username', input('post.username'))->data($data)->update();
 
