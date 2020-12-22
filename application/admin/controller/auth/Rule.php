@@ -13,6 +13,7 @@ use app\admin\controller\Common;
 use think\Db;
 use lib\Tree;
 use think\facade\Cache;
+use app\admin\model\AuthRule;
 
 class Rule extends Common
 {

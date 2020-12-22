@@ -27,6 +27,7 @@ git clone https://github.com/xianrenqh/huicmf_tp51_auth.git
 
 启动服务
 ###2、
+composer create-project xianrenqh/huicmf_tp51_aut
 composer require xianrenqh/huicmf_tp51_auth
 之后使用composer update进行更新
 
