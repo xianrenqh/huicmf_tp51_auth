@@ -47,19 +47,16 @@ class Upload
                     'ext'  => $option['allowtype']
                 ])->move(".".$file_path);
                 if ($info) {
-                    $filename = str_replace('\\', '/', $info->getSaveName());
-                    $fileInfo = $file->getInfo();
-
+                    $filename  = str_replace('\\', '/', $info->getSaveName());
+                    $fileInfo  = $file->getInfo();
+                    $fileInfo2 = $info->getSaveName();
                     //验证是否为图片文件
                     $imagewidth = $imageheight = 0;
                     if (in_array($fileInfo['type'],
                         ['image/gif', 'image/jpg', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp'])) {
-                        $imgInfo = getimagesize($fileInfo['tmp_name']);
-                        if ( ! $imgInfo || ! isset($imgInfo[0]) || ! isset($imgInfo[1])) {
-                            return json(['msg' => '上传文件不是有效的图片文件', 'status' => 0]);
-                        }
-                        $imagewidth  = isset($imgInfo[0]) ? $imgInfo[0] : $imagewidth;
-                        $imageheight = isset($imgInfo[1]) ? $imgInfo[1] : $imageheight;
+                        $image       = Image::open(".".$file_path.$fileInfo2);
+                        $imagewidth  = ($image->width());
+                        $imageheight = ($image->height());
                     }
 
                     $fileurl                 = $file_path.$filename;
@@ -75,7 +72,6 @@ class Upload
                     $fileinfo['imageheight'] = $imageheight;
                     $fileinfo['sha1']        = $hash;
                     $fileinfo['url']         = $fileinfo['filepath'].$fileinfo['filename'];
-
                     $this->add_water(".".$fileinfo['filepath'].$fileinfo['filename']);
                     $this->_att_write($fileinfo);
 
@@ -198,7 +194,10 @@ class Upload
             'wma',
             'wav',
             'amr',
-            'ogg'
+            'ogg',
+            'p12',
+            'pem',
+            'key'
         );
         foreach ($arr as $key => $val) {
             if ( ! in_array($val, $allow)) {
@@ -239,10 +238,10 @@ class Upload
      */
     public function _att_write($fileinfo)
     {
-        $arr             = [];
-        $arr['admin_id'] = $this->uid;
-        $arr['user_id']  = $this->user_id;
-        $arr['url']      = $fileinfo['url'];;
+        $arr                = [];
+        $arr['admin_id']    = $this->uid;
+        $arr['user_id']     = $this->user_id;
+        $arr['url']         = $fileinfo['url'];
         $arr['imagewidth']  = $fileinfo['imagewidth'];
         $arr['imageheight'] = $fileinfo['imageheight'];
         $arr['imagetype']   = $fileinfo['fileext'];

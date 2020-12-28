@@ -304,10 +304,10 @@ class Group extends Common
     {
         $id = input('pid');
         if ($id == 1) {
-            $data = Db::name('auth_rule')->order('weigh asc')->select();
+            $data = Db::name('auth_rule')->where('status','normal')->order('weigh asc')->select();
         } else {
             $rules = Db::name('auth_group')->field('rules')->where('id', $id)->find();
-            $data  = Db::name('auth_rule')->where('id', 'in', $rules['rules'])->order('weigh asc')->select();
+            $data  = Db::name('auth_rule')->where('status','normal')->where('id', 'in', $rules['rules'])->order('weigh asc')->select();
         }
         foreach ($data as $k => $v) {
             $data[$k]['level'] = $this->public_get_level($v['id'], $data);
@@ -346,10 +346,10 @@ class Group extends Common
         }
 
         if ($id == 1) {
-            $data = Db::name('auth_rule')->order('weigh asc')->select();
+            $data = Db::name('auth_rule')->where('status','normal')->order('weigh asc')->select();
         } else {
             $rules = Db::name('auth_group')->field('rules')->where('id', $id)->find();
-            $data  = Db::name('auth_rule')->where('id', 'in', $rules['rules'])->order('weigh asc')->select();
+            $data  = Db::name('auth_rule')->where('status','normal')->where('id', 'in', $rules['rules'])->order('weigh asc')->select();
         }
 
         foreach ($data as $k => $v) {

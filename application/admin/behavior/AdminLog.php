@@ -3,6 +3,7 @@
 namespace app\admin\behavior;
 
 use think\facade\Request;
+use app\admin\model\AdminLog as AdminLogModel;
 
 class AdminLog
 {
@@ -10,7 +11,7 @@ class AdminLog
     public function run()
     {
         if (Request::module() == 'admin' && Request::isPost()) {
-            \app\admin\model\AdminLog::record();
+            AdminLogModel::record();
         }
     }
 }

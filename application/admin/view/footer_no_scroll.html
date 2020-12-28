@@ -1,0 +1,29 @@
+<!-- 底部结束 -->
+<script type="text/javascript" src="__LIB__jquery/jquery.2.2.4.min.js"></script>
+<script type="text/javascript" src="__LIB__layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="__LIB__jquery/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="__STATIC_ADMIN__js/common.js"></script>
+
+<script type="text/javascript">
+  layui.config({
+    base: '__STATIC_ADMIN__js/huimodules/'
+    , version: '101100'
+  }).extend({ //设定模块别名
+    admin: 'admin',
+    menu: 'menu',
+    huiCookie: 'huiCookie',
+    huiBase64: 'huiBase64'
+  });
+
+  layui.use(['jquery', 'admin', 'menu', 'huiCookie', 'huiBase64'], function () {
+    var $ = layui.jquery,
+      admin = layui.admin,
+      huiCookie = layui.huiCookie,
+      huiBase64 = layui.huiBase64,
+      menu = layui.menu;
+    $(function () {
+      menu.getMenu("{:url('index/show_menu')}");
+    });
+  });
+
+</script>
