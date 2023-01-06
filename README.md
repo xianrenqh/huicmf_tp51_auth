@@ -3,6 +3,9 @@
 Huicmf 3.0 —— 念念不忘 必有回響，你值得信赖的CMF
 ===============
 
+### 此项目不再更新，请使用tp6版本的：
+https://github.com/xianrenqh/huicmf_tp6
+
 [![Total Downloads](https://poser.pugx.org/xianrenqh/huicmf_tp51/downloads)](https://packagist.org/packages/xianrenqh/huicmf_tp51)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D7.0-8892BF.svg)](http://www.php.net/)
 [![License](https://poser.pugx.org/xianrenqh/huicmf_tp51/license)](https://packagist.org/packages/xianrenqh/huicmf_tp51)
